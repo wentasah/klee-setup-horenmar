@@ -1,3 +1,6 @@
 [submodule "klee"]
 	path = klee
 	url = https://github.com/klee/klee.git
+[submodule "stp"]
+	path = stp
+	url = https://github.com/stp/stp.git
