@@ -1,0 +1,34 @@
+1)  Download LLVM-GCC for LLVM2.9 binaries from here 
+        http://llvm.org/releases/download.html#2.9
+        http://llvm.org/releases/2.9/llvm-gcc4.2-2.9-x86_64-linux.tar.bz2
+
+1b) Unpack and add them to PATH. <-- THIS IS IMPORTANT
+        If LLVM configure doesn't pick it up, it doesn't error out, it just
+        causes lots of problems later.
+
+2)  Download and build LLVM2.9 from here
+        http://llvm.org/releases/download.html#2.9
+        http://llvm.org/releases/2.9/llvm-2.9.tgz
+
+        ./configure --enable-optimized --enable-assertions
+
+2b) If compilation fails because of missing "lseek64", use included patch file.
+    This is needed because that source file relies on transitive includes and
+    current glibc is different.
+
+        patch -p1 < llvm-2.9-lseek64.patch
+
+3)  Download and build STP (in submodules)
+        cmake -DBUILD_SHARED_LIBS:BOOL=OFF -DENABLE_PYTHON_INTERFACE:BOOL=OFF
+        make
+
+<This project doesn't use uclibc and POSIX, so they are skipped.>
+
+4)  Download and build KLEE (in submodules)
+        ./configure --with-stp=<full/path/to/stp> --with-llvm=<full/path/to/llvm>
+        make DISABLE_ASSERTIONS=0 ENABLE_OPTIMIZED=1 ENABLE_SHARED=0
+
+4b) Optionally run KLEE test suite
+        make check
+        make unittests
+
