@@ -2,9 +2,9 @@
         http://llvm.org/releases/download.html#2.9
         http://llvm.org/releases/2.9/llvm-gcc4.2-2.9-x86_64-linux.tar.bz2
 
-1b) Unpack and add them to PATH. <-- THIS IS IMPORTANT
-        If LLVM configure doesn't pick it up, it doesn't error out, it just
-        causes lots of problems later.
+1b) Unpack and add them to PATH.
+        This isn't strictly necessary, but since using KLEE necessitates
+        using LLVM IR compiler, it will save some time.
 
 2)  Download and build LLVM2.9 from here
         http://llvm.org/releases/download.html#2.9
@@ -25,10 +25,11 @@
 <This project doesn't use uclibc and POSIX, so they are skipped.>
 
 4)  Download and build KLEE (in submodules)
-        ./configure --with-stp=<full/path/to/stp> --with-llvm=<full/path/to/llvm>
+        ./configure --with-stp=<full/path/to/stp> \
+        --with-llvm=<full/path/to/llvm> \
+        --with-llvmgccdir=<full/path/to/llvm-gcc>
         make DISABLE_ASSERTIONS=0 ENABLE_OPTIMIZED=1 ENABLE_SHARED=0
 
 4b) Optionally run KLEE test suite
         make check
         make unittests
-
