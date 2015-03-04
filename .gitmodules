@@ -4,3 +4,6 @@
 [submodule "stp"]
 	path = stp
 	url = https://github.com/stp/stp.git
+[submodule "emotor"]
+	path = emotor
+	url = git@rtime.felk.cvut.cz:emotor
