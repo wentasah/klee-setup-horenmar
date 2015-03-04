@@ -1,22 +1,19 @@
-1)  Download LLVM-GCC for LLVM2.9 binaries from here 
-        http://llvm.org/releases/download.html#2.9
-        http://llvm.org/releases/2.9/llvm-gcc4.2-2.9-x86_64-linux.tar.bz2
+1)  Download Clang+LLVM 3.3 binaries from here
+        http://llvm.org/releases/download.html#3.3
+        http://llvm.org/releases/3.3/clang+llvm-3.3-Ubuntu-13.04-x86_64-linux-gnu.tar.bz2
 
 1b) Unpack and add them to PATH.
-        This isn't strictly necessary, but since using KLEE necessitates
-        using LLVM IR compiler, it will save some time.
+        Adding them to path isn't strictly necessary, but since using KLEE
+        necessitates using Clang as IR compiler, it will save some time.
 
-2)  Download and build LLVM2.9 from here
-        http://llvm.org/releases/download.html#2.9
-        http://llvm.org/releases/2.9/llvm-2.9.tgz
+2)  Download and build Clang+LLVM3.3 from here
+        http://llvm.org/releases/download.html#3.3
+        http://llvm.org/releases/3.3/llvm-3.3.src.tar.gz
+        http://llvm.org/releases/3.3/clang-3.3.src.tar.gz
+            note that clang sources go into llvm/tools/clang directory
+        http://llvm.org/releases/3.3/compiler-rt-3.3.src.tar.gz
 
         ./configure --enable-optimized --enable-assertions
-
-2b) If compilation fails because of missing "lseek64", use included patch file.
-    This is needed because that source file relies on transitive includes and
-    current glibc is different.
-
-        patch -p1 < llvm-2.9-lseek64.patch
 
 3)  Download and build STP (in submodules)
         cmake -DBUILD_SHARED_LIBS:BOOL=OFF -DENABLE_PYTHON_INTERFACE:BOOL=OFF
@@ -27,7 +24,6 @@
 4)  Download and build KLEE (in submodules)
         ./configure --with-stp=<full/path/to/stp> \
         --with-llvm=<full/path/to/llvm> \
-        --with-llvmgccdir=<full/path/to/llvm-gcc>
         make DISABLE_ASSERTIONS=0 ENABLE_OPTIMIZED=1 ENABLE_SHARED=0
 
 4b) Optionally run KLEE test suite
