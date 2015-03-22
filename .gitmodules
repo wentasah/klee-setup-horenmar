@@ -7,3 +7,6 @@
 [submodule "emotor"]
 	path = emotor
 	url = git@rtime.felk.cvut.cz:emotor
+[submodule "whole-program-llvm"]
+	path = whole-program-llvm
+	url = https://github.com/travitch/whole-program-llvm.git
