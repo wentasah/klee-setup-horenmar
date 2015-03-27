@@ -1,0 +1,12 @@
+528c528
+<         return cc + ['-emit-llvm']
+---
+>         return cc + ['-emit-llvm', 'fsanitize=integer', '-g']
+532c532
+<             return ['{0}clang++'.format(self.prefixPath)]
+---
+>             return ['{0}clang++'.format(self.prefixPath), '-fsanitize=integer']
+534c534
+<             return ['{0}clang'.format(self.prefixPath)]
+---
+>             return ['{0}clang'.format(self.prefixPath), '-fsanitize=integer', '-g']
