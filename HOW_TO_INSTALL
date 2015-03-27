@@ -1,31 +1,24 @@
-1)  Download Clang+LLVM 3.3 binaries from here
-        http://llvm.org/releases/download.html#3.3
-        http://llvm.org/releases/3.3/clang+llvm-3.3-Ubuntu-13.04-x86_64-linux-gnu.tar.bz2
-
-1b) Unpack and add them to PATH.
-        Adding them to path isn't strictly necessary, but since using KLEE
-        necessitates using Clang as IR compiler, it will save some time.
-
-2)  Download and build Clang+LLVM3.3 from here
+1)  Download and build Clang+LLVM3.3 from here
         http://llvm.org/releases/download.html#3.3
         http://llvm.org/releases/3.3/llvm-3.3.src.tar.gz
-        http://llvm.org/releases/3.3/clang-3.3.src.tar.gz
+        http://llvm.org/releases/3.3/cfe-3.3.src.tar.gz
             note that clang sources go into llvm/tools/clang directory
         http://llvm.org/releases/3.3/compiler-rt-3.3.src.tar.gz
+            note that compiler-rt sources go into llvm/projects/compiler-rt
 
         ./configure --enable-optimized --enable-assertions
 
-3)  Download and build STP (in submodules)
+2)  Download and build STP (in submodules)
         cmake -DBUILD_SHARED_LIBS:BOOL=OFF -DENABLE_PYTHON_INTERFACE:BOOL=OFF
         make
 
 <This project doesn't use uclibc and POSIX, so they are skipped.>
 
-4)  Download and build KLEE (in submodules)
+3)  Download and build KLEE (in submodules)
         ./configure --with-stp=<full/path/to/stp> \
         --with-llvm=<full/path/to/llvm> \
         make DISABLE_ASSERTIONS=0 ENABLE_OPTIMIZED=1 ENABLE_SHARED=0
 
-4b) Optionally run KLEE test suite
+3b) Optionally run KLEE test suite
         make check
         make unittests
