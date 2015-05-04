@@ -3,3 +3,11 @@
 
 1b) Apply patch to force turning on the supported sanitizers.
 	Its in file sanitizer.patch
+        patch < sanitizer.patch should be enough
+
+1c) Add wllvm to path
+
+2) Add libkleeRuntest.so to linker's path.
+        Its in klee/_build/Release+Asserts/lib/
+        This means either putting it in say /usr/local/lib/
+        or setting LIBRARY_PATH or up the makefile with proper path
