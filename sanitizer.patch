@@ -5,15 +5,15 @@
      def getBitcodeCompiler(self):
          cc = self.getCompiler()
 -        return cc + ['-emit-llvm']
-+        return cc + ['-emit-llvm', 'fsanitize=integer', '-g']
++        return cc + ['-emit-llvm', '-fsanitize=integer', '-g']
  
      def getCompiler(self):
          if self.isCxx:
 -            return ['{0}clang++'.format(self.prefixPath)]
-+            return ['{0}clang++'.format(self.prefixPath), 'fsanitize=integer']
++            return ['{0}clang++'.format(self.prefixPath), '-fsanitize=integer']
          else:
 -            return ['{0}clang'.format(self.prefixPath)]
-+            return ['{0}clang'.format(self.prefixPath), 'fsanitize=integer', '-g']
++            return ['{0}clang'.format(self.prefixPath), '-fsanitize=integer', '-g']
  
      def getBitcodeArglistFilter(self):
          return ClangBitcodeArgumentListFilter(self.cmd)
