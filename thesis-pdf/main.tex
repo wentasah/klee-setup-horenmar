@@ -1,17 +1,20 @@
 \input ctustyle
 \input pdfuni
 \input glosdata
+\input opmac-bib
 \worktype [B/EN]
 \faculty {F3}
 \department {Katedra řídící techniky}
-\title {Minimální dokument}
+\title {The Use of Symbolic Execution for Testing of Real-Time
+        Safety-Related Software}
 \author {Martin Hořeňovský}
 \authorinfo {horenmar@fel.cvut.cz}
 \supervisor {Ing. Michal Sojka, Ph.D.}
 \studyinfo {Otevřená informatika - Informatika a počítačové vědy}
 \date {Květen 2015}
-\abstractEN {This document is for testing purpose only.}
-\abstractCZ {Tento dokument je pouze pro potřeby testování.}
+\abstractEN {Safety critical software is hard!.}
+\abstractCZ {\rfc{Translate the english abstract}}
+\thanks{I refuse to acknowledge my own mortality. \rfc{Yeah, change this.}}
 \declaration {
 I hereby declare that I made this on my own and I declared
 all used sources according to ``Metodický pokyn o dodržování
@@ -22,7 +25,11 @@ etických principů při přípravě vysokoškolských závěřečných prací''
 Prohlašuji, že jsem předloženou práci vypracoval samostatně
 a že jsem uvedl veškeré použité informační zdroje v souladu
 s Metodickým pokynem o dodržování etických principů při přípravě
-vysokoškolských závěrečných prací.}
+vysokoškolských závěrečných prací.
+
+\signature
+}
+
 
 %Some draft iteration related "defines"
 \draft %-- Remove this to finalize pdf.
@@ -31,12 +38,23 @@ vysokoškolských závěrečných prací.}
 \makefront
 \chap Introduction
 
-Introduction text
+I am citing klee-paper!\cite[klee-paper]
+I am citing SymDrive paper!\cite[symdrive-paper]
+
 \sec Following text
 
 Even more text.
 
-\app Bachelor project assignment
+
+\bibchap
+\usebib/c (simple) mybase
+%\usebib/<sorttype> (<style>) <bibfile>
+%sorttype c -- citation order in text
+%sorttype s -- by key in style file
+
+
+\app Specification
+
 
 \rfc{Check appendix name (Bachelor project assignment?)}
 \rfc{Include assignment in czech as well.}
