@@ -1,3 +1,8 @@
+# Tex build artifacts
+*.log
+*.ref
+# Note that pdfs are not ignored, for simplicity
+
 # Compiled Object files
 *.slo
 *.lo
