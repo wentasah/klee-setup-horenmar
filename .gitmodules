@@ -10,3 +10,6 @@
 [submodule "whole-program-llvm"]
 	path = whole-program-llvm
 	url = https://github.com/travitch/whole-program-llvm.git
+[submodule "macan"]
+	path = macan
+	url = https://github.com/horenmar/macan.git
