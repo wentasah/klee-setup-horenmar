@@ -1,0 +1,5 @@
+1) Download the wllvm utility (in submodules)
+	See https://github.com/travitch/whole-program-llvm for usage details.
+
+1b) Apply patch to force turning on the supported sanitizers.
+	Its in file sanitizer.patch
