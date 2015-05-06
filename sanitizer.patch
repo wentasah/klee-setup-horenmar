@@ -1,12 +1,19 @@
-528c528
-<         return cc + ['-emit-llvm']
----
->         return cc + ['-emit-llvm', 'fsanitize=integer', '-g']
-532c532
-<             return ['{0}clang++'.format(self.prefixPath)]
----
->             return ['{0}clang++'.format(self.prefixPath), '-fsanitize=integer']
-534c534
-<             return ['{0}clang'.format(self.prefixPath)]
----
->             return ['{0}clang'.format(self.prefixPath), '-fsanitize=integer', '-g']
+--- whole-program-llvm/driver/utils.py	2015-05-04 23:29:34.960434729 +0200
++++ whole-program-llvm/driver/utils.py	2015-05-04 23:31:15.105869272 +0200
+@@ -525,13 +525,13 @@
+ 
+     def getBitcodeCompiler(self):
+         cc = self.getCompiler()
+-        return cc + ['-emit-llvm']
++        return cc + ['-emit-llvm', '-fsanitize=integer', '-g']
+ 
+     def getCompiler(self):
+         if self.isCxx:
+-            return ['{0}clang++'.format(self.prefixPath)]
++            return ['{0}clang++'.format(self.prefixPath), '-fsanitize=integer']
+         else:
+-            return ['{0}clang'.format(self.prefixPath)]
++            return ['{0}clang'.format(self.prefixPath), '-fsanitize=integer', '-g']
+ 
+     def getBitcodeArglistFilter(self):
+         return ClangBitcodeArgumentListFilter(self.cmd)
