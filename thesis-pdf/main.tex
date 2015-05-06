@@ -77,7 +77,32 @@ While its original purpose was to test general purpose programs, we \rfc{I?}
 decided to test its fitness for testing real-time safety critical software,
 because such software's number of paths through code is relatively small.
 
+By itself, KLEE can find and show paths that lead to 
+
+    - Null pointer dereference
+    - Access outside of allocated memory
+    - Unsatisfyable conditions \rfc{???}
+    - Assertion violation
+
 \secc KLEE integer overflow checking
+
+When I started to work on using KLEE for testing real-time safety-critical
+software, it was unable to detect integer overflow.
+
+In a case of parallel development, both I and \rfc{ToDO? Reformulate}
+added this capability to KLEE, and \rfc{Todo!}'s patches have been since merged
+into mainline KLEE.
+
+KLEE is currently relying on Clang's support for UndefinedBehaviorSanitizer
+\rfc{check name} which in turn is based on Regehr et al's work on integer
+overflow checking. \cite[ioc-paper] KLEE implements overflow checking
+by performing arithmetic operations as-if done on wider types and then
+checking upper half of the result. If it isn't empty, overflow must have
+occured.
+
+KLEE can check for overflow of both signed and unsigned integral types, but the
+checks have to be turned on and/or off during tested program's compilation.
+This is caused by KLEE piggybacking on Clang's intrinsics.
 
 \sec Real-Time safety-critical applications
 
