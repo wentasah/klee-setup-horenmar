@@ -2,19 +2,27 @@
 \input pdfuni
 \input glosdata
 \input opmac-bib
+
 \worktype [B/EN]
 \faculty {F3}
 \department {Katedra řídící techniky}
 \title {The Use of Symbolic Execution for Testing of Real-Time
         Safety-Related Software}
+\titleCZ {Využití symbolické exekuce pro testování real-time,
+          bezpečnostně kritického softwaru}
 \author {Martin Hořeňovský}
 \authorinfo {horenmar@fel.cvut.cz}
 \supervisor {Ing. Michal Sojka, Ph.D.}
 \studyinfo {Otevřená informatika - Informatika a počítačové vědy}
 \date {Květen 2015}
 \abstractEN {Safety critical software is hard!.}
+\keywordsEN {Symbolic execution, KLEE, automatic testing,
+             security-critical systems, automotive domain}
 \abstractCZ {Safety critical software is hard!
              \rfc{Translate the english abstract}}
+\keywordsCZ {Symbolická exekuce, KLEE, automatické testování,
+             bezpečnostně kritický software, automobilová doména
+             \rfc{Standartní překlad??}}
 \thanks{I would like to thank my supervisor Ing. Michal Sojka, Ph.D.
         for having patience with my lazy ass. \rfc{Selfcensorship?}
         I also want to thank Petr Olšák for creating almost unified template
@@ -42,9 +50,7 @@ vysokoškolských závěrečných prací.
 \makefront
 \chap Introduction
 
-I am citing klee-paper!\cite[klee-paper]
-I am citing SymDrive paper!\cite[symdrive-paper]
-I am citing mailing list!\cite[wllvm-patch]
+Words...
 
 
 \sec Motivation
@@ -63,6 +69,20 @@ I am citing mailing list!\cite[wllvm-patch]
 
 \sec Symbolic execution
 
+Symbolic execution is a testing technique where program is run through an
+interpreter, which allows for inputs to be symbolic as opposed to concrete.
+This allows the interpreter to go through all possible paths in a program,
+without having to generate all possible inputs. This also allows to connect
+specific branches in the program with constraints upon inputs that lead there.
+
+Unlike with fuzzing, time required for symbolic execution of any given program
+doesn't increase exponentially with size of input, but rather increases with
+amount of branches (possible paths) through the program. Also, if symbolic
+execution encounters an infinite loop, it will never terminate. Various
+solutions to increase path coverage exist, including parallelizing independent
+paths\cite[c9-paper], usage of heuristics to guide search
+\cite[klee-paper, symdrive-paper, c9-paper] and usage of annotations.\cite[symdrive-paper]
+
 \secc Existing tools
 
 \sec KLEE
@@ -77,12 +97,16 @@ While its original purpose was to test general purpose programs, we \rfc{I?}
 decided to test its fitness for testing real-time safety critical software,
 because such software's number of paths through code is relatively small.
 
-By itself, KLEE can find and show paths that lead to 
+By itself, KLEE can find and show paths that lead to any of
 
-    - Null pointer dereference
-    - Access outside of allocated memory
-    - Unsatisfyable conditions \rfc{???}
-    - Assertion violation
+\begitems
+* Assertion violation
+* Access outside of allocated memory
+* Null pointer dereference
+\enditems
+
+it was also extended to handle integer oveflow checking, but needs support
+from the compiler.
 
 \secc KLEE integer overflow checking
 
