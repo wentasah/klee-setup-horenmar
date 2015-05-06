@@ -63,21 +63,29 @@ I am citing mailing list!\cite[wllvm-patch]
 
 \sec Symbolic execution
 
-\subsec Existing tools
+\secc Existing tools
 
 \sec KLEE
 
-KLEE is a symbolic execution tool primarily geared towards performing high-coverage tests on programs.
+KLEE is a symbolic execution tool primarily geared towards performing
+high-coverage tests on programs originally created by Cadar et al. \cite[klee-paper]
 
-\subsec KLEE integer overflow checking
+It is built on the LLVM compiler infrastructure, as it uses its front-end to
+convert C code in to LLVM IR representation, which it then works on.
+
+While its original purpose was to test general purpose programs, we \rfc{I?}
+decided to test its fitness for testing real-time safety critical software,
+because such software's number of paths through code is relatively small.
+
+\secc KLEE integer overflow checking
 
 \sec Real-Time safety-critical applications
 
-\subsec eMotor
+\secc eMotor
 
 eMotor is proprietary control software for Infineon Tricore TC1798 motor.
 
-\subsec MaCAN
+\secc MaCAN
 
 MaCAN library \rfc{cite?} implements MaCAN protocol for Linux, Infineon Tricore TC1798 and STM32 architectures.
 MaCAN protocol builds upon CAN protocol to provide additional security through authenticating control messages
