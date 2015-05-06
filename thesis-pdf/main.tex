@@ -119,6 +119,9 @@ paths\cite[c9-paper], usage of heuristics to guide search
 
 \secc Existing tools
 
+There are various existing tools for symbolic execution, many of which are
+based on KLEE\cite[symdrive-paper, c9-paper, s2e-paper].
+
 \sec KLEE
 
 KLEE is a symbolic execution tool primarily geared towards performing
@@ -149,7 +152,7 @@ development, both Dariz Luca and I independently added this capability to KLEE,
 and Dariz's patches have been since merged into mainline KLEE.%
 \cite[overflow-merge]
 
-KLEE is currently relying on Clang's support for Undefined Behavior Sanitizer
+This capability is reliant on Clang's support for Undefined Behavior Sanitizer
 (also known as ``ubsan''), which in turn is based on Regehr et al's work on
 integer overflow checking.\cite[ioc-paper] KLEE implements overflow checking
 by performing arithmetic operations as-if done on wider types and then
@@ -158,7 +161,7 @@ occured.
 
 KLEE can check for overflow of both signed and unsigned integral types, but the
 checks have to be turned on and/or off during tested program's compilation.
-This is caused by KLEE relying on Clang's intrinsics.
+This is caused by KLEE's reliance on Clang's intrinsics.
 
 \sec Real-Time safety-critical applications
 
