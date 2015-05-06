@@ -105,21 +105,19 @@ By itself, KLEE can find and show paths that lead to any of
 * Null pointer dereference
 \enditems
 
-it was also extended to handle integer oveflow checking, but needs support
-from the compiler.
+during my work on this thesis, KLEE was also extended to handle integer oveflow
+checking, but needs support from the compiler.
 
 \secc KLEE integer overflow checking
 
 When I started to work on using KLEE for testing real-time safety-critical
-software, it was unable to detect integer overflow.
+software, it was unable to detect integer overflow. In a case of parallel
+development, both Dariz Luca and I independently added this capability to KLEE,
+and Dariz's patches have been since merged into mainline KLEE.\cite[overflow-merge]
 
-In a case of parallel development, both I and \rfc{ToDO? Reformulate}
-added this capability to KLEE, and \rfc{Todo!}'s patches have been since merged
-into mainline KLEE.
-
-KLEE is currently relying on Clang's support for UndefinedBehaviorSanitizer
-\rfc{check name} which in turn is based on Regehr et al's work on integer
-overflow checking. \cite[ioc-paper] KLEE implements overflow checking
+KLEE is currently relying on Clang's support for Undefined Behavior Sanitizer
+(also known as ``ubsan''), which in turn is based on Regehr et al's work on
+integer overflow checking.\cite[ioc-paper] KLEE implements overflow checking
 by performing arithmetic operations as-if done on wider types and then
 checking upper half of the result. If it isn't empty, overflow must have
 occured.
@@ -136,9 +134,12 @@ eMotor is proprietary control software for Infineon Tricore TC1798 motor.
 
 \secc MaCAN
 
-MaCAN library \rfc{cite?} implements MaCAN protocol for Linux, Infineon Tricore TC1798 and STM32 architectures.
-MaCAN protocol builds upon CAN protocol to provide additional security through authenticating control messages
-received from the network.
+MaCAN library\urlnote{https://github.com/CTU-IIG/macan} implements
+MaCAN protocol for Linux, Infineon Tricore TC1798 and STM32 architectures.
+MaCAN protocol builds upon CAN protocol to provide additional security
+through authenticating control messages received from the network.\cite[MaCAN-paper]
+
+
 
 \chap Toolchain and case study preparation
 
