@@ -81,31 +81,31 @@ amount of branches (possible paths) through the program. Also, if symbolic
 execution encounters an infinite loop, it will never terminate. Various
 solutions to increase path coverage exist, including parallelizing independent
 paths\cite[c9-paper], usage of heuristics to guide search
-\cite[klee-paper, symdrive-paper, c9-paper] and usage of annotations.\cite[symdrive-paper]
+\cite[klee-paper, symdrive-paper, c9-paper] and usage of annotations.%
+\cite[symdrive-paper]
 
 \secc Existing tools
 
 \sec KLEE
 
 KLEE is a symbolic execution tool primarily geared towards performing
-high-coverage tests on programs originally created by Cadar et al. \cite[klee-paper]
-
-It is built on the LLVM compiler infrastructure, as it uses its front-end to
-convert C code in to LLVM IR representation, which it then works on.
+high-coverage tests on programs originally created by Cadar et al.%
+\cite[klee-paper]
+It is built on the LLVM compiler infrastructure, using its Clang front-end to
+convert C code to LLVM IR representation, which it then works on.
 
 While its original purpose was to test general purpose programs, we \rfc{I?}
 decided to test its fitness for testing real-time safety critical software,
 because such software's number of paths through code is relatively small.
 
 By itself, KLEE can find and show paths that lead to any of
-
 \begitems
 * Assertion violation
 * Access outside of allocated memory
 * Null pointer dereference
 \enditems
 
-during my work on this thesis, KLEE was also extended to handle integer oveflow
+During my work on this thesis, KLEE was also extended to handle integer oveflow
 checking, but needs support from the compiler.
 
 \secc KLEE integer overflow checking
@@ -113,7 +113,8 @@ checking, but needs support from the compiler.
 When I started to work on using KLEE for testing real-time safety-critical
 software, it was unable to detect integer overflow. In a case of parallel
 development, both Dariz Luca and I independently added this capability to KLEE,
-and Dariz's patches have been since merged into mainline KLEE.\cite[overflow-merge]
+and Dariz's patches have been since merged into mainline KLEE.%
+\cite[overflow-merge]
 
 KLEE is currently relying on Clang's support for Undefined Behavior Sanitizer
 (also known as ``ubsan''), which in turn is based on Regehr et al's work on
@@ -124,7 +125,7 @@ occured.
 
 KLEE can check for overflow of both signed and unsigned integral types, but the
 checks have to be turned on and/or off during tested program's compilation.
-This is caused by KLEE piggybacking on Clang's intrinsics.
+This is caused by KLEE relying on Clang's intrinsics.
 
 \sec Real-Time safety-critical applications
 
@@ -137,9 +138,13 @@ eMotor is proprietary control software for Infineon Tricore TC1798 motor.
 MaCAN library\urlnote{https://github.com/CTU-IIG/macan} implements
 MaCAN protocol for Linux, Infineon Tricore TC1798 and STM32 architectures.
 MaCAN protocol builds upon CAN protocol to provide additional security
-through authenticating control messages received from the network.\cite[MaCAN-paper]
+through authenticating control messages received from the network.%
+\cite[MaCAN-paper]
 
-
+The Macan library was designed to be crossplatform by only having single,
+platform independent dependency, cryptographic library Nettle%prevent break
+\urlnote{http://www.lysator.liu.se/~nisse/nettle/} and by separating platform
+dependent code from bulk of the library.
 
 \chap Toolchain and case study preparation
 
