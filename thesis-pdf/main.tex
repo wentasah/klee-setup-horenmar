@@ -75,6 +75,39 @@ This allows the interpreter to go through all possible paths in a program,
 without having to generate all possible inputs. This also allows to connect
 specific branches in the program with constraints upon inputs that lead there.
 
+Consider the following function:
+\begtt
+int is_odd(int n){
+    if (n % 2) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+\endtt
+It has $2^{32}$ possible concrete inputs, but as can be easily seen,
+has only two paths through. Symbolic testing allows us to find both paths
+without having to explore all $2^{32}$ inputs. If I mark the input as symbolic
+and use KLEE to test this function, it outputs both paths and gives concretized
+values that give full coverage.
+\begtt
+KLEE: done: total instructions = 29
+KLEE: done: completed paths = 2
+KLEE: done: generated tests = 2
+...
+args       : ['is_odd.o']
+num objects: 1
+object    0: name: 'n'
+object    0: size: 4
+object    0: data: 0
+...
+args       : ['is_odd.o']
+num objects: 1
+object    0: name: 'n'
+object    0: size: 4
+object    0: data: 1
+\endtt
+
 Unlike with fuzzing, time required for symbolic execution of any given program
 doesn't increase exponentially with size of input, but rather increases with
 amount of branches (possible paths) through the program. Also, if symbolic
@@ -94,7 +127,7 @@ high-coverage tests on programs originally created by Cadar et al.%
 It is built on the LLVM compiler infrastructure, using its Clang front-end to
 convert C code to LLVM IR representation, which it then works on.
 
-While its original purpose was to test general purpose programs, we \rfc{I?}
+While its original purpose was to test general purpose programs, we\rfc{I?}
 decided to test its fitness for testing real-time safety critical software,
 because such software's number of paths through code is relatively small.
 
@@ -183,6 +216,7 @@ dependent code from bulk of the library.
 \picw=\hsize
 \cinspic specification-en.pdf
 \vfil\break
+\picw=\hsize
 \cinspic specification-cz.pdf
 
 \nextoddpage
