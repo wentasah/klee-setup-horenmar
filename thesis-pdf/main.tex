@@ -69,6 +69,8 @@ Words...
 
 \sec Symbolic execution
 
+The contents of this section are heavily based on the KLEE paper%
+\cite[klee-paper] and \cite[s2e-paper]
 Symbolic execution is a testing technique where program is run through an
 interpreter, which allows for inputs to be symbolic as opposed to concrete.
 This allows the interpreter to go through all possible paths in a program,
@@ -110,17 +112,27 @@ object    0: data: 1
 
 Unlike with fuzzing, time required for symbolic execution of any given program
 doesn't increase exponentially with size of input, but rather increases with
-amount of branches (possible paths) through the program. Also, if symbolic
-execution encounters an infinite loop, it will never terminate. Various
-solutions to increase path coverage exist, including parallelizing independent
-paths\cite[c9-paper], usage of heuristics to guide search
-\cite[klee-paper, symdrive-paper, c9-paper] and usage of annotations.%
-\cite[symdrive-paper]
+amount of branches (possible paths) through the program. This allows use of
+symbolic testing on much larger programs than just using random inputs. 
+
+On the other hand, certain kinds of conditional branching are more or less
+unsolvable. Consider checking cryptographic hash of a symbolic value against
+predetermined result. For symbolic tool to be able to give us a concrete value
+or a set of constraints is asking it to reverse a cryptographic hash, which is
+generally regarded impossible without brute-force testing the input space, and
+in special cases might be impossible completely. Other problematic constructs
+are unbounded loops (IE those waiting for a hardware response) and infinite
+loops, which prevent symbolic execution from terminating.
+
+Various solutions to increase path coverage and exist, including parallelizing
+independent paths\cite[c9-paper], usage of heuristics to guide search
+\cite[klee-paper, symdrive-paper, c9-paper, kite-paper], usage of annotations%
+\cite[symdrive-paper] and selective symbolic execution.\cite[s2e-paper]
 
 \secc Existing tools
 
 There are various existing tools for symbolic execution, many of which are
-based on KLEE\cite[symdrive-paper, c9-paper, s2e-paper].
+based on KLEE\cite[symdrive-paper, c9-paper, s2e-paper, kite-paper].
 
 \sec KLEE
 
