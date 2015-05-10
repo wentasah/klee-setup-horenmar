@@ -11,3 +11,12 @@
         Its in klee/_build/Release+Asserts/lib/
         This means either putting it in say /usr/local/lib/
         or setting LIBRARY_PATH or up the makefile with proper path
+
+3) Build MaCAN by running make from macan/build/klee/
+
+4) Extract llvm bitcode from newly built binary.
+        The binary is at macan/build/klee/_compiled/bin-tests/
+
+5) Run klee on the extracted bitcode.
+        klee --only-output-states-covering-new --optimize --search=dfs \
+             --search=nurs:covnew

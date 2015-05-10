@@ -1,6 +1,7 @@
 # Tex build artifacts
 *.log
 *.ref
+*.synctex.gz
 # Note that pdfs are not ignored, for simplicity
 
 # Compiled Object files
