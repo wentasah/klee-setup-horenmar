@@ -73,7 +73,22 @@ Safety-critical systems are those systems whose malfunction and/or failure
 might result in death (or grievous injury) of people, severe damage to and/or
 loss of equipment and environmental damage. These systems are increasingly
 often implemented in software, as opposed to hardware, and new methods of
-software testing are needed for this kind of software.
+software defect prevention are needed.
+
+There are various ways to decrease the number and frequency of software
+malfunctions, such as specific development methodologies (ie MISRA C%
+\urlnote{http://www.misra.org.uk/MISRAHome/WhatisMISRA/tabid/66/Default.aspx},
+and JSF-AV C++ coding standards\urlnote{http://www.stroustrup.com/JSF-AV-rules.pdf})
+which aim to provide safer subset of the language, thus decreasing possible
+space for defects and set requirements for testing rigour. Similarly, since
+compilation is another potential source of software defects, there are formally
+provable compilers\urlnote{http://compcert.inria.fr/}.
+
+In general, safety-critical systems are expected to be hard real-time and to be
+fully defined for all possible inputs. This means that software contained
+within must always respond under a fixed time-limit and have to fully define
+its failure modes, even if the response is just turning off motor and engaging
+emergency breaks.
 
 \sec Symbolic execution
 
