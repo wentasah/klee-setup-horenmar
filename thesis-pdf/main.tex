@@ -71,12 +71,15 @@ Words...
 
 \sec Symbolic execution
 
-The term symbolic execution has been coined in year 1976 by James C. King in 
-article Symbolic execution and program testing%
-\cite[symbolic-execution-article].
+The term symbolic execution has been coined in year 1976 by James C. King in
+article Symbolic execution and program testing.%
+\cite[symbolic-execution-article] Since then symbolic execution has been
+implemented by various tools for various languages, from x86 assembly%
+\cite[s2e-paper], LLVM's IR (from C/C++)\cite[klee-paper, c9-paper] to higher
+level languages such as the .NET framework.\cite[pex-repair-paper]
 
-The contents of this section are heavily based on the KLEE paper%
-\cite[klee-paper] and \cite[s2e-paper]
+The contents of rest of this section are heavily based on the KLEE paper%
+\cite[klee-paper] and the S2E paper\cite[s2e-paper].
 Symbolic execution is a testing technique where program is run through an
 interpreter, which allows for inputs to be symbolic as opposed to concrete.
 This allows the interpreter to go through all possible paths in a program,
@@ -138,27 +141,31 @@ independent paths\cite[c9-paper], usage of heuristics to guide search%
 \secc Existing tools
 
 There are various existing tools for symbolic execution, many of which are
-based on KLEE\cite[symdrive-paper, c9-paper, s2e-paper, kite-paper].
+based on KLEE.\cite[symdrive-paper, c9-paper, s2e-paper, kite-paper]
 
-Cloud9 is a symbolic executor that can scale over clusters of machines, and
+Cloud9\urlnote{http://cloud9.epfl.ch/}
+is a symbolic executor that can scale over clusters of machines, and
 a cloud service for testing software.\cite[c9-paper] It's innovation is dynamic
 partitioning of search space while having a shared-nothing architecture. It is
 also capable of executing C++ code.
 
-S2E is a platform for analysing large scale programs In-Vivo. It accomplishes
+S2E\urlnote{http://s2e.epfl.ch/}
+is a platform for analysing large scale programs In-Vivo. It accomplishes
 this by using{\em selective symbolic execution} a technique that automatically
 minimalizes amount of symbolically executed code within a binary. Together with
 relaxed execution consistency, this allows S2E to analyse code as run in its
 real environment.\cite[s2e-paper]
 
-SymDrive\urlnote{http://research.cs.wisc.edu/sonar/projects/symdrive/} is tool
-for testing Linux and FreeBSD drivers without hardware.\cite[symdrive-paper]
-It uses static-analysis to automatically find driver entry points and loops,
-which often allows it to test a driver without requiring any modifications
-by its author and if it cannot create modified driver automatically, it alerts
-the developer as to what changes are required.\cite[symdrive-paper]
+SymDrive\urlnote{http://research.cs.wisc.edu/sonar/projects/symdrive/}
+is tool for testing Linux and FreeBSD drivers without hardware.%
+\cite[symdrive-paper] It uses static-analysis to automatically find driver
+entry points and loops, which often allows it to test a driver without
+requiring any modifications by its author and if it cannot create modified
+driver automatically, it alerts the developer as to what changes are required.%
+\cite[symdrive-paper]
 
-Kite is a KLEE based that prunes its search space whenever a path is proven
+Kite\urlnote{http://www.cs.ubc.ca/labs/isd/Projects/Kite/}
+is a KLEE based that prunes its search space whenever a path is proven
 to be infeasible. It is based on recent improvements of CDCL SAT solvers and
 uses markedly different exploration strategy from other tools, in that it
 looks for paths which allow it to ``learn'' the most, that is, prune the search
