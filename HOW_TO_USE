@@ -10,13 +10,16 @@
 2) Add libkleeRuntest.so to linker's path.
         Its in klee/_build/Release+Asserts/lib/
         This means either putting it in say /usr/local/lib/
-        or setting LIBRARY_PATH or up the makefile with proper path
+        or setting LIBRARY_PATH or changing the makefile to use proper path
 
 3) Build MaCAN by running make from macan/build/klee/
+        The binary will be named single_node
 
 4) Extract llvm bitcode from newly built binary.
         The binary is at macan/build/klee/_compiled/bin-tests/
+        To extract the bitcode call extract-bc single_node
 
 5) Run klee on the extracted bitcode.
         klee --only-output-states-covering-new --optimize --search=dfs \
-             --search=nurs:covnew --memory-limit=0 <bitcode>
+             --search=nurs:covnew --memory-limit=0 --check-div-zero \
+             --check-overshift <bitcode file>
