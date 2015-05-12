@@ -256,6 +256,12 @@ platform independent dependency, cryptographic library Nettle%prevent break
 \urlnote{http://www.lysator.liu.se/~nisse/nettle/} and by separating platform
 dependent code from bulk of the library.
 
+My investigation was done on a snapshot of the MaCAN library taken at commit
+1dac9fed8b9777d32e0c28b2b826b8ac36f146a5
+\urlnote{https://github.com/horenmar/macan/commit/1dac9fed8b9777d32e0c28b2b826b8ac36f146a5}
+with added modification to allow testing with KLEE. I will talk about these
+in the following chapter.
+
 \chap Toolchain and case study preparation
 
 In this chapter I will talk about changes done to KLEE, eMotor and MaCAN
