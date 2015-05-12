@@ -262,9 +262,7 @@ way, touching upon some ``personal'' experience gained during this thesis.
 Virtually all my work is also available online, in a GitHub repository%
 \urlnote{https://github.com/horenmar/thesis-setup-stable}.
 
-\sec KLEE stuff
-
-\rfc{make a better headline}
+\sec KLEE preparation
 
 When I started working with the KLEE tool, it was reliant on LLVM-2.9 and
 LLVM-GCC, which at the time was about 3 years outdated. Since then there was
@@ -276,7 +274,23 @@ It was also dependent on \em{extremely} outdated version of STP.
 
 This has lead to some initial trouble, because LLVM-2.9 does not compile
 against newer versions of glibc and both STP and KLEE's POSIX modelling layer
-have some problems because of their age as well.
+have some problems because of their age as well. Together with desire to use
+Clang's IntegerOverflowSanitizer, this lead me to use LLVM-3.4 toolchain and
+while doing so enabled testing for integer overflows, it also led to trouble
+with compiling programs spanning more than single source file. Since KLEE has
+been relying on obsolete parts of LLVM's API to link together bitcode files
+resulting from compilation of multiple source files and these were removed, it
+was impossible to compile a multi-file application.
+
+To solve this problem I used the WLLVM utility%
+\urlnote{https://github.com/travitch/whole-program-llvm} created by Tristan
+Ravitch. It works by using a compiler able to emit both normal object files
+and LLVM bitcode, generating both and then saving bitcode into the normal
+object file. During linking the bitcode sections are also linked together and
+can then be extracted from the final binary, resulting in working, complete
+bitcode file for KLEE.\cite[wllvm-working]
+
+
 
 \sec eMotor modifications
 
@@ -285,7 +299,7 @@ I don't know how much I can say about internal architecture and so on...}
 
 \sec MaCAN modifications
 
-As I mentioned before, MaCAN's architecture has decoupled architecture specific
+As mentioned before, MaCAN's architecture has decoupled architecture specific
 code from the general library code. This allowed me to make only minimal
 changes to the general library part of MaCAN code, increasing validity of
 performed tests, as only very small part of MaCAN behaviour is KLEE specific.
