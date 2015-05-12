@@ -290,7 +290,12 @@ object file. During linking the bitcode sections are also linked together and
 can then be extracted from the final binary, resulting in working, complete
 bitcode file for KLEE.\cite[wllvm-working]
 
-
+This worked, but only for generating binaries without integer overflow checking
+enabled. Enabling integer overflow checking via command line arguments, as if
+working with normal compiler has led to link time error,
+\note{It is approximately 200 lines} which was solved by using a hack provided
+on the KLEE mailing list.\cite[wlllvm-patch] Afterwards I was able to compile
+multi-file application into bitcode with integer overflow checking enabled.
 
 \sec eMotor modifications
 
