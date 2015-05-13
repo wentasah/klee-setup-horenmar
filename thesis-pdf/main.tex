@@ -95,6 +95,15 @@ within must always respond under a fixed time-limit and have to fully define
 its failure modes, even if the response is just turning off motor and engaging
 emergency breaks.
 
+Security used to be thought of as completely orthogonal to safety-critical
+software, because such software was expected to be completely isolated from
+outside world, and if networked, the network was thought to be completely
+isolated from the outside world. These assumptions are becoming more and more
+outdated, with recent example being the ability to locate and unlock Tesla
+Model S electric car by hacking a trivially brute-forceable code.
+
+Thus there is a need for secure safety-critical software.
+
 \sec Symbolic execution
 
 The term symbolic execution has been coined in year 1976 by James C. King in
