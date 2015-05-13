@@ -342,7 +342,14 @@ completeness of testing coverage to be able to perform logic analysis.
 
 \sec Results - problems, bugs, solutions?
 
-\rfc {Again, better headline} 
+Running KLEE on the modified MaCAN library reports some potential errors, the
+most common being potential unsigned integer overflows when working with system
+time. However, because time is represented as 64 bit unsigned integer, these
+were judged as mostly harmless. Not all potential time overflows were benign,
+one was in the UB territory and another caused a bug found independently.
+
+\rfc{Again, better headline.}
+\rfc{Complete these results as they are improved.}
 
 \sec Complexity, limitations, execution time
 
