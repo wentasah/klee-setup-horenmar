@@ -327,9 +327,14 @@ I don't know how much I should say about internal architecture and so on...}
 \sec MaCAN modifications
 
 As mentioned before, MaCAN's architecture has decoupled architecture specific
-code from the general library code. This allowed me to make only minimal
-changes to the general library part of MaCAN code, increasing validity of
-performed tests, as only very small part of MaCAN behaviour is KLEE specific.
+code from the general library code. This allowed me to initially make no
+changes to the library part of MaCAN code, shimming hardware dependencies to
+return symbolic values when run under KLEE.
+
+However, the MaCAN library inner working is deeply reliant on cryptography and
+validating cryptography using symbolic execution is intractable. Because of
+this I ended up having to change significant parts of the code, compromising
+completeness of testing coverage to be able to perform logic analysis.
 
 \rfc{specify changes}
 
