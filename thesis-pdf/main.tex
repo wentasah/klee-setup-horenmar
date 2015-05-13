@@ -245,24 +245,21 @@ eMotor is proprietary control software for Infineon Tricore TC1798 motor.
 
 \secc MaCAN
 
-\rfc{Make these paragraphs flow together better.}
-MaCAN library\urlnote{https://github.com/CTU-IIG/macan} implements
-MaCAN protocol for Linux, Infineon Tricore TC1798 and STM32 architectures.
-MaCAN protocol builds upon CAN protocol to provide additional security
-through authenticating control messages received from the network.%
-\cite[MaCAN-paper]
-
 Because it was usually assumed that attackers do not have access to the
 network inside vehicle, the standard communication protocol, CAN, was designed
 for deterministic real-time communication, reliability and robustness and no
 consideration was given to security. However modern vehicles often have at
 least one remotely accessible interfaces and thus there is now a need to have
-message security as part of the communication protocol. The advantage of MaCAN
-protocol here is that it builds upon the CAN bus and is backwards compatible
-with already deployed CAN networks.
+message security as part of the communication protocol.
 
-The MaCAN library itself was designed to be crossplatform by only having single,
-platform independent dependency, cryptographic library Nettle%prevent break
+The MaCAN protocol authenticates messages, giving a measure of message security
+and has an advantage in that it builds upon the CAN bus and is backwards
+compatible with already existing deployments of CAN.
+
+MaCAN library\urlnote{https://github.com/CTU-IIG/macan} implements the
+MaCAN protocol for Linux, Infineon Tricore TC1798 and STM32 architectures.%
+\cite[MaCAN-paper] It was designed to be cross-platform by only having
+single, platform-independent dependency, cryptographic library Nettle%
 \urlnote{http://www.lysator.liu.se/~nisse/nettle/} and by separating platform
 dependent code from bulk of the library.
 
