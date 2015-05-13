@@ -242,7 +242,12 @@ This is caused by KLEE's reliance on Clang's intrinsics.
 
 \secc eMotor
 
-eMotor is proprietary control software for Infineon Tricore TC1798 motor.
+The eMotor driver is a proprietary control software module for AUTOSAR
+developed by Infineon Technologies, consisting of MCAL and the eMotor control
+module itself. It is interrupt driven design (the entire control algorithm is
+executed inside the interrupt handler) and is designed to run on 32-bit Tricore
+TC1798 microcontroller. It is supplied together with proprietary IDE, compiler,
+assembler and linker.
 
 \secc MaCAN
 
@@ -317,7 +322,7 @@ multi-file application into bitcode with integer overflow checking enabled.
 \sec eMotor modifications
 
 \rfc{Ehhh? I probably should note how its hard it was to modify properly, but
-I don't know how much I can say about internal architecture and so on...}
+I don't know how much I should say about internal architecture and so on...}
 
 \sec MaCAN modifications
 
