@@ -2,7 +2,9 @@
 *.log
 *.ref
 *.synctex.gz
-# Note that pdfs are not ignored, for simplicity
+*.lbr
+*.pdf
+
 
 # Compiled Object files
 *.slo
