@@ -21,5 +21,5 @@
 
 5) Run klee on the extracted bitcode.
         klee --only-output-states-covering-new --optimize --search=dfs \
-             --search=nurs:covnew --memory-limit=0 --check-div-zero \
+             --search=nurs:covnew --max-memory=0 --check-div-zero \
              --check-overshift <bitcode file>
