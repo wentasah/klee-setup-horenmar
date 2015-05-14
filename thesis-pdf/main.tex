@@ -20,7 +20,7 @@
 \author {Martin Hořeňovský}
 \authorinfo {horenmar@fel.cvut.cz}
 \supervisor {Ing. Michal Sojka, Ph.D.}
-\studyinfo {Otevřená informatika - Informatika a počítačové vědy}
+\studyinfo {Otevřená informatika --- Informatika a počítačové vědy}
 \date {Květen 2015}
 \abstractEN {Safety critical software is hard!.}
 \keywordsEN {Symbolic execution, KLEE, automatic testing,
@@ -29,7 +29,7 @@
              \rfc{Translate the english abstract}}
 \keywordsCZ {Symbolická exekuce, KLEE, automatické testování,
              bezpečnostně kritický software, automobilová doména
-             \rfc{Standartní překlad??}}
+             \rfc{Standardní překlad??}}
 \thanks{I would like to thank my supervisor Ing. Michal Sojka, Ph.D.
         for having patience with my lazy ass. \rfc{Selfcensorship?}
         I also want to thank Petr Olšák for creating almost unified template
@@ -107,14 +107,14 @@ Thus there is a need for secure safety-critical software.
 \sec Symbolic execution
 
 The term symbolic execution has been coined in year 1976 by James C. King in
-article Symbolic execution and program testing.%
-\cite[symbolic-execution-article] Since then symbolic execution has been
-implemented by various tools for various languages, from x86 assembly%
-\cite[s2e-paper], LLVM's IR (from C/C++)\cite[klee-paper, c9-paper] to higher
-level languages such as the .NET framework.\cite[pex-repair-paper]
+article Symbolic execution and program testing
+\cite[symbolic-execution-article]. Since then symbolic execution has been
+implemented by various tools for various languages, from x86 assembly
+\cite[s2e-paper], LLVM's IR (from C/C++) \cite[klee-paper, c9-paper] to higher
+level languages such as the .NET framework \cite[pex-repair-paper].
 
-The contents of rest of this section are heavily based on the KLEE paper%
-\cite[klee-paper] and the S2E paper\cite[s2e-paper].
+The contents of rest of this section are heavily based on the KLEE paper
+\cite[klee-paper] and the S2E paper \cite[s2e-paper].
 Symbolic execution is a testing technique where program is run through an
 interpreter, which allows for inputs to be symbolic as opposed to concrete.
 This allows the interpreter to go through all possible paths in a program,
@@ -133,7 +133,7 @@ int is_odd(int n){
 \endtt
 It has $2^{32}$ possible concrete inputs, but as can be easily seen,
 has only two paths through. Symbolic testing allows us to find both paths
-without having to explore all $2^{32}$ inputs. If I mark the input as symbolic
+without having to explore all $2^{32}$ inputs. If we mark the input as symbolic
 and use KLEE to test this function, it outputs both paths and gives concretized
 values that give full coverage.
 \begtt
@@ -169,18 +169,18 @@ are unbounded loops (IE those waiting for a hardware response) and infinite
 loops, which prevent symbolic execution from terminating.
 
 Various solutions to increase path coverage and exist, including parallelizing
-independent paths\cite[c9-paper], usage of heuristics to guide search%
-\cite[klee-paper, symdrive-paper, c9-paper, kite-paper], usage of annotations%
-\cite[symdrive-paper] and selective symbolic execution.\cite[s2e-paper]
+independent paths \cite[c9-paper], usage of heuristics to guide search
+\cite[klee-paper, symdrive-paper, c9-paper, kite-paper], usage of annotations
+\cite[symdrive-paper] and selective symbolic execution \cite[s2e-paper].
 
 \secc Existing tools
 
-There are various existing tools for symbolic execution, many of which are
-based on KLEE.\cite[symdrive-paper, c9-paper, s2e-paper, kite-paper]
+There exist various tools for symbolic execution, many of which are
+based on KLEE \cite[symdrive-paper, c9-paper, s2e-paper, kite-paper].
 
 Cloud9\urlnote{http://cloud9.epfl.ch/}
 is a symbolic executor that can scale over clusters of machines, and
-a cloud service for testing software.\cite[c9-paper] It's innovation is dynamic
+a cloud service for testing software \cite[c9-paper]. It's innovation is dynamic
 partitioning of search space while having a shared-nothing architecture. It is
 also capable of executing C++ code.
 
@@ -189,28 +189,28 @@ is a platform for analysing large scale programs In-Vivo. It accomplishes
 this by using{\em selective symbolic execution} a technique that automatically
 minimalizes amount of symbolically executed code within a binary. Together with
 relaxed execution consistency, this allows S2E to analyse code as run in its
-real environment.\cite[s2e-paper]
+real environment \cite[s2e-paper].
 
 SymDrive\urlnote{http://research.cs.wisc.edu/sonar/projects/symdrive/}
 is tool for testing Linux and FreeBSD drivers without hardware.%
 \cite[symdrive-paper] It uses static-analysis to automatically find driver
 entry points and loops, which often allows it to test a driver without
 requiring any modifications by its author and if it cannot create modified
-driver automatically, it alerts the developer as to what changes are required.%
-\cite[symdrive-paper]
+driver automatically, it alerts the developer as to what changes are required 
+\cite[symdrive-paper].%
 
 Kite\urlnote{http://www.cs.ubc.ca/labs/isd/Projects/Kite/}
 is a KLEE based that prunes its search space whenever a path is proven
 to be infeasible. It is based on recent improvements of CDCL SAT solvers and
 uses markedly different exploration strategy from other tools, in that it
 looks for paths which allow it to ``learn'' the most, that is, prune the search
-space the most.\cite[kite-paper]
+space the most \cite[kite-paper].
 
 \sec KLEE
 
 KLEE is a symbolic execution tool primarily geared towards performing
-high-coverage tests on programs originally created by Cadar et al.%
-\cite[klee-paper]
+high-coverage tests on programs, originally created by Cadar et al
+\cite[klee-paper]. 
 It is built on the LLVM compiler infrastructure, using its Clang front-end to
 convert C code to LLVM IR representation, which it then works on.
 
@@ -218,32 +218,30 @@ While its original purpose was to test general purpose programs, we decided
 to test its fitness for testing real-time safety critical software, because
 such software's number of paths through code is relatively small.
 
-By itself, KLEE can find and show paths that lead to any of
+KLEE can find and show paths that lead to any case of
 \begitems
 * Assertion violation
-* Access outside of allocated memory
-* Null pointer dereference
+* Access outside of allocated memory (including null pointer dereference)
 * Division by zero
 * Overshift (shifting and integer by more than its size)
 \enditems
 
-During my work on this thesis, KLEE was also extended to handle integer oveflow
-checking, but needs support from the compiler.
+Recently, KLEE was also extended to handle integer oveflow
+checking, as detailed in the next section.
 
 \secc KLEE integer overflow checking
 
-When I started to work on using KLEE for testing real-time safety-critical
-software, it was unable to detect integer overflow. In a case of parallel
-development, both Dariz Luca and I independently added this capability to KLEE,
-and Dariz's patches have been since merged into mainline KLEE.%
-\cite[overflow-merge]
+When I started working with KLEE, it was unable to detect integer overflow. We
+decided to add support for checking integer overflow, but at the same time
+Dariz Luca had implemented it as well and since his work has been mainlined
+\cite[overflow-merge], I will talk about his implementation.
 
-This capability is reliant on Clang's support for Undefined Behavior Sanitizer
-(also known as ``ubsan''), which in turn is based on Regehr et al's work on
-integer overflow checking.\cite[ioc-paper] KLEE implements overflow checking
-by performing arithmetic operations as-if done on wider types and then
-checking upper half of the result. If it isn't empty, overflow must have
-occured.
+This capability relies on Clang's support for Undefined Behavior Sanitizer
+(also known as ``ubsan''), which in turn is based on work by Regehr et al. on
+integer overflow checking \cite[ioc-paper]. KLEE implements overflow checking
+by performing arithmetic operations as-if done on double sized types and then
+checking upper half of the result. If it is not empty, the operation must have
+overflown.
 
 KLEE can check for overflow of both signed and unsigned integral types, but the
 checks have to be turned on and/or off during tested program's compilation.
@@ -302,7 +300,7 @@ When I started working with the KLEE tool, it was reliant on LLVM-2.9 and
 LLVM-GCC, which at the time was about 3 years outdated. Since then there was
 significant work done to allow KLEE to work with newer version of the LLVM
 toolchain and Clang instead of LLVM-GCC, but as of the time of writing, it 
-officially supports only LLVM-2.9 coupled with LLVM-GCC.\cite[llvm-version]
+officially supports only LLVM-2.9 coupled with LLVM-GCC \cite[llvm-version].
 It was also dependent on {\em extremely} outdated version of STP.
 
 This has lead to some initial trouble, because LLVM-2.9 does not compile
@@ -321,13 +319,13 @@ Ravitch. It works by using a compiler able to emit both normal object files
 and LLVM bitcode, generating both and then saving bitcode into the normal
 object file. During linking the bitcode sections are also linked together and
 can then be extracted from the final binary, resulting in working, complete
-bitcode file for KLEE.\cite[wllvm-working]
+bitcode file for KLEE \cite[wllvm-working].
 
 This worked, but only for generating binaries without integer overflow checking
 enabled. Enabling integer overflow checking via command line arguments, as if
 working with normal compiler has led to link time error,
 \fnote{Approximately 200 lines long} which was solved by using a hack provided
-on the KLEE mailing list.\cite[wllvm-patch] Afterwards I was able to compile
+on the KLEE mailing list \cite[wllvm-patch]. Afterwards I was able to compile
 multi-file application into bitcode with integer overflow checking enabled.
 
 \sec eMotor modifications
