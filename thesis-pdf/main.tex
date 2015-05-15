@@ -368,7 +368,7 @@ Summary of overflows found can be seen in table~\ref[overflow-results].
 \midinsert \clabel[overflow-results]{Number of overflows found}
 \ctable{lr}{
 \hfil type of overflow & number \crl \tskip4pt
-    benign & <num> \cr
+    benign & 5 \cr
     causing bugs & 1 \cr
     causing UB & 1 \cr
 }
@@ -387,12 +387,12 @@ int i;
 time = macan_get_time(ctx);
 
 for (i = -1; i <= 1; i++) {
-	*ftime = htole32((int)time + i);
-	macan_aes_cmac(skey, len, cmac, plain);
+    *ftime = htole32((int)time + i);
+    macan_aes_cmac(skey, len, cmac, plain);
 
-	if (memcmp(cmac4, cmac, 4) == 0) {
-		return 1;
-	}
+    if (memcmp(cmac4, cmac, 4) == 0) {
+        return 1;
+    }
 }
 \endtt
 where the expression "(int)time + i" in line "*ftime = htole32((int)time + i);"
@@ -410,7 +410,6 @@ While this new version can still overflow (in fact, it has to overflow to work
 properly), this new overflow is well defined from the language point of view
 and is benign as far as function is intended.
 
-\rfc{Add note about the rediscovered bug in commit 754f71...}
 Another non-benign overflow was found in function that receives time from the
 MaCAN network and attempts to adjust local time to keep it in sync. It attempts
 to calculate time in microseconds and place the result into a 64 bit sized
@@ -445,7 +444,7 @@ overflows follow.
 w->expire_us = read_time() + w->repeat_us;
 \endtt
 \begtt
-return (read_time() + (uint64_t)ctx->time.offs) / ctx->config->time_div;
+(read_time() + (uint64_t)ctx->time.offs) / ctx->config->time_div;
 \endtt
 
 \sec Complexity, limitations, execution time
