@@ -79,6 +79,29 @@ Thus there is a need for secure safety-critical software.
 
 \chap Background and related technologies
 
+\rfc{Mention soundness and/or lack thereof depending on the tools?}
+
+Standard C places no constraints upon the result of program invoking undefined
+behaviour (UB), and this is often interpreted by compilers as allowance to
+generate arbitrary output for such program. It also defines many causes of
+undefined behaviour, such as\fnote{Taken from ISO C99 Appendix J.2
+\cite[iso-C99]}
+\begitems
+* Dereferencing uninitialized pointer
+* Dereferencing a NULL pointer
+* Dereferencing pointer to no longer valid object (ie freed object)
+* Creating pointers outside of allocated memory
+* Converting pointers to objects of incompatible types (ie converting "float*"
+  to "int*")
+* Signed integer overflow (unsigned overflow is well defined)
+* Shifting values by more than its size (ie "int64_t i = 1 << 70")
+* Evaluating arithmetic expression that would be mathematically undefined
+  (ie division by zero)
+\enditems
+The willingness of compilers to exploit undefined behaviour (UB) in code has
+already been documented as causing security bugs in real world
+\cite[linux-kernel-vuln].
+
 \rfc{Introduce possible bugs and give some background? Overflow might be UB,
 dereferencing null pointers, overshifts, going outside of memory...}
 
