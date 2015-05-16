@@ -353,14 +353,64 @@ All my modifications are publicly available as a fork to the original project.%
 
 \sec Results - problems, bugs, solutions?
 
+\rfc{Again, better headline.}
 Running KLEE on the modified MaCAN library reports some potential errors, the
 most common being potential unsigned integer overflows when working with system
 time. However, because time is represented as 64 bit unsigned integer, these
 were judged as mostly harmless. Not all potential time overflows were benign,
-one was in the UB territory.
+one invoked undefined behaviour and another has caused a bug that has also been
+found independently.
 
-\rfc{Again, better headline.}
+Summary of overflows found can be seen in table~\ref[overflow-results].
+%%%%%%
+% Results table
+%%%%%%
+\midinsert \clabel[overflow-results]{Number of overflows found}
+\ctable{lr}{
+\hfil type of overflow & number \crl \tskip4pt
+    benign & <num> \cr
+    causing bugs & 1 \cr
+    causing UB & 1 \cr
+}
+\caption/t Number of overflows found.
+\endinsert
 \rfc{Complete these results as they are improved.}
+
+The one case of undefined behaviour causing overflow was in function checking
+authenticity of received message. The programmer wanted to test whether the
+message was authentic, assuming it was sent either slightly before ``now''
+(that is, current MaCAN time), now, or after now and wrote this:
+\begtt
+uint64_t time;
+int i;
+...
+time = macan_get_time(ctx);
+
+for (i = -1; i <= 1; i++) {
+	*ftime = htole32((int)time + i);
+	macan_aes_cmac(skey, len, cmac, plain);
+
+	if (memcmp(cmac4, cmac, 4) == 0) {
+		return 1;
+	}
+}
+\endtt
+where the expression "(int)time + i" in line "*ftime = htole32((int)time + i);"
+performed signed arithmetic that can easily overflow. After finding this bug,
+it was fixed in mainline MaCAN, changing the problematic part of the code to
+the following:
+\begtt
+int delta_t;
+uint32_t time = (uint32_t)macan_get_time(ctx);
+for (delta_t = -1; delta_t <= 1; delta_t++) {
+    *ftime = htole32(time + (uint32_t)delta_t);
+}
+\endtt
+While this new version can still overflow (in fact, it has to overflow to work
+properly), this new overflow is well defined from the language point of view
+and is benign as far as function is intended.
+
+\rfc{Add note about the rediscovered bug in commit 754f71...}
 
 \sec Complexity, limitations, execution time
 
