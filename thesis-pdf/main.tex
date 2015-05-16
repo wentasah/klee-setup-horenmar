@@ -411,6 +411,30 @@ properly), this new overflow is well defined from the language point of view
 and is benign as far as function is intended.
 
 \rfc{Add note about the rediscovered bug in commit 754f71...}
+Another non-benign overflow was found in function that receives time from the
+MaCAN network and attempts to adjust local time to keep it in sync. It attempts
+to calculate time in microseconds and place the result into a 64 bit sized
+variable, which would be large enough, but the multiplication itself is
+performed with 32 bits of precision and the results will overflow after approx.
+68 minutes.
+\begtt
+uint32_t time_ts;
+uint64_t time_ts_us;
+...
+time_ts_us = time_ts * ctx->config->time_div;
+\endtt
+This bug was also found independently by Michal Sojka when he was presenting
+MaCAN's at a conference and this was the implemented fix:
+\begtt
+uint32_t time_ts;
+uint64_t time_ts_us;
+...
+time_ts_us = (uint64_t)time_ts * ctx->config->time_div;
+\endtt
+Changing "time_ts"'s type to 64 bit unsigned integer caused the multiplication
+to be performed with 64 bits of precision, changing the overflow from
+bug-causing to benign (64 bit integer has enough precision to represent over
+500000 years in microseconds).
 
 \sec Complexity, limitations, execution time
 
