@@ -152,12 +152,17 @@ level languages such as the .NET framework \cite[pex-repair-paper].
 The contents of rest of this section are heavily based on the KLEE paper
 \cite[klee-paper] and the S2E paper \cite[s2e-paper].
 Symbolic execution is a testing technique where program is run through an
-interpreter, which allows for inputs to be symbolic as opposed to concrete.
-This allows the interpreter to go through all possible paths in a program,
-without having to generate all possible inputs. This also allows to connect
-specific branches in the program with constraints upon inputs that lead there.
+interpreter, which allows for inputs to be symbolic, as opposed to concrete.
+While run under interpreter, symbolic data (either input or variables) are
+not actual data, but rather a set of boolean formulae that have been placed
+upon them by conditions along the currently executing path. This allows the
+interpreter to go through all possible paths in a program, without having to
+generate all possible inputs. This is achieved by keeping track of all
+conditions leading to any given path and using a SAT solver to A)~determine
+whether any given path can be taken and  B)~generate a sample solution
+(concretization of symbolic data) that will lead to any given path. As an
+example, consider the following function:
 
-Consider the following function:
 \begtt
 int is_odd(int n){
     if (n % 2) {
@@ -167,6 +172,7 @@ int is_odd(int n){
     }
 }
 \endtt
+
 It has $2^{32}$ possible concrete inputs, but as can be easily seen,
 has only two paths through. Symbolic testing allows us to find both paths
 without having to explore all $2^{32}$ inputs. If we mark the input as symbolic
