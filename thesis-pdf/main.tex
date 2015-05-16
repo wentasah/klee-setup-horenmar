@@ -436,6 +436,18 @@ to be performed with 64 bits of precision, changing the overflow from
 bug-causing to benign (64 bit integer has enough precision to represent over
 500000 years in microseconds).
 
+Some potential overflows I found were classified as benign. This either meant
+that they only occurred within 64 bit arithmetic and thus could happen only
+theoretically, or they were intended. In fact, just the event loop
+implementation contains three benign potential overflows. Examples of such
+overflows follow.
+\begtt
+w->expire_us = read_time() + w->repeat_us;
+\endtt
+\begtt
+return (read_time() + (uint64_t)ctx->time.offs) / ctx->config->time_div;
+\endtt
+
 \sec Complexity, limitations, execution time
 
 \sec KLEE fitness for purpose
