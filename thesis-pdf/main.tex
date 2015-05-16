@@ -59,6 +59,13 @@ vysokoškolských závěrečných prací.
 
 Words...
 
+\rfc{Work these into the introduction somehow.}
+While its original purpose was to test general purpose programs, we decided
+to test its fitness for testing real-time safety critical software, because
+such software's number of paths through code is relatively small.
+
+Thus there is a need for secure safety-critical software.
+
 
 \sec Motivation
 
@@ -70,7 +77,10 @@ Words...
 
 
 
-\chap Background and related software
+\chap Background and related technologies
+
+\rfc{Introduce possible bugs and give some background? Overflow might be UB,
+dereferencing null pointers, overshifts, going outside of memory...}
 
 \sec Safety-critical software and security
 
@@ -101,8 +111,6 @@ outside world, and if networked, the network was thought to be completely
 isolated from the outside world. These assumptions are becoming more and more
 outdated, with recent example being the ability to locate and unlock Tesla
 Model S electric car by hacking a trivially brute-forceable code.
-
-Thus there is a need for secure safety-critical software.
 
 \sec Symbolic execution
 
@@ -214,20 +222,20 @@ high-coverage tests on programs, originally created by Cadar et al
 It is built on the LLVM compiler infrastructure, using its Clang front-end to
 convert C code to LLVM IR representation, which it then works on.
 
-While its original purpose was to test general purpose programs, we decided
-to test its fitness for testing real-time safety critical software, because
-such software's number of paths through code is relatively small.
-
 KLEE can find and show paths that lead to any case of
 \begitems
 * Assertion violation
 * Access outside of allocated memory (including null pointer dereference)
 * Division by zero
-* Overshift (shifting and integer by more than its size)
+* Overshift (shifting an integer by more than its size)
 \enditems
 
-Recently, KLEE was also extended to handle integer oveflow
-checking, as detailed in the next section.
+Recently, KLEE was also extended to handle integer overflow checking, as
+detailed in the next section.
+
+\secc Principle of operation
+
+\rfc{How does klee work, todo.}
 
 \secc KLEE integer overflow checking
 
