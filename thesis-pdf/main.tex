@@ -397,15 +397,18 @@ return symbolic values when run under KLEE.
 
 However, the MaCAN library inner working is deeply reliant on cryptography and
 validating cryptography using symbolic execution is intractable. Because of
-this I ended up having to change significant parts of the code, compromising
-completeness of testing coverage to be able to perform logic analysis.
+this I ended up having to bypass parts of the code, compromising completeness
+of testing coverage to be able to analyse the rest of codebase.
 
-\rfc{specify changes}
-All my modifications are publicly available as a fork to the original project
+More specifically, in addition to adding KLEE as a platform to the MaCAN project
+and adding the necessary platform-specific scaffolding, I only had to perform
+small modifications to the original library source in the form of conditional
+compilation and create a dummy MaCAN node application, to create a valid
+execution entry point for KLEE.
+
+\rfc{Specify changes in more detail?}
+All my modifications are publicly available as a fork of the original project
 \urlnote{https://github.com/horenmar/macan/tree/klee}.
-
-
-
 
 \chap Evaluation
 
