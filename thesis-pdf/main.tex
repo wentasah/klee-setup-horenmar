@@ -55,6 +55,10 @@ vysokoškolských závěrečných prací.
 %\savetoner
  
 \makefront
+
+
+
+
 \chap Introduction
 
 Words...
@@ -234,7 +238,7 @@ relaxed execution consistency, this allows S2E to analyse code as run in its
 real environment \cite[s2e-paper].
 
 SymDrive\urlnote{http://research.cs.wisc.edu/sonar/projects/symdrive/}
-is tool for testing Linux and FreeBSD drivers without hardware
+is a tool for testing Linux and FreeBSD drivers without hardware
 \cite[symdrive-paper]. It uses static-analysis to automatically find driver
 entry points and loops, which often allows it to test a driver without
 requiring any modifications by its author and if it cannot create modified
@@ -242,7 +246,7 @@ driver automatically, it alerts the developer as to what changes are required
 \cite[symdrive-paper].%
 
 Kite\urlnote{http://www.cs.ubc.ca/labs/isd/Projects/Kite/}
-is a KLEE based that prunes its search space whenever a path is proven
+is a KLEE based tool that prunes its search space whenever a path is proven
 to be infeasible. It is based on recent improvements of CDCL SAT solvers and
 uses markedly different exploration strategy from other tools, in that it
 looks for paths which allow it to ``learn'' the most, that is, prune the search
@@ -259,9 +263,11 @@ convert C code to LLVM IR representation, which it then works on.
 KLEE can find and show paths that lead to any case of
 \begitems
 * Assertion violation
-* Access outside of allocated memory (including null pointer dereference)
+* Access outside of allocated memory (including null pointer dereference and
+  double free)
 * Division by zero
 * Integer overshift (shifting an integer by more than its size)
+* Call to "abort()"
 \enditems
 
 Recently, KLEE was also extended to handle integer overflow checking, as
@@ -326,10 +332,13 @@ My investigation was done on a snapshot of the MaCAN library taken at commit
 with added modification to allow testing with KLEE. I will talk about these
 in the following chapter.
 
+
+
+
 \chap Toolchain and case study preparation
 
 In this chapter I will talk about changes done to KLEE, eMotor and MaCAN
-that I have done to allow using KLEE to test these two libraries. I will also
+that I have done to allow testing these two libraries using KLEE. I will also
 talk about other necessary preparations and problems I had to face along the
 way, touching upon some ``personal'' experience gained during this thesis.
 
@@ -525,6 +534,9 @@ program. If I have not modified the MaCAN library to bypass cryptography, the
 execution would be completely intractable.
 
 \sec KLEE fitness for purpose
+
+
+
 
 \chap Conclusion
 
