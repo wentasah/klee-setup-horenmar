@@ -381,8 +381,12 @@ multi-file application into bitcode with integer overflow checking enabled.
 
 \sec eMotor modifications
 
-\rfc{Ehhh? I probably should note how its hard it was to modify properly, but
-I don't know how much I should say about internal architecture and so on...}
+Because the eMotor's internal structure is rather weakly abstracted and
+accesses to hardware registers are often interwoven inside functions, modifying
+eMotor to support symbolic execution has proven to be prohibitively hard. This
+has led to us giving up on testing eMotor.
+
+\rfc{Write more about this?}
 
 \sec MaCAN modifications
 
