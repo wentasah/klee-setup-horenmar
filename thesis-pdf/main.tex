@@ -497,6 +497,24 @@ within 64 bit unsigned variable and as such, are harmless.
 
 \sec Complexity, limitations, execution time
 
+KLEE's complexity is exponential in both memory (because the number of possible
+path generally increases exponentially with encountered conditional branches)
+and in CPU time (because it attempts to solve SAT at every branch). The memory
+complexity can be mitigated at the cost of further increasing runtime, by
+running KLEE with search strategy set to either DFS or IDDFS (which is only
+experimentally supported), but there is no way to reduce the CPU time
+complexity.
+
+\rfc{Update time and test cases after finishing}
+\rfc{Insert ``If the task has not been killed, it is still runnin'' joke
+somewhere.}
+This has shown itself while we were using KLEE to test the MaCAN library, when
+after 2 days, KLEE still has not finished executing the test program. It is
+also somewhat mitigated by the fact that KLEE does not have to finish running
+completely to find bugs and/or to start outputting possible paths through the
+program. If I have not modified the MaCAN library to bypass cryptography, the
+execution would be completely intractable.
+
 \sec KLEE fitness for purpose
 
 \chap Conclusion
