@@ -308,8 +308,8 @@ and has an advantage in that it builds upon the CAN bus and is backwards
 compatible with already existing deployments of CAN.
 
 MaCAN library\urlnote{https://github.com/CTU-IIG/macan} implements the
-MaCAN protocol for Linux, Infineon Tricore TC1798 and STM32 architectures.%
-\cite[MaCAN-paper] It was designed to be cross-platform by only having
+MaCAN protocol for Linux, Infineon Tricore TC1798 and STM32 architectures
+\cite[MaCAN-paper]. It was designed to be cross-platform by only having
 single, platform-independent dependency, cryptographic library Nettle%
 \urlnote{http://www.lysator.liu.se/~nisse/nettle/} and by separating platform
 dependent code from bulk of the library.
@@ -359,8 +359,8 @@ bitcode file for KLEE \cite[wllvm-working].
 
 This worked, but only for generating binaries without integer overflow checking
 enabled. Enabling integer overflow checking via command line arguments, as if
-working with normal compiler has led to link time error,
-\fnote{Approximately 200 lines long} which was solved by using a hack provided
+working with normal compiler has led to link time error
+\fnote{Approximately 200 lines long}, which was solved by using a hack provided
 on the KLEE mailing list \cite[wllvm-patch]. Afterwards I was able to compile
 multi-file application into bitcode with integer overflow checking enabled.
 
@@ -382,8 +382,8 @@ this I ended up having to change significant parts of the code, compromising
 completeness of testing coverage to be able to perform logic analysis.
 
 \rfc{specify changes}
-All my modifications are publicly available as a fork to the original project.%
-\urlnote{https://github.com/horenmar/macan/tree/klee}
+All my modifications are publicly available as a fork to the original project
+\urlnote{https://github.com/horenmar/macan/tree/klee}.
 
 \chap Evaluation
 
