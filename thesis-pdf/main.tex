@@ -358,7 +358,7 @@ single, platform-independent dependency, cryptographic library Nettle%
 dependent code from bulk of the library.
 
 My investigation was done on a snapshot of the MaCAN library taken at commit
-1dac9fed8b9777d32e0c28b2b826b8ac36f146a5
+1dac9fed8b9777d32e0c28b2b826b8ac36f146a5%
 \urlnote{https://github.com/horenmar/macan/commit/1dac9fed8b9777d32e0c28b2b826b8ac36f146a5}
 with added modification to allow testing with KLEE. I will talk about these
 in the following chapter.
@@ -405,7 +405,7 @@ bitcode file for KLEE \cite[wllvm-working].
 
 This worked, but only for generating binaries without integer overflow checking
 enabled. Enabling integer overflow checking via command line arguments, as if
-working with normal compiler has led to link time error
+working with normal compiler has led to link time error%
 \fnote{Approximately 200 lines long}, which was solved by using a hack provided
 on the KLEE mailing list \cite[wllvm-patch]. Afterwards I was able to compile
 multi-file application into bitcode with integer overflow checking enabled.
@@ -438,7 +438,7 @@ compilation and create a dummy MaCAN node application, to create a valid
 execution entry point for KLEE.
 
 \rfc{Specify changes in more detail?}
-All my modifications are publicly available as a fork of the original project
+All my modifications are publicly available as a fork of the original project%
 \urlnote{https://github.com/horenmar/macan/tree/klee}.
 
 \chap Evaluation
