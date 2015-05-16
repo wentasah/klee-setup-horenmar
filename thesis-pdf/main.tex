@@ -68,8 +68,6 @@ While its original purpose was to test general purpose programs, we decided
 to test its fitness for testing real-time safety critical software, because
 such software's number of paths through code is relatively small.
 
-Thus there is a need for secure safety-critical software.
-
 
 \sec Motivation
 
@@ -110,9 +108,8 @@ While static analysis can find some of these potential defects (ie
 dereferencing uninitialized pointers and incompatible pointer conversions),
 it is not sound and gives both false positives and false negatives. Static
 analysis is also unable to find integer overflows, as these are inherently
-dynamic and the only viable way to detect them is runtime checking.
-
-\rfc{Introduce possible bugs and give some background?}
+dynamic and the only viable way to detect them is with tools performing runtime
+checking.
 
 \sec Safety-critical software and security
 
@@ -214,7 +211,7 @@ in special cases might be impossible completely. Other problematic constructs
 are unbounded loops (IE those waiting for a hardware response) and infinite
 loops, which prevent symbolic execution from terminating.
 
-Various solutions to increase path coverage and exist, including parallelizing
+Various solutions to increase path coverage exist, including parallelizing
 independent paths \cite[c9-paper], usage of heuristics to guide search
 \cite[klee-paper, symdrive-paper, c9-paper, kite-paper], usage of annotations
 \cite[symdrive-paper] and selective symbolic execution \cite[s2e-paper].
@@ -231,7 +228,7 @@ partitioning of search space while having a shared-nothing architecture. It is
 also capable of executing C++ code.
 
 S2E\urlnote{http://s2e.epfl.ch/}
-is a platform for analysing large scale programs In-Vivo. It accomplishes
+is a platform for analysing large scale programs {\em in vivo}. It accomplishes
 this by using{\em selective symbolic execution} a technique that automatically
 minimalizes amount of symbolically executed code within a binary. Together with
 relaxed execution consistency, this allows S2E to analyse code as run in its
