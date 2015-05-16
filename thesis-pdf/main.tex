@@ -261,7 +261,7 @@ KLEE can find and show paths that lead to any case of
 * Assertion violation
 * Access outside of allocated memory (including null pointer dereference)
 * Division by zero
-* Overshift (shifting an integer by more than its size)
+* Integer overshift (shifting an integer by more than its size)
 \enditems
 
 Recently, KLEE was also extended to handle integer overflow checking, as
@@ -437,7 +437,10 @@ for (i = -1; i <= 1; i++) {
     }
 }
 \endtt
-where the expression "(int)time + i" in line "*ftime = htole32((int)time + i);"
+where the expression "(int)time + i" in line 
+\begtt
+*ftime = htole32((int)time + i);
+\endtt
 performed signed arithmetic that can easily overflow. After finding this bug,
 it was fixed in mainline MaCAN, changing the problematic part of the code to
 the following:
@@ -474,13 +477,13 @@ time_ts_us = (uint64_t)time_ts * ctx->config->time_div;
 \endtt
 Changing "time_ts"'s type to 64 bit unsigned integer caused the multiplication
 to be performed with 64 bits of precision, changing the overflow from
-bug-causing to benign (64 bit integer has enough precision to represent over
-500000 years in microseconds).
+bug-causing to benign (64 bit integer has enough precision to represent more
+than 500000 years in microseconds).
 
-Some potential overflows I found were classified as benign. This either meant
-that they only occurred within 64 bit arithmetic and thus could happen only
-theoretically, or they were intended. In fact, just the event loop
-implementation contains three benign potential overflows. Examples of such
+Some potential overflows KLEE found were classified as benign. This either
+meant that they only occurred within 64 bit arithmetic and thus could happen
+only theoretically, or they were intended. In fact, just the event loop
+implementation contains three benign potential overflows. Two examples of such
 overflows follow.
 \begtt
 w->expire_us = read_time() + w->repeat_us;
@@ -488,6 +491,9 @@ w->expire_us = read_time() + w->repeat_us;
 \begtt
 (read_time() + (uint64_t)ctx->time.offs) / ctx->config->time_div;
 \endtt
+For either of there to overflow, the total run-time of given MaCAN network
+would have to exceed the aforementioned 500000 years that are representable
+within 64 bit unsigned variable and as such, are harmless.
 
 \sec Complexity, limitations, execution time
 
