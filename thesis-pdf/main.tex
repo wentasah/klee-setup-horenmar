@@ -141,6 +141,13 @@ isolated from the outside world. These assumptions are becoming more and more
 outdated, with recent example being the ability to locate and unlock Tesla
 Model S electric car by hacking a trivially brute-forceable code.
 
+While no tool can prevent security vulnerabilities caused by naive
+authentication scheme, automatic testing can find security implementation
+bugs which could potentially allow an attack to bypass security measures that
+are in place. Thus, in this thesis I attempt to determine whether a general
+purpose symbolic execution tool, KLEE, can help find these bugs in existing
+real-time safety-critical software.
+
 \sec Symbolic execution
 
 The term symbolic execution has been coined in year 1976 by James C. King in
