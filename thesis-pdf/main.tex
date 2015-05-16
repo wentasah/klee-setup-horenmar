@@ -79,8 +79,6 @@ Thus there is a need for secure safety-critical software.
 
 \chap Background and related technologies
 
-\rfc{Mention soundness and/or lack thereof depending on the tools?}
-
 Standard C places no constraints upon the result of program invoking undefined
 behaviour (UB), and this is often interpreted by compilers as allowance to
 generate arbitrary output for such program. It also defines many causes of
@@ -100,10 +98,17 @@ undefined behaviour, such as\fnote{Taken from ISO C99 Appendix J.2
 \enditems
 The willingness of compilers to exploit undefined behaviour (UB) in code has
 already been documented as causing security bugs in real world
-\cite[linux-kernel-vuln].
+\cite[linux-kernel-vuln], but defined behaviour can lead to bugs as well.
+A common example is unsigned overflow, which is well defined, but often is not
+accounted for and breaks program's logic. 
 
-\rfc{Introduce possible bugs and give some background? Overflow might be UB,
-dereferencing null pointers, overshifts, going outside of memory...}
+While static analysis can find some of these potential defects (ie
+dereferencing uninitialized pointers and incompatible pointer conversions),
+it is not sound and gives both false positives and false negatives. Static
+analysis is also unable to find integer overflows, as these are inherently
+dynamic and the only viable way to detect them is runtime checking.
+
+\rfc{Introduce possible bugs and give some background?}
 
 \sec Safety-critical software and security
 
