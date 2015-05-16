@@ -279,7 +279,34 @@ detailed in the next section.
 
 \secc Principle of operation
 
-\rfc{How does klee work, todo.}
+Text in this subsection is based on the KLEE paper \cite[klee-paper].
+
+KLEE takes a file of LLVM IR its input and works directly on the LLVM IR. It is
+capable of interpreting a large subset of the language, that does not include
+symbolic floating point, threads, "longjmp", embedded assembly code and some
+intrinsics. All memory objects also have to have concrete size.
+
+At the core of KLEE testing is an interpreter loop, selecting a currently open
+state and executing an LLVM instruction using selected state's context. State's
+context is comprised of corresponding registers, stack and heap objects. If the
+instruction does not branch, it is executed as normal, but if the executed
+instruction is a conditional branch instruction, KLEE uses a SAT solver to
+determine whether the condition is provably true or false given current state
+and constraints created along the path taken to reach it, in which case KLEE
+takes the appropriate path. If the conditional branch cannot be proved to be
+either, KLEE creates two new states with added constraints from the branch.
+These two states are then added to priority queue of all open states.
+
+Branches can also be created implicitly, by potentially dangerous operations.
+Every division, pointer dereference and similar instructions create an implicit
+branch that checks for possibility of error. For example, division instruction
+creates a branch checking whether the divisor can be equal to zero, and if it
+can, it terminates the state and generates test case leading to to it.
+
+This interpreter loop and state expansion continue while there are open states
+in its priority queue or while a user defined timeout has not expired.
+
+\rfc{Should I also describe internal optimizations?}
 
 \secc KLEE integer overflow checking
 
