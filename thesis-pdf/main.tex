@@ -326,6 +326,154 @@ KLEE can check for overflow of both signed and unsigned integral types, but the
 checks have to be turned on and/or off during tested program's compilation.
 This is caused by KLEE's reliance on Clang's intrinsics.
 
+\secc Example of KLEE usage
+
+In this chapter I intend to explain basic usage of KLEE. I will be working with
+two toy single file programs, "sum.c" and "memcpyassert.c", whose listings are
+in figure~\ref[sum-listing] and figure~\ref[memcpyassert-listing] respectively.
+It assumes already working klee and Clang-3.3.
+
+\midinsert \clabel[sum-listing]{{\tt sum.c} listing}
+\begtt
+#include "klee/klee.h"
+
+int read_int(){
+    int res;
+    klee_make_symbolic(&res, sizeof(res), "summand");
+    return res;
+}
+
+int main(){
+    int total = 0;
+    for (int i = 0; i < 5; ++i){
+        total += read_int();
+    }
+    return 0;
+}
+\endtt
+\caption/f {\tt sum.c} listing
+\endinsert
+
+\midinsert \clabel[memcpyassert-listing]{{\tt memcpyassert.c} listing}
+\begtt
+#include "klee/klee.h"
+#include <string.h>
+#include <assert.h>
+
+int read_int(){
+    int res;
+    klee_make_symbolic(&res, sizeof(res), "some int");
+    return res;
+}
+
+int main(){
+        int a, b;
+        a = read_int();
+
+        memcpy(&b, &a, sizeof(b));
+
+        assert(b != 0);
+
+        return 0;
+}
+\endtt
+\caption/f {\tt memcpyassert.c} listing
+\endinsert
+
+Because KLEE runs on LLVM bitcode files, the first step is to run Clang on
+the source file as seen in figure~\ref[compilation-flags]. The result of this
+is a ".o" file containing LLVM bitcode. This can be now run by KLEE as seen in
+figure~\ref[how-to-run-klee].
+
+\midinsert \clabel[compilation-flags]{compilation flags}
+\begtt
+clang -emit-llvm -c -g -fsanitize=integer <name>.c
+\endtt
+\caption/f compilation flags
+\endinsert
+
+\midinsert \clabel[how-to-run-klee]{how to run klee}
+\begtt
+klee <name>.o
+\endtt
+\caption/f how to run klee
+\endinsert
+
+The output of running KLEE on "sum.o" can be seen in 
+figure~\ref[klee-sum-results] and in figure~\ref[klee-memcpy-results] for
+"memcpyassert.o". As they show, both of these toy programs contain possible
+bugs. For "sum.c" it is a possible signed\fnote{Yes, signed. KLEE's overflow
+reporting currently contains a bug and reports every overflow as unsigned.}
+integer overflow, which is UB and for "memcpyassert.o" it is a possible
+assertion violation.
+
+\midinsert \clabel[klee-sum-results]{klee results for {\tt sum.c}}
+\begtt
+KLEE: output directory is "/.../thesis-setup-stable/examples/klee-out-0"
+KLEE: ERROR: /.../thesis-setup-stable/examples/sum.c:12: overflow on
+unsigned addition
+KLEE: NOTE: now ignoring this error at this location
+
+KLEE: done: total instructions = 218
+KLEE: done: completed paths = 5
+KLEE: done: generated tests = 2
+\endtt
+\caption/f klee results for {\tt sum.c}
+\endinsert
+
+\midinsert \clabel[klee-memcpy-results]{klee results for {\tt memcpyassert.c}}
+\begtt
+KLEE: output directory is "/.../thesis-setup-stable/examples/klee-out-1"
+KLEE: ERROR: /.../thesis-setup-stable/examples/memcpyassert.c:12:
+ASSERTION FAIL: b != 0
+KLEE: NOTE: now ignoring this error at this location
+
+KLEE: done: total instructions = 62
+KLEE: done: completed paths = 2
+KLEE: done: generated tests = 2
+\endtt
+\caption/f klee results for {\tt memcpyassert.c}
+\endinsert
+
+For every run KLEE creates a new folder with several files, as can be seen in
+figure~\ref[klee-files]. In addition to files created for the execution itself,
+"assembly.ll", "info", "messages.txt", "run.stats", "run.istats" and
+"warnings.txt", KLEE has created sample inputs for every distinct path through
+the sample programs and for every error found ("test<n>.ktest") and if the path
+generated an error, two more files: "test<n>.pc" with condition guarding the
+error and "test<n>.<err>" with details about the error (what kind, where in the
+source code, call stack).  
+
+\midinsert \clabel[klee-files]{list of files in klee's results directory}
+\begtt
+assembly.ll   run.istats        test000001.overflow.err  warnings.txt
+info          run.stats         test000001.pc
+messages.txt  test000001.ktest  test000002.ktest
+\endtt
+\caption/f list of files in klee's results directory
+\endinsert
+
+The "test<n>.ktest" files are in a binary format, so KLEE comes with an utility
+to read them, "ktest-tool". If used it writes out human readable list of
+symbolic variables and their concrete values that would lead program execution
+through to its corresponding path. For an example, see figure~\ref[ktest-tool].
+
+\midinsert \clabel[ktest-tool]{Sample listing of ktest-tool output}
+\begtt
+/.../klee-last$ ktest-tool --write-ints test000001.ktest
+ktest file : 'test000001.ktest'
+args       : ['sum.o']
+num objects: 2
+object    0: name: 'summand'
+object    0: size: 4
+object    0: data: 1073741824
+object    1: name: 'summand'
+object    1: size: 4
+object    1: data: 1073741824
+\endtt
+\caption/f Sample listing of ktest-tool output
+\endinsert
+
 \sec Real-Time safety-critical applications
 
 \secc eMotor
