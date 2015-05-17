@@ -5,6 +5,9 @@
 *.lbr
 *.pdf
 
+# KLEE run artifacts
+klee-last
+klee-out-*
 
 # Compiled Object files
 *.slo
