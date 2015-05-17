@@ -600,17 +600,37 @@ running KLEE on the MaCAN library.
 \sec Results - problems, bugs, solutions?
 
 \rfc{Again, better headline.}
-Running KLEE on the modified MaCAN library reports some potential errors, the
-most common being potential unsigned integer overflows when working with system
-time. However, because time is represented as 64 bit unsigned integer, these
-were judged as mostly harmless. Not all potential time overflows were benign,
-one invoked undefined behaviour and another has caused a bug that has also been
-found independently.
 
-Summary of overflows found can be seen in table~\ref[overflow-results].
-%%%%%%
-% Results table
-%%%%%%
+When I ran KLEE on the modified MaCAN library, KLEE has reported some potential
+errors. After fixing Assertion and access violation caused by my
+misconfiguration of the test client, I ran KLEE again in two configurations.
+One using the default heuristics as its search strategy and one using DFS as
+its search strategy. Statistics for resulting bugs found are in 
+table~\ref[klee-results].
+
+\midinsert \clabel[klee-results]{Number of bugs found}
+\ctable{lr}{
+\hfil type of bug & number found \crl \tskip4pt
+    Assertion violation & 0 \cr
+    Access outside of allocated memory & 0 \cr
+    Division by zero & 0 \cr
+    Integer overshift & 0 \cr
+    Calls to abort & 0 \cr
+    Integer overfow & placeholder \cr
+}
+\caption/t Number of bugs found.
+\endinsert
+\rfc{Complete these results as well.}
+
+As can be seen, the only reports were for integer overflows. The numbers for
+these are further broken down in table~\ref[overflow-results]. All of them were
+found in arithmetic expressions containing time. To determine whether the
+potential overflow in any given report is dangerous or not, I used simple
+rules: any and all signed overflows invoke UB and as such are always considered
+dangerous. For unsigned overflows, I used personal inspection and assistance
+from my supervisor, Michal Sojka\fnote{Michal Sojka is one of the MaCAN library
+authors and maintainers.}.
+
 \midinsert \clabel[overflow-results]{Number of overflows found}
 \ctable{lr}{
 \hfil type of overflow & number found \crl \tskip4pt
