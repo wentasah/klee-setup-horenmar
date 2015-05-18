@@ -249,24 +249,26 @@ also capable of executing C++ code.
 S2E\urlnote{http://s2e.epfl.ch/}
 is a platform for analysing large scale programs {\em in vivo}. It accomplishes
 this by using {\em selective symbolic execution} a technique that automatically
-minimalizes amount of symbolically executed code within a binary. Together with
+minimalises amount of symbolically executed code within a binary. Together with
 relaxed execution consistency, this allows S2E to analyse code as run in its
 real environment~\cite[s2e-paper].
 
 SymDrive\urlnote{http://research.cs.wisc.edu/sonar/projects/symdrive/}
-is a tool for testing Linux and FreeBSD drivers without 
+is a tool for testing Linux and FreeBSD drivers without
 hardware~\cite[symdrive-paper]. It uses static-analysis to automatically find
-driver entry points and loops, which often allows it to test a driver without
-requiring any modifications by its author and if it cannot create modified
-driver automatically, it alerts the developer as to what changes are 
-required~\cite[symdrive-paper].%
+driver entry points and loops, together with source to source transformation,
+which often allows it to test a driver without requiring any modifications by
+its author and if it cannot create modified driver automatically (that is, it
+cannot perform necessary transformations for testing), it alerts the developer
+as to what changes are required~\cite[symdrive-paper].
 
 Kite\urlnote{http://www.cs.ubc.ca/labs/isd/Projects/Kite/}
 is a KLEE based tool that prunes its search space whenever a path is proven
-to be infeasible. It is based on recent improvements of CDCL SAT solvers and
-uses markedly different exploration strategy from other tools, in that it
-looks for paths which allow it to ``learn'' the most, that is, prune the search
-space the most~\cite[kite-paper].
+to be infeasible. It is based on recent improvements of Conflict-Driven Clause
+Learning (CDCL) Boolean Satisfiability Problem (SAT) solvers and uses markedly
+different exploration strategy from other tools, in that it looks for paths
+which allow it to ``learn'' the most, that is, prune the search space the
+most~\cite[kite-paper].
 
 \sec KLEE
 
@@ -276,7 +278,7 @@ al.~\cite[klee-paper]. It is built on the LLVM compiler infrastructure, using
 its Clang front-end to convert C code to LLVM intermediate representation (IR),
 which it then works on.
 
-KLEE can find and show paths that lead to any case of
+KLEE can find and show paths that lead to any of
 \begitems
 * Assertion violation
 * Access outside of allocated memory (including null pointer dereference and
@@ -287,16 +289,22 @@ KLEE can find and show paths that lead to any case of
 \enditems
 
 Recently, KLEE was also extended to handle integer overflow checking, as
-detailed in the next section.
+detailed in later section.
 
 \secc Principle of operation
 
 Text in this subsection is based on the KLEE paper~\cite[klee-paper].
 
-KLEE takes a file of LLVM IR as its input and works directly on the LLVM IR. It
-is capable of interpreting a large subset of the language, that does not
-include symbolic floating point, threads, "longjmp", embedded assembly code and
-some intrinsics. All memory objects also have to have concrete size.
+KLEE takes a file of LLVM IR as its input and works directly on the LLVM IR.
+LLVM IR is a low-level programming language resembling strongly typed assembly
+for a very abstracted machine. It uses infinite set of registers, supports
+floating point, variable width integers, exception handling, atomicity and
+threads, but also explicit calling conventions. There are two (three) standard
+forms of LLVM IR, human-readable assembly, serialized bitcode (and C++
+objects). KLEE is capable of interpreting most of LLVM IR, but it does not
+support symbolic floating point, threads, "longjmp", embedded assembly
+code and some intrinsics. All memory allocations also have to have concrete
+size.
 
 At the core of KLEE testing is an interpreter loop, selecting a currently open
 state and executing an LLVM instruction using selected state's context. State's
@@ -456,13 +464,13 @@ generated an error, two more files: "test<n>.pc" with condition guarding the
 error and "test<n>.<err>" with details about the error (what kind, where in the
 source code, call stack).  
 
-\midinsert \clabel[klee-files]{list of files in klee's results directory}
+\midinsert \clabel[klee-files]{list of files in KLEE's results directory}
 \begtt
 assembly.ll   run.istats        test000001.overflow.err  warnings.txt
 info          run.stats         test000001.pc
 messages.txt  test000001.ktest  test000002.ktest
 \endtt
-\caption/f list of files in klee's results directory
+\caption/f list of files in KLEE's results directory
 \endinsert
 
 The "test<n>.ktest" files are in a binary format, so KLEE comes with an utility
@@ -491,21 +499,24 @@ object    1: data: 1073741824
 \secc eMotor
 
 The eMotor driver is a proprietary electric motor control software module for
-AUTOSAR
-developed by Infineon Technologies, consisting of MCAL and the eMotor control
-module itself. It has interrupt driven design (the entire control algorithm is
+AUTomotive Open System ARchitecture (AUTOSAR), standardized software
+architecture for automotive domain, developed by Infineon Technologies.
+It has an interrupt driven design (the entire control algorithm is
 executed inside the interrupt handler) and is designed to run on 32-bit Tricore
 TC1798 microcontroller. It requires proprietary IDE, compiler, assembler and
 linker to be compiled.
 
 \secc MaCAN
 
+Controller Area Network (CAN) bus is standard communication bus for vehicles,
+designed by Bosch~\cite[bosch-can]. The CAN protocol is message based and there
+are two different message formats, base frame format and extended frame format.
 Because it was usually assumed that attackers do not have access to the
-network inside vehicle, the standard communication protocol, CAN, was designed
-for deterministic real-time communication, reliability and robustness and no
-consideration was given to security. However modern vehicles often have at
-least one remotely accessible interfaces and thus there is now a need to have
-message security as part of the communication protocol.
+network inside vehicle, CAN was designed for deterministic real-time
+communication, reliability and robustness and no consideration was given to
+security. However modern vehicles often have at least one remotely accessible
+interfaces and thus there is now a need to have message security as part of the
+communication protocol.
 
 The MaCAN protocol authenticates messages, giving a measure of message security
 and has an advantage in that it builds upon the CAN bus and is backwards
@@ -530,10 +541,8 @@ in the following chapter.
 \chap Toolchain and case study preparation
 
 This chapter covers changes done to KLEE, eMotor and MaCAN to allow testing
-these two libraries using KLEE. It will also cover other necessary preparations
-and problems I had to face along the way, touching upon some ``personal''
-experience gained during this thesis.
-\rfc{reword preparations}
+these two libraries using KLEE. It will also cover problems I ran into along
+the way, touching upon some ``personal'' experience gained during this thesis.
 
 Virtually all my work is also available online, in a GitHub repository%
 \urlnote{https://github.com/horenmar/thesis-setup-stable}.
@@ -545,7 +554,8 @@ dependencies, which at the time were about 3 years outdated. Since then there
 was significant work done to allow KLEE to work with newer version of the LLVM
 toolchain and Clang instead of LLVM-GCC, but as of the time of writing, it 
 officially supports only LLVM-2.9 coupled with LLVM-GCC~\cite[llvm-version].
-It was also dependent on {\em extremely} outdated version of STP.
+It was also dependent on {\em extremely} outdated version of the Simple Theorem
+Prover (STP) SAT solver.
 
 This has lead to some initial trouble, because LLVM-2.9 does not compile
 against newer versions of glibc and both STP and KLEE's POSIX modelling layer
