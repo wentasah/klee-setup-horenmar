@@ -604,7 +604,121 @@ All my modifications are publicly available as a fork of the original project%
 \urlnote{https://github.com/horenmar/macan/tree/klee} as well as on the DVD
 accompanying this thesis.
 
+\midinsert \clabel[diffstat]{{\tt diffstat} of my work on MaCAN library}
+\begtt
+ build/klee/Makefile.omk        |    1 +
+ build/klee/clear_early.sh      |   12 +
+ build/klee/config.target       |   11 +
+ build/klee/macan               |    1 +
+ build/klee/nettle              |    1 +
+ build/klee/node/Makefile.omk   |    4 +
+ build/klee/node/node.c         |  138 ++++
+ build/klee/run_klee.sh         |    5 +
+ macan/include/Makefile.omk     |    3 +
+ macan/include/klee.h           |    7 +
+ macan/src/Makefile.omk         |    1 +
+ macan/src/cryptlib.c           |    9 +
+ macan/src/klee/klee_cryptlib.c |   39 ++
+ macan/src/klee/klee_macan.c    |   41 ++
+ macan/src/klee/macan_ev.c      |  102 +++
+ macan/src/klee/macan_ev.h      |   82 +++
+ macan/src/macan.c              |    6 +-
+\endtt
+\caption/f {\tt diffstat} of my work on MaCAN library.
+\endinsert
 
+\midinsert \clabel[macan-ev-loop]{Listing of KLEE's event loop for testing}
+\begtt
+bool
+macan_ev_run(macan_ev_loop *loop)
+{
+       for (int i = 0; i < HOW_MANY_ITERATIONS; ++i){
+               uint64_t now = read_time();
+
+               for (macan_ev_timer *t = loop->timers; t; t = t->next) {
+                       if (now >= t->expire_us) {
+                               t->cb(loop, t, MACAN_EV_TIMER);
+                               t->expire_us = now + t->repeat_us;
+                       }
+               }
+
+               can_rx_cb(NULL /*ignored*/, loop->cans, 0 /*ignored*/);
+
+       }
+       return true;
+}
+\endtt
+\caption/f Listing of KLEE's event loop for testing.
+\endinsert
+
+\midinsert \clabel[macan-klee-hw]{Overview of MaCAN's KLEE target implementation}
+\begtt
+uint64_t read_time(void){
+       uint64_t time;
+       klee_make_symbolic(&time, sizeof(time), "time");
+       return time;
+}
+
+bool gen_rand_data(void* dest, size_t len){
+       memset(dest, 0, len);
+}
+
+bool macan_read(struct macan_ctx* ctx, struct can_frame* cf){
+       (void)ctx;
+       //It is literally impossible for symbolic read to fail.
+       klee_make_symbolic(cf, sizeof(struct can_frame),
+                         "incoming can frame");
+       static int counter = 0;
+       counter++;
+       counter %= 15;
+       return counter != 0;
+}
+
+//For the klee false target, this is a noop.
+void macan_target_init(struct macan_ctx* ctx){
+       (void)ctx;
+}
+
+//Not currently part of testing.
+bool macan_send(struct macan_ctx* ctx, const struct can_frame* cf){
+       (void)ctx, (void)cf;
+       return true;
+}
+\endtt
+\caption/f Overview of MaCAN's KLEE target implementation. {\tt macan.c}
+\endinsert
+
+\midinsert \clabel[macan-klee-crypto]{Overview of MaCAN's KLEE target implementation}
+\begtt
+/**
+ * Simplifies cmac -> message is automagically going to have both the
+ * correct and the incorrect cmac anyway.
+ */
+void macan_aes_cmac(const struct macan_key *key, size_t length,
+                    uint8_t *dst, uint8_t *src)
+{
+    (void)key, (void)length, (void)dst, (void)src;
+    memset(dst, 0, 16);
+}
+
+
+void macan_aes_encrypt(const struct macan_key *key, size_t len,
+                       uint8_t *dst, const uint8_t *src)
+{
+    (void)key, (void)src;
+    klee_make_symbolic(dst, len, "aes encryption");
+}
+
+void macan_aes_decrypt(const struct macan_key *key, size_t len,
+                       uint8_t *dst, const uint8_t *src)
+{
+    (void)key, (void)src;
+    klee_make_symbolic(dst, len, "aes decryption");
+}
+
+\endtt
+\caption/f Overview of MaCAN's KLEE target implementation. {\tt cryptlib.c}
+\endinsert
 
 
 \chap Evaluation
