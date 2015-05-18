@@ -316,11 +316,11 @@ Dariz Luca had implemented it as well and since his work has been mainlined
 \cite[overflow-merge], I will talk about his implementation.
 
 This capability relies on Clang's support for Undefined Behavior Sanitizer
-(also known as ``ubsan''), which in turn is based on work by Regehr et al. on
-integer overflow checking \cite[ioc-paper]. KLEE implements overflow checking
-by performing arithmetic operations as-if done on double sized types and then
-checking upper half of the result. If it is not empty, the operation must have
-overflown.
+(also known as ``ubsan'')\urlnote{http://blog.regehr.org/archives/905},
+which in turn is based on work by Regehr et al. on integer overflow checking
+\cite[ioc-paper]. KLEE implements overflow checking by performing arithmetic
+operations as-if done on double sized types and then checking upper half of the
+result. If it is not empty, the operation must have overflown.
 
 KLEE can check for overflow of both signed and unsigned integral types, but the
 checks have to be turned on and/or off during tested program's compilation.
