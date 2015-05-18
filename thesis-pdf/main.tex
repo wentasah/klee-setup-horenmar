@@ -669,43 +669,6 @@ macan_ev_run(macan_ev_loop *loop){
 \caption/f Listing of KLEE's event loop for testing.
 \endinsert
 
-\midinsert \clabel[macan-klee-hw]{Overview of MaCAN's KLEE target implementation}
-\begtt
-uint64_t read_time(void){
-       uint64_t time;
-       klee_make_symbolic(&time, sizeof(time), "time");
-       return time;
-}
-
-bool gen_rand_data(void* dest, size_t len){
-       memset(dest, 0, len);
-       return true;
-}
-
-bool macan_read(struct macan_ctx* ctx, struct can_frame* cf){
-       (void)ctx;
-       klee_make_symbolic(cf, sizeof(struct can_frame),
-                         "incoming can frame");
-       static int counter = 0;
-       counter++;
-       counter %= 10;
-       return counter != 0;
-}
-
-//For the klee false target, this is a noop.
-void macan_target_init(struct macan_ctx* ctx){
-       (void)ctx;
-}
-
-//Not currently part of testing.
-bool macan_send(struct macan_ctx* ctx, const struct can_frame* cf){
-       (void)ctx, (void)cf;
-       return true;
-}
-\endtt
-\caption/f Overview of MaCAN's KLEE target implementation. {\tt macan.c}
-\endinsert
-
 \midinsert \clabel[macan-klee-crypto]{Overview of MaCAN's KLEE target implementation}
 \begtt
 void macan_aes_cmac(const struct macan_key *key, size_t length,
@@ -744,6 +707,42 @@ void macan_aes_decrypt(const struct macan_key *key, size_t len,
 \caption/f Necessary patch against {\tt cryptlib.c}.
 \endinsert
 
+\midinsert \clabel[macan-klee-hw]{Overview of MaCAN's KLEE target implementation}
+\begtt
+uint64_t read_time(void){
+       uint64_t time;
+       klee_make_symbolic(&time, sizeof(time), "time");
+       return time;
+}
+
+bool gen_rand_data(void* dest, size_t len){
+       memset(dest, 0, len);
+       return true;
+}
+
+bool macan_read(struct macan_ctx* ctx, struct can_frame* cf){
+       (void)ctx;
+       klee_make_symbolic(cf, sizeof(struct can_frame),
+                         "incoming can frame");
+       static int counter = 0;
+       counter++;
+       counter %= 10;
+       return counter != 0;
+}
+
+//For the klee false target, this is a noop.
+void macan_target_init(struct macan_ctx* ctx){
+       (void)ctx;
+}
+
+//Not currently part of testing.
+bool macan_send(struct macan_ctx* ctx, const struct can_frame* cf){
+       (void)ctx, (void)cf;
+       return true;
+}
+\endtt
+\caption/f Overview of MaCAN's KLEE target implementation. {\tt macan.c}
+\endinsert
 
 
 
