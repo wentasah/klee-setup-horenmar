@@ -28,7 +28,7 @@
 \abstractCZ {Safety critical software is hard!
              \rfc{Translate the english abstract}}
 \keywordsCZ {Symbolická exekuce, KLEE, automatické testování,
-             bezpečnostně kritický software, automobilová doména
+             bezpečnostně kritický software, automobilový průmysl
              \rfc{Standardní překlad??}}
 \thanks{I would like to thank my supervisor Ing. Michal Sojka, Ph.D.
         for having patience with my lazy ass. \rfc{Selfcensorship?}
@@ -89,14 +89,14 @@ J.2~\cite[iso-C99]}
 \begitems
 * Dereferencing uninitialized pointer
 * Dereferencing a NULL pointer
-* Dereferencing pointer to no longer valid object (ie freed object)
+* Dereferencing pointer to no longer valid object (i.e. freed object)
 * Creating pointers outside of allocated memory
-* Converting pointers to objects of incompatible types (ie converting "float*"
+* Converting pointers to objects of incompatible types (e.g. converting "float*"
   to "int*")
 * Signed integer overflow (unsigned overflow is well defined)
 * Shifting values by more than its size (ie "int64_t i = 1 << 70")
 * Evaluating arithmetic expression that would be mathematically undefined
-  (ie division by zero)
+  (e.g. division by zero)
 \enditems
 The willingness of compilers to exploit undefined behaviour (UB) in code has
 already been documented as causing security bugs in real 
@@ -116,20 +116,21 @@ checking.
 Safety-critical systems are those systems whose malfunction and/or failure
 might result in death (or grievous injury) of people, severe damage to and/or
 loss of equipment and environmental damage. These systems are increasingly
-often implemented in software, as opposed to hardware, and new methods of
-software defect prevention are needed.
+often implemented in software, as opposed to hardware, or as mechanic,
+pneumatic, hydraulic, ..., systems and new methods of software defect
+prevention are needed.
 
 There are various ways to decrease the number and frequency of software
-malfunctions, such as specific development methodologies (ie MISRA C%
+malfunctions, such as specific development methodologies (e.g. MISRA C%
 \urlnote{http://www.misra.org.uk/MISRAHome/WhatisMISRA/tabid/66/Default.aspx},
 and JSF-AV C++ coding standards\urlnote{http://www.stroustrup.com/JSF-AV-rules.pdf})
 which aim to provide safer subset of the language, thus decreasing possible
 space for defects and set requirements for testing rigour. Similarly, since
 compilation is another potential source of software defects, there are formally
-provable compilers\urlnote{http://compcert.inria.fr/}.
+provable compilers~\cite[compcert-paper].
 
-In general, safety-critical systems are expected to be hard real-time and to be
-fully defined for all possible inputs. This means that software contained
+In general, safety-critical systems often have hard real-time requirements and
+to be fully defined for all possible inputs. This means that software contained
 within must always respond under a fixed time-limit and have to fully define
 its failure modes, even if the response is just turning off motor and engaging
 emergency breaks.
@@ -139,7 +140,8 @@ software, because such software was expected to be completely isolated from
 outside world, and if networked, the network was thought to be completely
 isolated from the outside world. These assumptions are becoming more and more
 outdated, with recent example being the ability to locate and unlock Tesla
-Model S electric car by hacking a trivially brute-forceable code.
+Model S electric car by hacking a trivially brute-forceable
+code~\cite[tesla-security].
 
 While no tool can prevent security vulnerabilities caused by naive
 authentication scheme, automatic testing can find security implementation
@@ -223,7 +225,7 @@ predetermined result. For symbolic tool to be able to give us a concrete value
 or a set of constraints is asking it to reverse a cryptographic hash, which is
 generally regarded impossible without brute-force testing the input space, and
 in special cases might be impossible completely. Other problematic constructs
-are unbounded loops (IE those waiting for a hardware response) and infinite
+are unbounded loops (i.e. those waiting for a hardware response) and infinite
 loops, which prevent symbolic execution from terminating.
 
 Various solutions to increase path coverage exist, including parallelizing
@@ -269,9 +271,9 @@ space the most~\cite[kite-paper].
 
 KLEE is a symbolic execution tool primarily geared towards performing
 high-coverage tests on programs, originally created by Cadar et
-al.~\cite[klee-paper].
-It is built on the LLVM compiler infrastructure, using its Clang front-end to
-convert C code to LLVM IR representation, which it then works on.
+al.~\cite[klee-paper]. It is built on the LLVM compiler infrastructure, using
+its Clang front-end to convert C code to LLVM intermediate representation (IR),
+which it then works on.
 
 KLEE can find and show paths that lead to any case of
 \begitems
@@ -290,10 +292,10 @@ detailed in the next section.
 
 Text in this subsection is based on the KLEE paper~\cite[klee-paper].
 
-KLEE takes a file of LLVM IR its input and works directly on the LLVM IR. It is
-capable of interpreting a large subset of the language, that does not include
-symbolic floating point, threads, "longjmp", embedded assembly code and some
-intrinsics. All memory objects also have to have concrete size.
+KLEE takes a file of LLVM IR as its input and works directly on the LLVM IR. It
+is capable of interpreting a large subset of the language, that does not
+include symbolic floating point, threads, "longjmp", embedded assembly code and
+some intrinsics. All memory objects also have to have concrete size.
 
 At the core of KLEE testing is an interpreter loop, selecting a currently open
 state and executing an LLVM instruction using selected state's context. State's
@@ -487,12 +489,13 @@ object    1: data: 1073741824
 
 \secc eMotor
 
-The eMotor driver is a proprietary control software module for AUTOSAR
+The eMotor driver is a proprietary electric motor control software module for
+AUTOSAR
 developed by Infineon Technologies, consisting of MCAL and the eMotor control
-module itself. It is interrupt driven design (the entire control algorithm is
+module itself. It has interrupt driven design (the entire control algorithm is
 executed inside the interrupt handler) and is designed to run on 32-bit Tricore
-TC1798 microcontroller. It is supplied together with proprietary IDE, compiler,
-assembler and linker.
+TC1798 microcontroller. It requires proprietary IDE, compiler, assembler and
+linker to be compiled.
 
 \secc MaCAN
 
@@ -525,19 +528,20 @@ in the following chapter.
 
 \chap Toolchain and case study preparation
 
-In this chapter I will talk about changes done to KLEE, eMotor and MaCAN
-that I have done to allow testing these two libraries using KLEE. I will also
-talk about other necessary preparations and problems I had to face along the
-way, touching upon some ``personal'' experience gained during this thesis.
+This chapter covers changes done to KLEE, eMotor and MaCAN to allow testing
+these two libraries using KLEE. It will also cover other necessary preparations
+and problems I had to face along the way, touching upon some ``personal''
+experience gained during this thesis.
+\rfc{reword preparations}
 
 Virtually all my work is also available online, in a GitHub repository%
 \urlnote{https://github.com/horenmar/thesis-setup-stable}.
 
 \sec KLEE preparation
 
-When I started working with the KLEE tool, it was reliant on LLVM-2.9 and
-LLVM-GCC, which at the time was about 3 years outdated. Since then there was
-significant work done to allow KLEE to work with newer version of the LLVM
+When I started working with the KLEE tool, it had LLVM-2.9 and LLVM-GCC as its
+dependencies, which at the time were about 3 years outdated. Since then there
+was significant work done to allow KLEE to work with newer version of the LLVM
 toolchain and Clang instead of LLVM-GCC, but as of the time of writing, it 
 officially supports only LLVM-2.9 coupled with LLVM-GCC~\cite[llvm-version].
 It was also dependent on {\em extremely} outdated version of STP.
@@ -569,10 +573,10 @@ multi-file application into bitcode with integer overflow checking enabled.
 
 \sec eMotor modifications
 
-Because the eMotor's internal structure is rather weakly abstracted and
-accesses to hardware registers are often interwoven inside functions, modifying
-eMotor to support symbolic execution has proven to be prohibitively hard. This
-has led to us giving up on testing eMotor.
+Because the eMotor's access to HW registers is weakly abstracted, modifying
+eMotor to support symbolic execution has proven to be prohibitively hard. This,
+combined with time issues and the fact the project for which we worked on
+eMotor has ended, led us to give up on testing eMotor.
 
 \rfc{Write more about this?}
 
@@ -596,15 +600,18 @@ execution entry point for KLEE.
 
 \rfc{Specify changes in more detail?}
 All my modifications are publicly available as a fork of the original project%
-\urlnote{https://github.com/horenmar/macan/tree/klee}.
+\urlnote{https://github.com/horenmar/macan/tree/klee} as well as on the DVD
+accompanying this thesis.
+
+
+
 
 \chap Evaluation
 
-In this chapter I will talk about results I obtained by running KLEE on the
-MaCAN library to evaluate its viability as testing tool of real-time,
-safety-critical software. Because of the already mentioned difficulties with
-modifying eMotor to run under KLEE, all results in this chapter are from
-running KLEE on the MaCAN library.
+This chapter presents results I obtained by running KLEE on the MaCAN library
+to evaluate its viability as testing tool of real-time, safety-critical
+software. Because of the already mentioned difficulties with modifying eMotor
+to run under KLEE, results from testing eMotor are not included.
 
 \sec Results - problems, bugs, solutions?
 
@@ -645,7 +652,7 @@ authors and current maintainer.}.
 \hfil type of overflow & number found \crl \tskip4pt
     benign & placeholder \cr
     causing bugs & placeholder \cr
-    causing UB & placeholder \cr
+    causing undefined behaviour & placeholder \cr
 }
 \caption/t Number of overflows found.
 \endinsert
@@ -701,7 +708,7 @@ uint64_t time_ts_us;
 time_ts_us = time_ts * ctx->config->time_div;
 \endtt
 This bug was also found independently by Michal Sojka when he was presenting
-MaCAN's at a conference and this was the implemented fix:
+MaCAN at an exhibition and this was the implemented fix:
 \begtt
 uint32_t time_ts;
 uint64_t time_ts_us;
