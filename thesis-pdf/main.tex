@@ -98,7 +98,7 @@ J.2~\cite[iso-C99]}
 * Evaluating arithmetic expression that would be mathematically undefined
   (e.g. division by zero)
 \enditems
-The willingness of compilers to exploit undefined behaviour (UB) in code has
+The willingness of compilers to exploit undefined behaviour in code has
 already been documented as causing security bugs in real 
 world~\cite[linux-kernel-vuln], but defined behaviour can lead to bugs as well.
 A common example is unsigned overflow, which is well defined, but often is not
@@ -340,10 +340,10 @@ This is caused by KLEE's reliance on Clang's intrinsics.
 
 \secc Example of KLEE usage
 
-This section explains basic usage of KLEE. We will go through running KLEE on
-two toy single file programs, "sum.c" and "memcpyassert.c", whose listings are
-in Figure~\ref[sum-listing] and Figure~\ref[memcpyassert-listing] respectively.
-We wil use Clang-3.3 as our LLVM IR compiler.
+This subsection explains basic usage of KLEE. We will go through running KLEE
+on two toy single file programs, "sum.c" and "memcpyassert.c", whose listings
+are in Figure~\ref[sum-listing] and Figure~\ref[memcpyassert-listing]
+respectively. We wil use Clang-3.3 as our LLVM IR compiler.
 
 \midinsert \clabel[sum-listing]{{\tt sum.c} listing}
 \begtt
@@ -430,7 +430,7 @@ KLEE: done: total instructions = 218
 KLEE: done: completed paths = 5
 KLEE: done: generated tests = 2
 \endtt
-\caption/f klee results for {\tt sum.c}
+\caption/f KLEE results for {\tt sum.c}
 \endinsert
 
 \midinsert \clabel[klee-memcpy-results]{KLEE results for {\tt memcpyassert.c}}
@@ -444,7 +444,7 @@ KLEE: done: total instructions = 62
 KLEE: done: completed paths = 2
 KLEE: done: generated tests = 2
 \endtt
-\caption/f klee results for {\tt memcpyassert.c}
+\caption/f KLEE results for {\tt memcpyassert.c}
 \endinsert
 
 For every run KLEE creates a new folder with several files, as can be seen in
@@ -575,9 +575,9 @@ multi-file application into bitcode with integer overflow checking enabled.
 \sec eMotor modifications
 
 Because the eMotor's access to HW registers is weakly abstracted, modifying
-eMotor to support symbolic execution has proven to be prohibitively hard. This,
-combined with time issues and the fact the project for which we worked on
-eMotor has ended, led us to give up on testing eMotor.
+eMotor to support symbolic execution has proven to be hard. This, combined with
+time issues and the fact the project for which we worked on eMotor has ended,
+led us to give up on testing eMotor.
 
 \rfc{Write more about this?}
 
@@ -591,7 +591,7 @@ return symbolic values when run under KLEE.
 However, the MaCAN library inner working is deeply reliant on cryptography and
 validating cryptography using symbolic execution is intractable. Because of
 this I ended up having to bypass parts of the code, compromising completeness
-of testing coverage to be able to analyse the rest of codebase.
+of testing coverage to be able to analyse the rest of MaCAN library codebase.
 
 More specifically, in addition to adding KLEE as a platform to the MaCAN project
 and adding the necessary platform-specific scaffolding, I only had to perform
