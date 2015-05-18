@@ -605,8 +605,9 @@ Figure~\ref[macan-ev-loop] shows dummy event loop used to invoke the MaCAN
 library, Figure~\ref[macan-klee-hw] shows my implementation of MaCAN's platform
 hardware specific functionality and Figure~\ref[macan-klee-crypto] shows my
 implementation of MaCAN's platform specific cryptographic functionality.
-Figure~\ref[macan-crypto-patch] shows patch that was also needed in the general
-MaCAN implementation of "cryptlib.c".
+Figure~\ref[macan-crypto-patch] shows patch that was needed in the general
+MaCAN implementation of "cryptlib.c" (I also removed static linkage from
+function serving as entry point for CAN frames in "macan.c").
 
 All my modifications are publicly available as a fork of the original project%
 \urlnote{https://github.com/horenmar/macan/tree/klee} as well as on the DVD
@@ -727,6 +728,23 @@ void macan_aes_decrypt(const struct macan_key *key, size_t len,
 \endtt
 \caption/f Overview of MaCAN's KLEE target implementation. {\tt cryptlib.c}
 \endinsert
+
+\midinsert \clabel[macan-crypto-patch]{Necessary patch against {\tt cryptlib.c}}
+\begtt
+ void macan_unwrap_key(const struct macan_key *key, size_t srclen,
+                       uint8_t *dst, uint8_t *src) {
++#ifdef WITH_KLEE
++       //FIXME? This should pair up aes unwrap to get around the verification.
++       klee_make_symbolic(dst+16, 7, "aes unwrap modification");
++#else
+        macan_aes_unwrap(key, srclen, dst, src, src);
++#endif
+ }
+\endtt
+\caption/f Necessary patch against {\tt cryptlib.c}.
+\endinsert
+
+
 
 
 \chap Evaluation
