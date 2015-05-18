@@ -68,6 +68,20 @@ While its original purpose was to test general purpose programs, we decided
 to test its fitness for testing real-time safety critical software, because
 such software's number of paths through code is relatively small.
 
+Security used to be thought of as completely orthogonal to safety-critical
+software, because such software was expected to be completely isolated from
+outside world, and if networked, the network was thought to be completely
+isolated from the outside world. These assumptions are becoming more and more
+outdated, with recent example being the ability to locate and unlock Tesla
+Model S electric car by hacking a trivially brute-forceable
+code~\cite[tesla-security].
+
+While no tool can prevent security vulnerabilities caused by naive
+authentication scheme, automatic testing can find security implementation
+bugs which could potentially allow an attack to bypass security measures that
+are in place. Thus, in this thesis I attempt to determine whether a general
+purpose symbolic execution tool, KLEE, can help find these bugs in existing
+real-time safety-critical software.
 
 \sec Motivation
 
@@ -134,21 +148,6 @@ to be fully defined for all possible inputs. This means that software contained
 within must always respond under a fixed time-limit and have to fully define
 its failure modes, even if the response is just turning off motor and engaging
 emergency breaks.
-
-Security used to be thought of as completely orthogonal to safety-critical
-software, because such software was expected to be completely isolated from
-outside world, and if networked, the network was thought to be completely
-isolated from the outside world. These assumptions are becoming more and more
-outdated, with recent example being the ability to locate and unlock Tesla
-Model S electric car by hacking a trivially brute-forceable
-code~\cite[tesla-security].
-
-While no tool can prevent security vulnerabilities caused by naive
-authentication scheme, automatic testing can find security implementation
-bugs which could potentially allow an attack to bypass security measures that
-are in place. Thus, in this thesis I attempt to determine whether a general
-purpose symbolic execution tool, KLEE, can help find these bugs in existing
-real-time safety-critical software.
 
 \sec Symbolic execution
 
