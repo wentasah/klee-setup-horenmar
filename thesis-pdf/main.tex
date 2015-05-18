@@ -773,10 +773,14 @@ authors and current maintainer.}.
 \endinsert
 \rfc{Complete these results as they are improved.}
 
-The one case of undefined behaviour causing overflow was in function checking
+The one case of undefined-behaviour-causing overflow was in function checking
 authenticity of received message. The programmer wanted to test whether the
 message was authentic, assuming it was sent either slightly before ``now''
-(that is, current MaCAN time), now, or after now and wrote this:
+(that is, current MaCAN time), now, or after now and wrote the code in
+Figure~\ref[ub-code], where the  expression "(int)time + i" performed signed
+arithmetic that could easily overflow.
+
+\midinsert \clabel[ub-code]{Listing of the UB causing bug}
 \begtt
 uint64_t time;
 int i;
@@ -792,13 +796,10 @@ for (i = -1; i <= 1; i++) {
     }
 }
 \endtt
-where the expression "(int)time + i" in line 
-\begtt
-*ftime = htole32((int)time + i);
-\endtt
-performed signed arithmetic that can easily overflow. After finding this bug,
-it was fixed in mainline MaCAN, changing the problematic part of the code to
-the following:
+\caption/f Listing of the UB causing bug.
+\endinsert
+
+\midinsert \clabel[ub-fix]{Listing of the fix for UB causing bug}
 \begtt
 int delta_t;
 uint32_t time = (uint32_t)macan_get_time(ctx);
@@ -806,9 +807,15 @@ for (delta_t = -1; delta_t <= 1; delta_t++) {
     *ftime = htole32(time + (uint32_t)delta_t);
 }
 \endtt
-While this new version can still overflow (in fact, it has to overflow to work
-properly), this new overflow is well defined from the language point of view
-and is benign as far as function is intended.
+\caption/f Listing of the fix for UB causing bug in mainline MaCAN.
+\endinsert
+
+After I found this bug, it was fixed in
+mainline MaCAN library, by changing the code to the one in
+Figure~\ref[ub-fix]~\cite[MaCAN-UB-fix]. The new version can still overflow
+(in fact it has to overflow to work properly), but the new overflow is well
+defined from the language point of view and is intended (and thus benign).
+
 
 Another non-benign overflow was found in function that receives time from the
 MaCAN network and attempts to adjust local time to keep it in sync. It attempts
