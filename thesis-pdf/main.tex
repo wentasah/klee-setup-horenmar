@@ -169,8 +169,9 @@ generate all possible inputs. This is achieved by keeping track of all
 conditions leading to any given path and using a SAT solver to A)~determine
 whether any given path can be taken and  B)~generate a sample solution
 (concretization of symbolic data) that will lead to any given path. As an
-example, consider the following function:
+example, consider the function in figure~\ref[sample-symbolic-function].
 
+\midinsert \clabel[sample-symbolic-function]{Example function}
 \begtt
 int is_odd(int n){
     if (n % 2) {
@@ -180,12 +181,17 @@ int is_odd(int n){
     }
 }
 \endtt
+\caption/f Example function for symbolic execution.
+\endinsert
 
 It has $2^{32}$ possible concrete inputs, but as can be easily seen,
 has only two paths through. Symbolic testing allows us to find both paths
 without having to explore all $2^{32}$ inputs. If we mark the input as symbolic
 and use KLEE to test this function, it outputs both paths and gives concretized
-values that give full coverage.
+values that give full coverage as can be seen in
+figure~\ref[klee-sample-listing].
+
+\midinsert \clabel[klee-sample-listing]{Abbreviated KLEE's output for the example}
 \begtt
 KLEE: done: total instructions = 29
 KLEE: done: completed paths = 2
@@ -203,6 +209,8 @@ object    0: name: 'n'
 object    0: size: 4
 object    0: data: 1
 \endtt
+\caption/f Abbreviated KLEE's output for the example.
+\endinsert
 
 Unlike with fuzzing, time required for symbolic execution of any given program
 doesn't increase exponentially with size of input, but rather increases with
