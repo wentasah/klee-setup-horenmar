@@ -104,7 +104,7 @@ world~\cite[linux-kernel-vuln], but defined behaviour can lead to bugs as well.
 A common example is unsigned overflow, which is well defined, but often is not
 accounted for and breaks program's logic. 
 
-While static analysis can find some of these potential defects (ie
+While static analysis can find some of these potential defects (e.g.
 dereferencing uninitialized pointers and incompatible pointer conversions),
 it is not sound and gives both false positives and false negatives. Static
 analysis is also unable to find integer overflows, as these are inherently
@@ -156,7 +156,8 @@ The term symbolic execution has been coined in year 1976 by James C. King in
 article Symbolic execution and program 
 testing~\cite[symbolic-execution-article]. Since then symbolic execution has
 been implemented by various tools for various languages, from x86 
-assembly~\cite[s2e-paper], LLVM's IR (from C/C++)~\cite[klee-paper, c9-paper]
+assembly~\cite[s2e-paper], LLVM's intermediate representation (IR)
+(from C/C++)~\cite[klee-paper, c9-paper]
 to higher level languages such as the .NET framework~\cite[pex-repair-paper].
 
 The contents of rest of this section are heavily based on the KLEE 
@@ -171,7 +172,7 @@ generate all possible inputs. This is achieved by keeping track of all
 conditions leading to any given path and using a SAT solver to A)~determine
 whether any given path can be taken and  B)~generate a sample solution
 (concretization of symbolic data) that will lead to any given path. As an
-example, consider the function in figure~\ref[sample-symbolic-function].
+example, consider the function in Figure~\ref[sample-symbolic-function].
 
 \midinsert \clabel[sample-symbolic-function]{Example function}
 \begtt
@@ -191,7 +192,7 @@ has only two paths through. Symbolic testing allows us to find both paths
 without having to explore all $2^{32}$ inputs. If we mark the input as symbolic
 and use KLEE to test this function, it outputs both paths and gives concretized
 values that give full coverage as can be seen in
-figure~\ref[klee-sample-listing].
+Figure~\ref[klee-sample-listing].
 
 \midinsert \clabel[klee-sample-listing]{Abbreviated KLEE's output for the example}
 \begtt
@@ -236,7 +237,7 @@ execution~\cite[s2e-paper].
 
 \secc Existing tools
 
-There exist various tools for symbolic execution, many of which are
+There exist various tools for performing symbolic execution, many of which are
 based on KLEE~\cite[symdrive-paper, c9-paper, s2e-paper, kite-paper].
 
 Cloud9\urlnote{http://cloud9.epfl.ch/}
@@ -339,10 +340,10 @@ This is caused by KLEE's reliance on Clang's intrinsics.
 
 \secc Example of KLEE usage
 
-In this chapter I intend to explain basic usage of KLEE. I will be working with
+This section explains basic usage of KLEE. We will go through running KLEE on
 two toy single file programs, "sum.c" and "memcpyassert.c", whose listings are
-in figure~\ref[sum-listing] and figure~\ref[memcpyassert-listing] respectively.
-It assumes already working KLEE and Clang-3.3.
+in Figure~\ref[sum-listing] and Figure~\ref[memcpyassert-listing] respectively.
+We wil use Clang-3.3 as our LLVM IR compiler.
 
 \midinsert \clabel[sum-listing]{{\tt sum.c} listing}
 \begtt
@@ -392,33 +393,33 @@ int main(){
 \endinsert
 
 Because KLEE runs on LLVM bitcode files, the first step is to run Clang on
-the source file as seen in figure~\ref[compilation-flags]. The result of this
-is a ".o" file containing LLVM bitcode. This can be now run by KLEE as seen in
-figure~\ref[how-to-run-klee].
+the source file as seen in Figure~\ref[compilation-cmd]. The result of this
+step is a ".o" file containing LLVM bitcode, which can be now run by KLEE as
+seen in Figure~\ref[how-to-run-klee].
 
-\midinsert \clabel[compilation-flags]{compilation flags}
+\midinsert \clabel[compilation-cmd]{Compilation command line}
 \begtt
 clang -emit-llvm -c -g -fsanitize=integer <name>.c
 \endtt
-\caption/f compilation flags
+\caption/f Compilation command line
 \endinsert
 
-\midinsert \clabel[how-to-run-klee]{how to run klee}
+\midinsert \clabel[how-to-run-klee]{How to run KLEE}
 \begtt
 klee <name>.o
 \endtt
-\caption/f how to run klee
+\caption/f How to run KLEE
 \endinsert
 
 The output of running KLEE on "sum.o" can be seen in 
-figure~\ref[klee-sum-results] and in figure~\ref[klee-memcpy-results] for
+Figure~\ref[klee-sum-results] and in Figure~\ref[klee-memcpy-results] for
 "memcpyassert.o". As they show, both of these toy programs contain possible
 bugs. For "sum.c" it is a possible signed\fnote{Yes, signed. KLEE's overflow
 reporting currently contains a bug and reports every overflow as unsigned.}
-integer overflow, which is UB and for "memcpyassert.o" it is a possible
-assertion violation.
+integer overflow, which is undefined behaviour and "memcpyassert.o" contains
+possible assertion violation.
 
-\midinsert \clabel[klee-sum-results]{klee results for {\tt sum.c}}
+\midinsert \clabel[klee-sum-results]{KLEE results for {\tt sum.c}}
 \begtt
 KLEE: output directory is "/.../thesis-setup-stable/examples/klee-out-0"
 KLEE: ERROR: /.../thesis-setup-stable/examples/sum.c:12: overflow on
@@ -432,7 +433,7 @@ KLEE: done: generated tests = 2
 \caption/f klee results for {\tt sum.c}
 \endinsert
 
-\midinsert \clabel[klee-memcpy-results]{klee results for {\tt memcpyassert.c}}
+\midinsert \clabel[klee-memcpy-results]{KLEE results for {\tt memcpyassert.c}}
 \begtt
 KLEE: output directory is "/.../thesis-setup-stable/examples/klee-out-1"
 KLEE: ERROR: /.../thesis-setup-stable/examples/memcpyassert.c:12:
@@ -447,7 +448,7 @@ KLEE: done: generated tests = 2
 \endinsert
 
 For every run KLEE creates a new folder with several files, as can be seen in
-figure~\ref[klee-files]. In addition to files created for the execution itself,
+Figure~\ref[klee-files]. In addition to files created for the execution itself,
 "assembly.ll", "info", "messages.txt", "run.stats", "run.istats" and
 "warnings.txt", KLEE has created sample inputs for every distinct path through
 the sample programs and for every error found ("test<n>.ktest") and if the path
@@ -467,7 +468,7 @@ messages.txt  test000001.ktest  test000002.ktest
 The "test<n>.ktest" files are in a binary format, so KLEE comes with an utility
 to read them, "ktest-tool". If used it writes out human readable list of
 symbolic variables and their concrete values that would lead program execution
-through to its corresponding path. For an example, see figure~\ref[ktest-tool].
+through to its corresponding path. For an example, see Figure~\ref[ktest-tool].
 
 \midinsert \clabel[ktest-tool]{Sample listing of ktest-tool output}
 \begtt
@@ -626,7 +627,7 @@ table~\ref[klee-results].
 
 \midinsert \clabel[klee-results]{Number of bugs found}
 \ctable{lr}{
-\hfil type of bug & number found \crl \tskip4pt
+\hfil Type of bug & Count \crl \tskip4pt
     Assertion violation & 0 \cr
     Access outside of allocated memory & 0 \cr
     Division by zero & 0 \cr
@@ -649,7 +650,7 @@ authors and current maintainer.}.
 
 \midinsert \clabel[overflow-results]{Number of overflows found}
 \ctable{lr}{
-\hfil type of overflow & number found \crl \tskip4pt
+\hfil Type of overflow & Count \crl \tskip4pt
     benign & placeholder \cr
     causing bugs & placeholder \cr
     causing undefined behaviour & placeholder \cr
@@ -739,9 +740,10 @@ within 64 bit unsigned variable and as such, are harmless.
 
 KLEE's complexity is exponential in both memory (because the number of possible
 path generally increases exponentially with encountered conditional branches)
-and in CPU time (because it attempts to solve SAT at every branch). The memory
-complexity can be mitigated at the cost of further increasing runtime, by
-running KLEE with search strategy set to either DFS or IDDFS (which is only
+and in CPU time (because it attempts to solve SAT problem at every branching).
+The memory complexity can be mitigated at the cost of further increasing
+runtime, by running KLEE with search strategy set to either Depth First Search
+(DFS) or Iteratively Deepening Depth First Search (IDDFS) (which is only
 experimentally supported), but there is no way to reduce the CPU time
 complexity.
 
