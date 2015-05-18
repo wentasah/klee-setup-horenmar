@@ -639,8 +639,7 @@ accompanying this thesis (see Appendix C for more detail).
 \midinsert \clabel[macan-ev-loop]{Listing of KLEE's event loop for testing}
 \begtt
 bool
-macan_ev_run(macan_ev_loop *loop)
-{
+macan_ev_run(macan_ev_loop *loop){
        for (int i = 0; i < HOW_MANY_ITERATIONS; ++i){
                uint64_t now = read_time();
 
@@ -670,16 +669,16 @@ uint64_t read_time(void){
 
 bool gen_rand_data(void* dest, size_t len){
        memset(dest, 0, len);
+       return true;
 }
 
 bool macan_read(struct macan_ctx* ctx, struct can_frame* cf){
        (void)ctx;
-       //It is literally impossible for symbolic read to fail.
        klee_make_symbolic(cf, sizeof(struct can_frame),
                          "incoming can frame");
        static int counter = 0;
        counter++;
-       counter %= 15;
+       counter %= 10;
        return counter != 0;
 }
 
@@ -699,28 +698,20 @@ bool macan_send(struct macan_ctx* ctx, const struct can_frame* cf){
 
 \midinsert \clabel[macan-klee-crypto]{Overview of MaCAN's KLEE target implementation}
 \begtt
-/**
- * Simplifies cmac -> message is automagically going to have both the
- * correct and the incorrect cmac anyway.
- */
 void macan_aes_cmac(const struct macan_key *key, size_t length,
-                    uint8_t *dst, uint8_t *src)
-{
+                    uint8_t *dst, uint8_t *src){
     (void)key, (void)length, (void)dst, (void)src;
     memset(dst, 0, 16);
 }
 
-
 void macan_aes_encrypt(const struct macan_key *key, size_t len,
-                       uint8_t *dst, const uint8_t *src)
-{
+                       uint8_t *dst, const uint8_t *src){
     (void)key, (void)src;
     klee_make_symbolic(dst, len, "aes encryption");
 }
 
 void macan_aes_decrypt(const struct macan_key *key, size_t len,
-                       uint8_t *dst, const uint8_t *src)
-{
+                       uint8_t *dst, const uint8_t *src){
     (void)key, (void)src;
     klee_make_symbolic(dst, len, "aes decryption");
 }
@@ -734,7 +725,6 @@ void macan_aes_decrypt(const struct macan_key *key, size_t len,
  void macan_unwrap_key(const struct macan_key *key, size_t srclen,
                        uint8_t *dst, uint8_t *src) {
 +#ifdef WITH_KLEE
-+       //FIXME? This should pair up aes unwrap to get around the verification.
 +       klee_make_symbolic(dst+16, 7, "aes unwrap modification");
 +#else
         macan_aes_unwrap(key, srclen, dst, src, src);
