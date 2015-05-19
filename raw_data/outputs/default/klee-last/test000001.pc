@@ -1,0 +1,5 @@
+array time_1[8] : w32 -> w8 = symbolic
+(query [(Ult 18446744073709551615
+              (Add w128 1000000
+                        (ZExt w128 (ReadLSB w64 0 time_1))))]
+        false)

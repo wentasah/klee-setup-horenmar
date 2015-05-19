@@ -1,0 +1,7 @@
+Error: overflow on unsigned multiplication
+File: /home/horenmar/thesis-setup-stable/macan/build/klee/macan/src/macan.c
+Line: 468
+assembly.ll line: 943
+Stack: 
+	#000000943 in can_rx_cb (loop=0, w=48989160, revents=0) at /home/horenmar/thesis-setup-stable/macan/build/klee/macan/src/macan.c:468
+	#100000446 in main () at /home/horenmar/thesis-setup-stable/macan/build/klee/macan/src/klee/macan_ev.c:98

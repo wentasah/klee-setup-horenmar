@@ -1,0 +1,7 @@
+Error: overflow on unsigned subtraction
+File: /home/horenmar/thesis-setup-stable/macan/build/klee/macan/src/macan.c
+Line: 473
+assembly.ll line: 960
+Stack: 
+	#000000960 in can_rx_cb (loop=0, w=54893784, revents=0) at /home/horenmar/thesis-setup-stable/macan/build/klee/macan/src/macan.c:473
+	#100000443 in main () at /home/horenmar/thesis-setup-stable/macan/build/klee/macan/src/klee/macan_ev.c:98

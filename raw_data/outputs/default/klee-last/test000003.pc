@@ -1,0 +1,17 @@
+array time_1[8] : w32 -> w8 = symbolic
+array time[8] : w32 -> w8 = symbolic
+array time_2[8] : w32 -> w8 = symbolic
+array time_4[8] : w32 -> w8 = symbolic
+(query [(Eq false
+             (Ult 18446744073709551615
+                  N0:(Add w128 1000000
+                               (ZExt w128 (ReadLSB w64 0 time_1)))))
+         (Ult N1:(ReadLSB w64 0 time_2)
+              (Extract w64 0 N0))
+         (Eq false
+             (Ult N1
+                  (Extract w64 0 (ZExt w128 (ReadLSB w64 0 time)))))
+         (Ult 18446744073709551615
+              (Add w128 5000000
+                        (ZExt w128 (ReadLSB w64 0 time_4))))]
+        false)

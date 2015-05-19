@@ -1,0 +1,8 @@
+Error: overflow on unsigned addition
+File: /home/horenmar/thesis-setup-stable/macan/build/klee/macan/src/macan.c
+Line: 841
+assembly.ll line: 590
+Stack: 
+	#000000590 in macan_request_key (ctx=59942544, fwd_id=1) at /home/horenmar/thesis-setup-stable/macan/build/klee/macan/src/macan.c:841
+	#100000648 in macan_housekeeping_cb (loop=60434256, w=59942704, revents=2) at /home/horenmar/thesis-setup-stable/macan/build/klee/macan/src/macan.c:855
+	#200000420 in main () at /home/horenmar/thesis-setup-stable/macan/build/klee/macan/src/klee/macan_ev.c:93

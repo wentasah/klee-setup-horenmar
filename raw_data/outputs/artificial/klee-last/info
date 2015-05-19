@@ -1,0 +1,18 @@
+klee --only-output-states-covering-new --optimize --search=dfs --max-memory=0 --check-div-zero --check-overshift single_node.bc
+PID: 713
+Started: 2015-05-18 12:45:16
+BEGIN searcher description
+DFSSearcher
+END searcher description
+Finished: 2015-05-19 11:30:21
+Elapsed: 22:45:05
+KLEE: done: explored paths = 206944
+KLEE: done: avg. constructs per query = 1119
+KLEE: done: total queries = 104754
+KLEE: done: valid queries = 68144
+KLEE: done: invalid queries = 36610
+KLEE: done: query cex = 104754
+
+KLEE: done: total instructions = 24141357
+KLEE: done: completed paths = 206944
+KLEE: done: generated tests = 65

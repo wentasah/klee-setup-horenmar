@@ -1,0 +1,6 @@
+Error: overflow on unsigned addition
+File: /home/horenmar/thesis-setup-stable/macan/build/klee/macan/src/klee/macan_ev.c
+Line: 68
+assembly.ll line: 384
+Stack: 
+	#000000384 in main () at /home/horenmar/thesis-setup-stable/macan/build/klee/macan/src/klee/macan_ev.c:68

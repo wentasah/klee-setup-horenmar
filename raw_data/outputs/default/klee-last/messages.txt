@@ -1,0 +1,6 @@
+KLEE: ERROR: /home/horenmar/thesis-setup-stable/macan/build/klee/macan/src/klee/macan_ev.c:68: overflow on unsigned addition
+KLEE: NOTE: now ignoring this error at this location
+KLEE: ERROR: /home/horenmar/thesis-setup-stable/macan/build/klee/macan/src/klee/macan_ev.c:94: overflow on unsigned addition
+KLEE: NOTE: now ignoring this error at this location
+KLEE: ERROR: /home/horenmar/thesis-setup-stable/macan/build/klee/macan/src/macan.c:841: overflow on unsigned addition
+KLEE: NOTE: now ignoring this error at this location

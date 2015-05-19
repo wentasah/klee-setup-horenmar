@@ -1,0 +1,8 @@
+KLEE: WARNING: undefined reference to function: __ubsan_handle_shift_out_of_bounds
+KLEE: WARNING: undefined reference to function: memcmp
+KLEE: WARNING: undefined reference to function: printf
+KLEE: WARNING: undefined reference to function: puts
+KLEE: WARNING: undefined reference to function: snprintf
+KLEE: WARNING: undefined reference to variable: stdout
+KLEE: WARNING: undefined reference to function: vfprintf
+KLEE: WARNING ONCE: calling external: puts(59952736)

@@ -1,0 +1,358 @@
+array time_2[8] : w32 -> w8 = symbolic
+array incoming can frame_2[16] : w32 -> w8 = symbolic
+array incoming can frame_4[16] : w32 -> w8 = symbolic
+array time_1[8] : w32 -> w8 = symbolic
+array time_4[8] : w32 -> w8 = symbolic
+array time[8] : w32 -> w8 = symbolic
+array time_6[8] : w32 -> w8 = symbolic
+array incoming can frame[16] : w32 -> w8 = symbolic
+array incoming can frame_1[16] : w32 -> w8 = symbolic
+array incoming can frame_3[16] : w32 -> w8 = symbolic
+array incoming can frame_5[16] : w32 -> w8 = symbolic
+array incoming can frame_6[16] : w32 -> w8 = symbolic
+array incoming can frame_8[16] : w32 -> w8 = symbolic
+array incoming can frame_7[16] : w32 -> w8 = symbolic
+array incoming can frame_10[16] : w32 -> w8 = symbolic
+array incoming can frame_12[16] : w32 -> w8 = symbolic
+array incoming can frame_11[16] : w32 -> w8 = symbolic
+array incoming can frame_13[16] : w32 -> w8 = symbolic
+array incoming can frame_14[16] : w32 -> w8 = symbolic
+array incoming can frame_15[16] : w32 -> w8 = symbolic
+array incoming can frame_16[16] : w32 -> w8 = symbolic
+array incoming can frame_18[16] : w32 -> w8 = symbolic
+array incoming can frame_17[16] : w32 -> w8 = symbolic
+array incoming can frame_20[16] : w32 -> w8 = symbolic
+array incoming can frame_22[16] : w32 -> w8 = symbolic
+array incoming can frame_21[16] : w32 -> w8 = symbolic
+array incoming can frame_24[16] : w32 -> w8 = symbolic
+array incoming can frame_23[16] : w32 -> w8 = symbolic
+array incoming can frame_26[16] : w32 -> w8 = symbolic
+array incoming can frame_25[16] : w32 -> w8 = symbolic
+array incoming can frame_27[16] : w32 -> w8 = symbolic
+array incoming can frame_28[16] : w32 -> w8 = symbolic
+array time_7[8] : w32 -> w8 = symbolic
+(query [(Eq false
+             (Ult 18446744073709551615
+                  N0:(Add w128 1000000
+                               (ZExt w128 (ReadLSB w64 0 time_1)))))
+         (Eq false
+             (Ult N1:(ReadLSB w64 0 time_2)
+                  (Extract w64 0 N0)))
+         (Eq false
+             (Ult 18446744073709551615
+                  (Add w128 1000000 (ZExt w128 N1))))
+         (Eq false
+             (Ult N1
+                  (Extract w64 0 (ZExt w128 (ReadLSB w64 0 time)))))
+         (Eq false
+             (Ult 18446744073709551615
+                  (Add w128 5000000
+                            (ZExt w128 (ReadLSB w64 0 time_4)))))
+         (Eq false
+             (Ult 18446744073709551615
+                  (Add w128 5000000
+                            (ZExt w128 (ReadLSB w64 0 time_6)))))
+         (Eq false
+             (Eq 258
+                 N2:(ReadLSB w32 0 incoming can frame)))
+         (Eq false (Eq 0 N2))
+         (Eq false
+             (Eq 0 (Read w8 4 incoming can frame)))
+         (Eq false (Eq 512 N2))
+         (Eq false (Eq 513 N2))
+         (Eq false (Eq 256 N2))
+         (Eq false (Eq 257 N2))
+         (Eq false (Eq 259 N2))
+         (Eq false
+             (Eq 258
+                 N3:(ReadLSB w32 0 incoming can frame_1)))
+         (Eq false (Eq 0 N3))
+         (Eq false
+             (Eq 0 (Read w8 4 incoming can frame_1)))
+         (Eq false (Eq 512 N3))
+         (Eq false (Eq 513 N3))
+         (Eq false (Eq 256 N3))
+         (Eq false (Eq 257 N3))
+         (Eq false (Eq 259 N3))
+         (Eq false
+             (Eq 258
+                 N4:(ReadLSB w32 0 incoming can frame_2)))
+         (Eq false (Eq 0 N4))
+         (Eq false
+             (Eq 0 (Read w8 4 incoming can frame_2)))
+         (Eq false (Eq 512 N4))
+         (Eq false (Eq 513 N4))
+         (Eq false (Eq 256 N4))
+         (Eq false (Eq 257 N4))
+         (Eq false (Eq 259 N4))
+         (Eq false
+             (Eq 258
+                 N5:(ReadLSB w32 0 incoming can frame_3)))
+         (Eq false (Eq 0 N5))
+         (Eq false
+             (Eq 0 (Read w8 4 incoming can frame_3)))
+         (Eq false (Eq 512 N5))
+         (Eq false (Eq 513 N5))
+         (Eq false (Eq 256 N5))
+         (Eq false (Eq 257 N5))
+         (Eq false (Eq 259 N5))
+         (Eq false
+             (Eq 258
+                 N6:(ReadLSB w32 0 incoming can frame_4)))
+         (Eq false (Eq 0 N6))
+         (Eq false
+             (Eq 0 (Read w8 4 incoming can frame_4)))
+         (Eq false (Eq 512 N6))
+         (Eq false (Eq 513 N6))
+         (Eq false (Eq 256 N6))
+         (Eq false (Eq 257 N6))
+         (Eq false (Eq 259 N6))
+         (Eq false
+             (Eq 258
+                 N7:(ReadLSB w32 0 incoming can frame_5)))
+         (Eq false (Eq 0 N7))
+         (Eq false
+             (Eq 0 (Read w8 4 incoming can frame_5)))
+         (Eq false (Eq 512 N7))
+         (Eq false (Eq 513 N7))
+         (Eq false (Eq 256 N7))
+         (Eq false (Eq 257 N7))
+         (Eq false (Eq 259 N7))
+         (Eq false
+             (Eq 258
+                 N8:(ReadLSB w32 0 incoming can frame_6)))
+         (Eq false (Eq 0 N8))
+         (Eq false
+             (Eq 0 (Read w8 4 incoming can frame_6)))
+         (Eq false (Eq 512 N8))
+         (Eq false (Eq 513 N8))
+         (Eq false (Eq 256 N8))
+         (Eq false (Eq 257 N8))
+         (Eq false (Eq 259 N8))
+         (Eq false
+             (Eq 258
+                 N9:(ReadLSB w32 0 incoming can frame_7)))
+         (Eq false (Eq 0 N9))
+         (Eq false
+             (Eq 0 (Read w8 4 incoming can frame_7)))
+         (Eq false (Eq 512 N9))
+         (Eq false (Eq 513 N9))
+         (Eq false (Eq 256 N9))
+         (Eq false (Eq 257 N9))
+         (Eq false (Eq 259 N9))
+         (Eq false
+             (Eq 258
+                 N10:(ReadLSB w32 0 incoming can frame_8)))
+         (Eq false (Eq 0 N10))
+         (Eq false
+             (Eq 0 (Read w8 4 incoming can frame_8)))
+         (Eq false (Eq 512 N10))
+         (Eq false (Eq 513 N10))
+         (Eq false (Eq 256 N10))
+         (Eq false (Eq 257 N10))
+         (Eq false (Eq 259 N10))
+         (Eq false
+             (Eq 258
+                 N11:(ReadLSB w32 0 incoming can frame_10)))
+         (Eq false (Eq 0 N11))
+         (Eq false
+             (Eq 0 (Read w8 4 incoming can frame_10)))
+         (Eq false (Eq 512 N11))
+         (Eq false (Eq 513 N11))
+         (Eq false (Eq 256 N11))
+         (Eq false (Eq 257 N11))
+         (Eq false (Eq 259 N11))
+         (Eq false
+             (Eq 258
+                 N12:(ReadLSB w32 0 incoming can frame_11)))
+         (Eq false (Eq 0 N12))
+         (Eq false
+             (Eq 0 (Read w8 4 incoming can frame_11)))
+         (Eq false (Eq 512 N12))
+         (Eq false (Eq 513 N12))
+         (Eq false (Eq 256 N12))
+         (Eq false (Eq 257 N12))
+         (Eq false (Eq 259 N12))
+         (Eq false
+             (Eq 258
+                 N13:(ReadLSB w32 0 incoming can frame_12)))
+         (Eq false (Eq 0 N13))
+         (Eq false
+             (Eq 0 (Read w8 4 incoming can frame_12)))
+         (Eq false (Eq 512 N13))
+         (Eq false (Eq 513 N13))
+         (Eq false (Eq 256 N13))
+         (Eq false (Eq 257 N13))
+         (Eq false (Eq 259 N13))
+         (Eq false
+             (Eq 258
+                 N14:(ReadLSB w32 0 incoming can frame_13)))
+         (Eq false (Eq 0 N14))
+         (Eq false
+             (Eq 0 (Read w8 4 incoming can frame_13)))
+         (Eq false (Eq 512 N14))
+         (Eq false (Eq 513 N14))
+         (Eq false (Eq 256 N14))
+         (Eq false (Eq 257 N14))
+         (Eq false (Eq 259 N14))
+         (Eq false
+             (Eq 258
+                 N15:(ReadLSB w32 0 incoming can frame_14)))
+         (Eq false (Eq 0 N15))
+         (Eq false
+             (Eq 0 (Read w8 4 incoming can frame_14)))
+         (Eq false (Eq 512 N15))
+         (Eq false (Eq 513 N15))
+         (Eq false (Eq 256 N15))
+         (Eq false (Eq 257 N15))
+         (Eq false (Eq 259 N15))
+         (Eq false
+             (Eq 258
+                 N16:(ReadLSB w32 0 incoming can frame_15)))
+         (Eq false (Eq 0 N16))
+         (Eq false
+             (Eq 0 (Read w8 4 incoming can frame_15)))
+         (Eq false (Eq 512 N16))
+         (Eq false (Eq 513 N16))
+         (Eq false (Eq 256 N16))
+         (Eq false (Eq 257 N16))
+         (Eq false (Eq 259 N16))
+         (Eq false
+             (Eq 258
+                 N17:(ReadLSB w32 0 incoming can frame_16)))
+         (Eq false (Eq 0 N17))
+         (Eq false
+             (Eq 0 (Read w8 4 incoming can frame_16)))
+         (Eq false (Eq 512 N17))
+         (Eq false (Eq 513 N17))
+         (Eq false (Eq 256 N17))
+         (Eq false (Eq 257 N17))
+         (Eq false (Eq 259 N17))
+         (Eq false
+             (Eq 258
+                 N18:(ReadLSB w32 0 incoming can frame_17)))
+         (Eq false (Eq 0 N18))
+         (Eq false
+             (Eq 0 (Read w8 4 incoming can frame_17)))
+         (Eq false (Eq 512 N18))
+         (Eq false (Eq 513 N18))
+         (Eq false (Eq 256 N18))
+         (Eq false (Eq 257 N18))
+         (Eq false (Eq 259 N18))
+         (Eq false
+             (Eq 258
+                 N19:(ReadLSB w32 0 incoming can frame_18)))
+         (Eq false (Eq 0 N19))
+         (Eq false
+             (Eq 0 (Read w8 4 incoming can frame_18)))
+         (Eq false (Eq 512 N19))
+         (Eq false (Eq 513 N19))
+         (Eq false (Eq 256 N19))
+         (Eq false (Eq 257 N19))
+         (Eq false (Eq 259 N19))
+         (Eq false
+             (Eq 258
+                 N20:(ReadLSB w32 0 incoming can frame_20)))
+         (Eq false (Eq 0 N20))
+         (Eq false
+             (Eq 0 (Read w8 4 incoming can frame_20)))
+         (Eq false (Eq 512 N20))
+         (Eq false (Eq 513 N20))
+         (Eq false (Eq 256 N20))
+         (Eq false (Eq 257 N20))
+         (Eq false (Eq 259 N20))
+         (Eq false
+             (Eq 258
+                 N21:(ReadLSB w32 0 incoming can frame_21)))
+         (Eq false (Eq 0 N21))
+         (Eq false
+             (Eq 0 (Read w8 4 incoming can frame_21)))
+         (Eq false (Eq 512 N21))
+         (Eq false (Eq 513 N21))
+         (Eq false (Eq 256 N21))
+         (Eq false (Eq 257 N21))
+         (Eq false (Eq 259 N21))
+         (Eq false
+             (Eq 258
+                 N22:(ReadLSB w32 0 incoming can frame_22)))
+         (Eq false (Eq 0 N22))
+         (Eq false
+             (Eq 0 (Read w8 4 incoming can frame_22)))
+         (Eq false (Eq 512 N22))
+         (Eq false (Eq 513 N22))
+         (Eq false (Eq 256 N22))
+         (Eq false (Eq 257 N22))
+         (Eq false (Eq 259 N22))
+         (Eq false
+             (Eq 258
+                 N23:(ReadLSB w32 0 incoming can frame_23)))
+         (Eq false (Eq 0 N23))
+         (Eq false
+             (Eq 0 (Read w8 4 incoming can frame_23)))
+         (Eq false (Eq 512 N23))
+         (Eq false (Eq 513 N23))
+         (Eq false (Eq 256 N23))
+         (Eq false (Eq 257 N23))
+         (Eq false (Eq 259 N23))
+         (Eq false
+             (Eq 258
+                 N24:(ReadLSB w32 0 incoming can frame_24)))
+         (Eq false (Eq 0 N24))
+         (Eq false
+             (Eq 0 (Read w8 4 incoming can frame_24)))
+         (Eq false (Eq 512 N24))
+         (Eq false (Eq 513 N24))
+         (Eq false (Eq 256 N24))
+         (Eq false (Eq 257 N24))
+         (Eq false (Eq 259 N24))
+         (Eq false
+             (Eq 258
+                 N25:(ReadLSB w32 0 incoming can frame_25)))
+         (Eq false (Eq 0 N25))
+         (Eq false
+             (Eq 0 (Read w8 4 incoming can frame_25)))
+         (Eq false (Eq 512 N25))
+         (Eq false (Eq 513 N25))
+         (Eq false (Eq 256 N25))
+         (Eq false (Eq 257 N25))
+         (Eq false (Eq 259 N25))
+         (Eq false
+             (Eq 258
+                 N26:(ReadLSB w32 0 incoming can frame_26)))
+         (Eq false (Eq 0 N26))
+         (Eq false
+             (Eq 0 (Read w8 4 incoming can frame_26)))
+         (Eq false (Eq 512 N26))
+         (Eq false (Eq 513 N26))
+         (Eq false (Eq 256 N26))
+         (Eq false (Eq 257 N26))
+         (Eq false (Eq 259 N26))
+         (Eq false
+             (Eq 0 (Read w8 4 incoming can frame_27)))
+         (Eq 257
+             (ReadLSB w32 0 incoming can frame_27))
+         (Eq 2
+             (And w8 N27:(Read w8 8 incoming can frame_27) 63))
+         (Eq 2
+             (LShr w32 (ZExt w32 N27) 6))
+         (Eq false
+             (Slt 2147483647
+                  N28:(Add w64 18446744073709551615
+                               (SExt w64 (Extract w32 0 (UDiv w64 (Extract w64 0 (ZExt w128 (ReadLSB w64 0 time_7)))
+                                                                  1000000))))))
+         (Eq false (Slt N28 18446744071562067968))
+         (Eq false
+             (Eq 0
+                 (And w32 (ZExt w32 (ReadLSB w24 9 incoming can frame_27))
+                          4)))
+         (Eq 0
+             (ReadLSB w32 0 incoming can frame_28))
+         (Eq 8 (Read w8 4 incoming can frame_28))
+         (Eq 0 (Read w8 12 incoming can frame_28))
+         (Eq 0 (Read w8 13 incoming can frame_28))
+         (Eq 0 (Read w8 14 incoming can frame_28))
+         (Eq 0 (Read w8 15 incoming can frame_28))
+         (Ult 4294967295
+              (Mul w64 1000000
+                       (ZExt w64 (ReadLSB w32 8 incoming can frame_28))))]
+        false)

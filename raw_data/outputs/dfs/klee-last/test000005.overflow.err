@@ -1,0 +1,8 @@
+Error: overflow on unsigned addition
+File: /home/horenmar/thesis-setup-stable/macan/build/klee/macan/src/cryptlib.c
+Line: 165
+assembly.ll line: 2307
+Stack: 
+	#000002307 in macan_check_cmac (ctx=32924416, cmac4=36507676, fill_time=35836608) at /home/horenmar/thesis-setup-stable/macan/build/klee/macan/src/cryptlib.c:165
+	#100001450 in can_rx_cb (loop=0, w=32924536, revents=0) at /home/horenmar/thesis-setup-stable/macan/build/klee/macan/src/macan.c:240
+	#200000446 in main () at /home/horenmar/thesis-setup-stable/macan/build/klee/macan/src/klee/macan_ev.c:98
