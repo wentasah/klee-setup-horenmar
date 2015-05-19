@@ -306,15 +306,17 @@ code and some intrinsics. All memory allocations also have to have concrete
 size.
 
 At the core of KLEE testing is an interpreter loop, selecting a currently open
-state and executing an LLVM instruction using selected state's context. State's
-context is comprised of corresponding registers, stack and heap objects. If the
-instruction does not branch, it is executed as normal, but if the executed
-instruction is a conditional branch instruction, KLEE uses a SAT solver to
-determine whether the condition is provably true or false given current state
-and constraints created along the path taken to reach it, in which case KLEE
-takes the appropriate path. If the conditional branch cannot be proved to be
-either, KLEE creates two new states with added constraints from the branch.
-These two states are then added to priority queue of all open states.
+state. KLEE's state consists of the current values of registers, stack and heap
+objects as represented by expression trees built from LLVM IR operations. The
+interpreter then executes current LLVM IR instruction according to the current
+state. If the instruction does not branch, its execution is straightforward,
+but if the executed instruction is a conditional branch instruction, KLEE uses
+a SAT solver to determine whether the condition is provably true or false given
+current state and constraints created along the path taken to reach it, in
+which case KLEE takes the appropriate path. If the conditional branch cannot be
+proved to be either, KLEE creates two new states with added constraints from
+the branch. These two states are then added to priority queue of all open
+states.
 
 Branches can also be created implicitly, by potentially dangerous operations.
 Every division, pointer dereference and similar instructions create an implicit
@@ -517,9 +519,10 @@ security. However modern vehicles often have at least one remotely accessible
 interfaces and thus there is now a need to have message security as part of the
 communication protocol.
 
-The MaCAN protocol authenticates messages, giving a measure of message security
-and has an advantage in that it builds upon the CAN bus and is backwards
-compatible with already existing deployments of CAN.
+The MaCAN protocol contains both a key exchange protocol and a way of 
+authenticating messages, giving a measure of message security and has an
+advantage in that it builds upon the CAN bus and is backwards compatible with
+already existing deployments of CAN.
 
 MaCAN library\urlnote{https://github.com/CTU-IIG/macan} implements the
 MaCAN protocol for Linux, Infineon Tricore TC1798 and STM32
@@ -566,13 +569,15 @@ been relying on obsolete parts of LLVM's API to link together bitcode files
 resulting from compilation of multiple source files and these were removed, it
 was impossible to compile a multi-file application.
 
+\rfc{FixMe}
+
 To solve this problem I used the WLLVM utility%
 \urlnote{https://github.com/travitch/whole-program-llvm} created by Tristan
-Ravitch. It works by using a compiler able to emit both normal object files
-and LLVM bitcode, generating both and then saving bitcode into the normal
+Ravitch. WLLVM works by using a compiler capable of emitting both normal object
+files and the LLVM bitcode, generating both and saving bitcode into normal
 object file. During linking the bitcode sections are also linked together and
-can then be extracted from the final binary, resulting in working, complete
-bitcode file for KLEE~\cite[wllvm-working].
+the final bitcode program can then be extracted from resulting
+binary~\cite[wllvm-working]. KLEE can then run the bitcode program.
 
 This worked, but only for generating binaries without integer overflow checking
 enabled. Enabling integer overflow checking via command line arguments, as if
