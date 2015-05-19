@@ -613,20 +613,6 @@ small modifications to the original library source in the form of conditional
 compilation and create a dummy MaCAN node application, to create a valid
 execution entry point for KLEE.
 
-Figure~\ref[diffstat] shows overall statistics of changes during my work
-in the MaCAN repository, minus boilerplate files of MaCAN's build system.
-Figure~\ref[macan-ev-loop] shows dummy event loop used to invoke the MaCAN
-library, Figure~\ref[macan-klee-hw] shows my implementation of MaCAN's platform
-hardware specific functionality and Figure~\ref[macan-klee-crypto] shows my
-implementation of MaCAN's platform specific cryptographic functionality.
-Figure~\ref[macan-crypto-patch] shows patch that was needed in the general
-MaCAN implementation of "cryptlib.c" (I also removed static linkage from
-function serving as entry point for CAN frames in "macan.c").
-
-All my modifications are publicly available as a fork of the original project%
-\urlnote{https://github.com/horenmar/macan/tree/klee} as well as on the DVD
-accompanying this thesis (see Appendix C for more detail).
-
 \midinsert \clabel[diffstat]{Statistics of my work on MaCAN library}
 \begtt
  build/klee/Makefile.omk        |    1 +
@@ -650,11 +636,50 @@ accompanying this thesis (see Appendix C for more detail).
 \caption/f Statistics of my work on MaCAN library.
 \endinsert
 
+Figure~\ref[diffstat] shows overall statistics of changes during my work
+in the MaCAN repository, minus boilerplate files of MaCAN's build system.
+Figure~\ref[macan-ev-loop] shows dummy event loop used to invoke the MaCAN
+library, Figure~\ref[macan-klee-hw] shows my implementation of MaCAN's platform
+hardware specific functionality and Figure~\ref[macan-klee-crypto] shows my
+implementation of MaCAN's platform specific cryptographic functionality.
+
+\midinsert \clabel[macan-rx-cb]{{\tt Listing of CAN receive callback}}
+\begtt
+void
+can_rx_cb(macan_ev_loop *loop, macan_ev_can *w, int revents){
+    (void)loop; (void)revents; /* suppress warnings */
+    struct macan_ctx *ctx = w->data;
+    struct can_frame cf;
+
+    while (macan_read(ctx, &cf))
+        macan_process_frame(ctx, &cf);
+}
+\endtt
+\caption/f {\tt Listing of CAN receive callback.}
+\endinsert
+
+As can be seen in Figure~\ref[macan-ev-loop], the testing harness consists of
+a loop called three times, where it each time goes through all registered
+timers (which for the test program means calling the ``housekeeping'' timer,
+that is responsible for renewing expired keys) and then calls the MaCAN library
+entry point for received messages, "can_rx_cb". As seen in
+Figure~\ref[macan-rx-cb], this callback loops while there are current messages
+and as Figure~\ref[macan-klee-hw] shows, 10 messages can be read in a row. This
+means that every path through the program found by KLEE has read 30 messages.
+
+Figure~\ref[macan-crypto-patch] shows patch that was needed in the general
+MaCAN implementation of "cryptlib.c" (I also removed static linkage from
+function serving as entry point for CAN frames in "macan.c").
+
+All my modifications are publicly available as a fork of the original project%
+\urlnote{https://github.com/horenmar/macan/tree/klee} as well as on the DVD
+accompanying this thesis (see Appendix C for more detail).
+
 \midinsert \clabel[macan-ev-loop]{Listing of KLEE's event loop for testing}
 \begtt
 bool
 macan_ev_run(macan_ev_loop *loop){
-       for (int i = 0; i < HOW_MANY_ITERATIONS; ++i){
+       for (int i = 0; i < 3; ++i){
                uint64_t now = read_time();
 
                for (macan_ev_timer *t = loop->timers; t; t = t->next) {
