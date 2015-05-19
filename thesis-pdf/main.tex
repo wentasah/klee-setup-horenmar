@@ -527,11 +527,17 @@ communication protocol.
 The MaCAN protocol contains both a key exchange protocol and a way of 
 authenticating messages, giving a measure of message security and has an
 advantage in that it builds upon the CAN bus and is backwards compatible with
-already existing deployments of CAN.
+already existing deployments of CAN. Because of these backward compatibility
+constraints, such as only 8 byte payload in a single CAN frame, MaCAN protocol
+cannot use more than 32 bits for its Message Authentication codes and thus the
+cryptographic security is weaker than would be recommended in other domains.
+However, this is mitigated by other factors, such as short lived keys and the
+relative slowness of CAN network limiting rate at which an attacker can make
+guesses.~\cite[MaCAN-paper]
 
-MaCAN library\urlnote{https://github.com/CTU-IIG/macan} implements the
+The MaCAN library\urlnote{https://github.com/CTU-IIG/macan} implements the
 MaCAN protocol for Linux, Infineon Tricore TC1798 and STM32
-architectures~\cite[MaCAN-paper]. It was designed to be cross-platform by only
+architectures~\cite[MaCAN-thesis]. It was designed to be cross-platform by only
 having single, platform-independent dependency, cryptographic library Nettle%
 \urlnote{http://www.lysator.liu.se/~nisse/nettle/} and by separating platform
 dependent code from bulk of the library.
