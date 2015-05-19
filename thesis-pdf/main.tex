@@ -624,8 +624,8 @@ small modifications to the original library source in the form of conditional
 compilation and create a dummy MaCAN node application, to create a valid
 execution entry point for KLEE.
 
-Figure~\ref[diffstat] shows "diffstat" results of my work in the MaCAN
-repository, minus boilerplate files of MaCAN's build system.
+Figure~\ref[diffstat] shows overall statistics of changes during my work
+in the MaCAN repository, minus boilerplate files of MaCAN's build system.
 Figure~\ref[macan-ev-loop] shows dummy event loop used to invoke the MaCAN
 library, Figure~\ref[macan-klee-hw] shows my implementation of MaCAN's platform
 hardware specific functionality and Figure~\ref[macan-klee-crypto] shows my
@@ -638,7 +638,7 @@ All my modifications are publicly available as a fork of the original project%
 \urlnote{https://github.com/horenmar/macan/tree/klee} as well as on the DVD
 accompanying this thesis (see Appendix C for more detail).
 
-\midinsert \clabel[diffstat]{{\tt diffstat} of my work on MaCAN library}
+\midinsert \clabel[diffstat]{Statistics of my work on MaCAN library}
 \begtt
  build/klee/Makefile.omk        |    1 +
  build/klee/clear_early.sh      |   12 +
@@ -658,7 +658,7 @@ accompanying this thesis (see Appendix C for more detail).
  macan/src/klee/macan_ev.h      |   82 +++
  macan/src/macan.c              |    6 +-
 \endtt
-\caption/f {\tt diffstat} of my work on MaCAN library.
+\caption/f Statistics of my work on MaCAN library.
 \endinsert
 
 \midinsert \clabel[macan-ev-loop]{Listing of KLEE's event loop for testing}
