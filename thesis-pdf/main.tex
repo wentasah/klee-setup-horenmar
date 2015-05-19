@@ -950,24 +950,31 @@ overflow that currently doesn't cause bugs, but under different hardware could.
 
 \sec Complexity, limitations, execution time
 
-KLEE's complexity is exponential in both memory (because the number of possible
+As trying to test eMotor has shown, modifying software so it can be tested can
+be difficult if it has weakly abstracted input. This limits the kinds of
+software that can be tested using KLEE, to those with well abstracted inputs,
+which usually means software that was written to be cross-platform. Another
+difficulty in using KLEE to test software has shown itself when I created a
+test program for the MaCAN library. Due to an error I made while configuring
+the library in my test program, I ended up with a false positive results.
+
+Another difficulty when using KLEE to test software is the time it needs to
+test a program. The MaCAN test setup described in previously has been running
+on modestly fast CPU for 5 days without finishing. This is caused by KLEE's
+complexity being exponential in both memory (because the number of possible
 path generally increases exponentially with encountered conditional branches)
 and in CPU time (because it attempts to solve SAT problem at every branching).
+
 The memory complexity can be mitigated at the cost of further increasing
 runtime, by running KLEE with search strategy set to either Depth First Search
 (DFS) or Iteratively Deepening Depth First Search (IDDFS) (which is only
 experimentally supported), but there is no way to reduce the CPU time
-complexity.
+complexity. However, KLEE does not have to finish testing a program completely
+to find bugs and to output possible paths through the tested program.
 
-\rfc{Update time and test cases after finishing}
+
 \rfc{Insert ``If the task has not been killed, it is still runnin'' joke
 somewhere.}
-This has shown itself while we were using KLEE to test the MaCAN library, when
-after 2 days, KLEE still has not finished executing the test program. It is
-also somewhat mitigated by the fact that KLEE does not have to finish running
-completely to find bugs and/or to start outputting possible paths through the
-program. If I have not modified the MaCAN library to bypass cryptography, the
-execution would be completely intractable.
 
 \sec KLEE fitness for purpose
 
