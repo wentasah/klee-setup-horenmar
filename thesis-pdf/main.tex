@@ -277,6 +277,14 @@ al.~\cite[klee-paper]. It is built on the LLVM compiler infrastructure, using
 its Clang front-end to convert C code to LLVM intermediate representation (IR),
 which it then works on.
 
+Officially KLEE still has LLVM-2.9 and LLVM-GCC as its dependencies, which are
+currently almost 4 years outdated. Since then there was significant amount of
+work done to allow KLEE to work with newer version of the LLVM toolchain and
+Clang instead of LLVM-GCC, but the only officially supported toolchain is
+LLVM-2.9 and LLVM-GCC. The officially supported version of Simple Theorem
+Prover (STP) SAT solver is {\em extremely} outdated as well. Later chapter
+covers what did I have to do to be able to use it for testing.
+
 KLEE can find and show paths that lead to any of
 \begitems
 * Assertion violation
@@ -286,9 +294,10 @@ KLEE can find and show paths that lead to any of
 * Integer overshift (shifting an integer by more than its size)
 * Call to "abort()"
 \enditems
+and recently was also extended to handle integer overflow checking, as detailed
+in later section.
 
-Recently, KLEE was also extended to handle integer overflow checking, as
-detailed in later section.
+
 
 \secc Principle of operation
 
@@ -327,13 +336,11 @@ can, it terminates the state and generates test case leading to to it.
 This interpreter loop and state expansion continue while there are open states
 in its priority queue or while a user defined timeout has not expired.
 
-\rfc{Should I also describe internal optimizations?}
-
 \secc KLEE integer overflow checking
 
 When I started working with KLEE, it was unable to detect integer overflow. We
 decided to add support for checking integer overflow, but at the same time
-Dariz Luca had implemented it as well and since his work has been 
+Dariz Luca had implemented it as well and since his work has been
 mainlined~\cite[overflow-merge], I will talk about his implementation.
 
 This capability relies on Clang's support for Undefined Behavior Sanitizer
@@ -352,7 +359,7 @@ This is caused by KLEE's reliance on Clang's intrinsics.
 This subsection explains basic usage of KLEE. We will go through running KLEE
 on two toy single file programs, "sum.c" and "memcpyassert.c", whose listings
 are in Figure~\ref[sum-listing] and Figure~\ref[memcpyassert-listing]
-respectively. We wil use Clang-3.3 as our LLVM IR compiler.
+respectively. We will use Clang-3.3 as our LLVM IR compiler.
 
 \midinsert \clabel[sum-listing]{{\tt sum.c} listing}
 \begtt
@@ -562,40 +569,24 @@ Virtually all my work is also available online, in a GitHub repository%
 
 \sec KLEE preparation
 
-When I started working with the KLEE tool, it had LLVM-2.9 and LLVM-GCC as its
-dependencies, which at the time were about 3 years outdated. Since then there
-was significant work done to allow KLEE to work with newer version of the LLVM
-toolchain and Clang instead of LLVM-GCC, but as of the time of writing, it 
-officially supports only LLVM-2.9 coupled with LLVM-GCC~\cite[llvm-version].
-It was also dependent on {\em extremely} outdated version of the Simple Theorem
-Prover (STP) SAT solver.
+Because KLEE's overflow checking relies on Clang's UndefinedBehaviorSanitizer,
+I had to find a way of compiling and linking together binary from multiple
+source files using Clang. Because the bitcode linking facilities in LLVM have
+been deleted between the 2.9 (officially supported by KLEE) version and 3.3
+(first version with ubsan support) version, I used the Whole program LLVM%
+\urlnote{https://github.com/travitch/whole-program-llvm} (WLLVM) utility
+created by Tristan Ravitch.
 
-This has lead to some initial trouble, because LLVM-2.9 does not compile
-against newer versions of glibc and both STP and KLEE's POSIX modelling layer
-have some problems because of their age as well. Together with desire to use
-Clang's IntegerOverflowSanitizer, this lead me to use LLVM-3.4 toolchain and
-while doing so enabled testing for integer overflows, it also led to trouble
-with compiling programs spanning more than single source file. Since KLEE has
-been relying on obsolete parts of LLVM's API to link together bitcode files
-resulting from compilation of multiple source files and these were removed, it
-was impossible to compile a multi-file application.
-
-\rfc{FixMe}
-
-To solve this problem I used the WLLVM utility%
-\urlnote{https://github.com/travitch/whole-program-llvm} created by Tristan
-Ravitch. WLLVM works by using a compiler capable of emitting both normal object
+WLLVM works by using a compiler capable of emitting both normal object
 files and the LLVM bitcode, generating both and saving bitcode into normal
 object file. During linking the bitcode sections are also linked together and
 the final bitcode program can then be extracted from resulting
-binary~\cite[wllvm-working]. KLEE can then run the bitcode program.
+binary~\cite[wllvm-working] and run in KLEE.
 
-This worked, but only for generating binaries without integer overflow checking
-enabled. Enabling integer overflow checking via command line arguments, as if
-working with normal compiler has led to link time error%
-\fnote{Approximately 200 lines long}, which was solved by using a hack provided
-on the KLEE mailing list~\cite[wllvm-patch]. Afterwards I was able to compile
-multi-file application into bitcode with integer overflow checking enabled.
+Furthermore, to enable integer overflow checking I had to change how WLLVM
+calls Clang, which means that whether WLLVM compiles code with overflow checking
+enabled or disabled is hardcoded into the utility itself. The patch itself is
+from the KLEE mailing list~\cite[wllvm-patch].
 
 \sec eMotor modifications
 
@@ -603,8 +594,6 @@ Because the eMotor's access to HW registers is weakly abstracted, modifying
 eMotor to support symbolic execution has proven to be hard. This, combined with
 time issues and the fact the project for which we worked on eMotor has ended,
 led us to give up on testing eMotor.
-
-\rfc{Write more about this?}
 
 \sec MaCAN modifications
 
