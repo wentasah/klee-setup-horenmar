@@ -3,6 +3,7 @@
 *.synctex.gz
 *.lbr
 *.pdf
+main.log
 
 # Compiled Object files
 *.slo
