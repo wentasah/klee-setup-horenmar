@@ -845,31 +845,39 @@ Figure~\ref[ub-fix]~\cite[MaCAN-UB-fix]. The new version can still overflow
 (in fact it has to overflow to work properly), but the new overflow is well
 defined from the language point of view and is intended (and thus benign).
 
-
 Another non-benign overflow was found in function that receives time from the
-MaCAN network and attempts to adjust local time to keep it in sync. It attempts
-to calculate time in microseconds and place the result into a 64 bit sized
-variable, which would be large enough, but the multiplication itself is
-performed with 32 bits of precision and the results will overflow after approx.
-68 minutes.
+MaCAN network and attempts to adjust local time to keep it in sync. As can be
+seen in Figure~\ref[over-code] it calculates time in microseconds and places
+the result into 64 bit unsigned integer which is large enough, but the
+arithmetic itself is done with 32 bits of precision and leads to erroneous
+results.
+
+\midinsert \clabel[over-code]{Unsigned overflow causing bug}
 \begtt
 uint32_t time_ts;
 uint64_t time_ts_us;
 ...
 time_ts_us = time_ts * ctx->config->time_div;
 \endtt
+\caption/f Unsigned overflow causing bug. 
+\endinsert
+
 This bug was also found independently by Michal Sojka when he was presenting
-MaCAN at an exhibition and this was the implemented fix:
+MaCAN at an exhibition and Figure~\ref[over-fix] shows the fix already
+implemented in mainline. Casting "time_ts"'s type to 64 bit unsigned integer
+leads to the multiplication being performed with 64 bits of precision, which
+means that overflow can still potentially happen, but only if the MaCAN network
+in question is online for more than 500000 years.
+
+\midinsert \clabel[over-fix]{The fix for unsigned overflow bug}
 \begtt
 uint32_t time_ts;
 uint64_t time_ts_us;
 ...
 time_ts_us = (uint64_t)time_ts * ctx->config->time_div;
 \endtt
-Changing "time_ts"'s type to 64 bit unsigned integer caused the multiplication
-to be performed with 64 bits of precision, changing the overflow from
-bug-causing to benign (64 bit integer has enough precision to represent more
-than 500000 years in microseconds).
+\caption/f The fix for unsigned overflow bug.
+\endinsert
 
 Some potential overflows KLEE found were classified as benign. This either
 meant that they only occurred within 64 bit arithmetic and thus could happen
