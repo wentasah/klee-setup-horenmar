@@ -1,13 +1,8 @@
 # Tex build artifacts
-*.log
 *.ref
 *.synctex.gz
 *.lbr
 *.pdf
-
-# KLEE run artifacts
-klee-last
-klee-out-*
 
 # Compiled Object files
 *.slo
