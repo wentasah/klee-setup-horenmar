@@ -1080,7 +1080,7 @@ Table~\ref[klee-table] shows an overview of bugs found, where were they found
 and their classification. I added a ``dormant'' classification to label
 overflow that currently doesn't cause bugs, but under different hardware could.
 
-\midinsert \clabel[klee-table]{Summary of found bugs}
+\midinsert \clabel[klee-table]{Overview of found overflows}
 \ctable{lrl}{
 \hfil File & Line & Classification \crl \tskip4pt
     cryptlib.c & 165 & causing undefined behaviour \cr
@@ -1092,7 +1092,7 @@ overflow that currently doesn't cause bugs, but under different hardware could.
     macan\_ev.c & 68 & benign \cr
     macan\_ev.c & 94 & dormant \cr
 }
-\caption/t Summary of found bugs.
+\caption/t Overview of found overflows.
 \endinsert
 
 \sec Complexity, limitations, execution time
