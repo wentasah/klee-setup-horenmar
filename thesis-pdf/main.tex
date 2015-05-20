@@ -60,12 +60,6 @@ vysokoškolských závěrečných prací.
 
 \chap Introduction
 
-Words...
-
-While its original purpose was to test general purpose programs, we decided
-to test its fitness for testing real-time safety critical software, because
-such software's number of paths through code is relatively small.
-
 Security used to be thought of as completely orthogonal to safety-critical
 software, because such software was expected to be completely isolated from
 outside world, and if networked, the network was thought to be completely
@@ -75,19 +69,38 @@ Model S electric car by hacking a trivially brute-forceable
 code~\cite[tesla-security].
 
 While no tool can prevent security vulnerabilities caused by naive
-authentication scheme, automatic testing can find security implementation
+authentication scheme, automatic testing can find security {\em implementation}
 bugs which could potentially allow an attack to bypass security measures that
-are in place. Thus, in this thesis I attempt to determine whether a general
-purpose symbolic execution tool, KLEE, can help find these bugs in existing
+are in place. Thus there is a need to test new methods of verification of
 real-time safety-critical software.
 
-\sec Motivation
+In this thesis I attempt to determine whether a general purpose symbolic
+execution tool, KLEE, can help find bugs in existing real-time safety-critical
+software. While its original purpose was to test general purpose programs, we
+decided to test its fitness for testing real-time safety critical software,
+because such software's number of paths through code is relatively small, which
+mitigates the main downside of symbolic execution, its exponential complexity
+in number of branches in the executed program.
 
-\sec What is the goal
+The rest of this work is organized as follows. Second chapter, Background and
+Related Technologies introduces basic information about undefined behaviour,
+safety-critical software, symbolic execution and already existing tools using
+it, the tool I am testing in this thesis and the two pieces of safety-critical
+software we will use to evaluate KLEE's fitness for purpose. Third chapter,
+Toolchain and case study preparation, covers work performed in the course of
+writing my thesis. It covers work done on KLEE, eMotor software and the MaCAN
+library.
 
-\sec Structure
+Fourth chapter, Evaluation, covers results, such as number of bugs found using
+KLEE, their severity, time it took to find them and whether KLEE will be useful
+tool for testing safety-critical real-time software going forward. The final
+chapter, Conclusion, recapitulates our findings and recommendations.
 
-\rfc{The rest is organized as follows... bla bla bla}
+There are also 4 appendices. Appendix A is the specification for this thesis,
+Appendix B is glossary of terms used in this thesis, Appendix C lists contents
+of the enclosed DVD and Appendix D contains detailed data and results from the
+testing.
+
 
 
 
