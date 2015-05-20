@@ -544,6 +544,22 @@ object    1: data: 1073741824
 \caption/f Sample listing of ktest-tool output
 \endinsert
 
+KLEE also writes out runtime statistics, including branch coverage, LLVM IR
+instruction coverage, total time spent running, and so on.
+Figure~\ref[klee-example-stats] shows an example of usage and output.
+
+\midinsert \clabel[klee-example-stats]{Sample listing of klee-stats output}
+\begtt
+/.../examples$ klee-stats klee-last
+------------------------------------------------------------------------
+|  Path   |  Instrs|  Time(s)|  ICov(%)|  BCov(%)|  ICount|  TSolver(%)|
+------------------------------------------------------------------------
+|klee-last|     218|     0.23|    29.59|    12.50|     169|       97.19|
+------------------------------------------------------------------------
+\endtt
+\caption/f Sample listing of klee-stats output.
+\endinsert
+
 \sec Real-Time safety-critical applications
 
 This section covers the two pieces of real-time safety-critical software we
