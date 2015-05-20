@@ -1053,14 +1053,18 @@ somewhere.}
 \sec KLEE fitness for purpose
 
 Overall we found KLEE fit for purpose, but with reservation. It has helped to
-find two previously unfound bug and if it was used sooner, it would have found
-another one. However, both of these could have been found by using other tools,
-with less run time and less time investment.
+find two previously unknown bugs in the MaCAN library and another one that has
+been fixed found and fixed after I forked MaCAN for testing. It provides sound
+analysis, which means that it doesn't provide false negatives, at the cost of
+exponential time and space complexity and specific requirements on the tested
+software.
 
-\rfc{Rewrite this.}
+For software that resembles eMotor in that it has weakly abstracted inputs,
+the time investment needed to modify it so that it can be tested with KLEE is
+probably not worth the results and many of KLEE's benefits can be found from
+using other tools, such as STACK~\ref[MIT-ub], which does not need neither
+the time investment for running, nor the scope of modifications of using KLEE.
 
-We have found KLEE to be useful for specific kinds of software, one that
-contains assertions and does not have many branches.
 
 
 
