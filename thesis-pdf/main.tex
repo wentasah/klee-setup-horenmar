@@ -976,6 +976,15 @@ somewhere.}
 
 \sec KLEE fitness for purpose
 
+Overall we found KLEE fit for purpose, but with reservation. It has helped to
+find two previously unfound bug and if it was used sooner, it would have found
+another one. However, both of these could have been found by using other tools,
+with less run time and less time investment.
+
+\rfc{Cite that MIT ub tool}
+
+We have found KLEE to be useful for specific kinds of software, one that
+contains assertions and does not have many branches.
 
 
 
@@ -986,17 +995,28 @@ symbolic execution tool KLEE. Because of KLEE's limitations and requirements, I
 could only proceed with testing of the MaCAN library and had to abandon testing
 eMotor.
 
-The results from testing the MaCAN library are mixed. On one hand, KLEE has
-helped found a critical bug, confirmed a found bug and helped find a currently
-dormant bug in the MaCAN implementation of the library. On the other, after
-running for more than 5 days, KLEE has not completely finished running the
-test.
+The results from testing the MaCAN library are mixed. After running for more
+than 5 days, KLEE has found a critical bug, found already fixed bug again 
+and helped to find a currently dormant bug in the MaCAN implementation of the
+library. It will also be added as a way to test the library going forward.
+
+On the other hand, even after running for more than 5 days, KLEE has only
+covered approx. 60\% of all branches and 77\% of all LLVM IR instructions
+in the test program. Because the progress of KLEE's test coverage is non-linear
+and can in general be expected to be logarithmic, I predict that even after
+another 5 days KLEE would not have finished running the MaCAN test program.
 
 Thus we conclude that KLEE can be a valuable tool to use for verification of
 real-time safety-critical software, but the software has to be designed from
 the start with using KLEE in mind. This means liberal use of assertions,
 minimizing complexity of branches, well abstracted inputs and documented parts
 that are intractable for symbolic execution, such as cryptographic primitives.
+
+We do not recommend using KLEE if the user is only interested in checks against
+undefined behaviour, as there are better tools for testing against these, such
+as the STACK tool~\cite[MIT-ub]. STACK does not provide sound analysis, that
+means it can report false negative, but it is able to analyse a program inside
+reasonable time span.
 
 \bibchap
 \usebib/c (simple) mybase
