@@ -1038,11 +1038,14 @@ time_ts_us = (uint64_t)time_ts * ctx->config->time_div;
 \endinsert
 
 The other non-benign overflow is in the event-loop mechanism, in timer expiry
-tracking. It is currently dormant because none of the hardware implementations
-trigger it, but the code in Figure~\ref[dormant-bug] could cause errors in the
-future, unless fixed. The bug lies in the expression
-"t->expire_us = now + t->repeat_us" which can overflow and the timer then will
-remain expired until MaCAN system time overflows as well.
+tracking. It is currently dormant because MaCAN system time, stored in 64 bit
+unsigned integer "now", is platform specific and could theoretically overflow.
+All current platform implementation start system time at 0, but if a future
+platform started system time at different value, it could trigger the overflow in
+Figure~\ref[dormant-bug] and the overflow could cause errors in the future,
+unless fixed. The bug lies in the expression
+"t->expire_us = now + t->repeat_us" whos right-hand side can overflow and the
+timer then will remain expired until MaCAN system time ("now") overflows as well.
 
 \midinsert \clabel[dormant-bug]{Dormant bug in the event loop}
 \begtt
