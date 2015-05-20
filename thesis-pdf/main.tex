@@ -87,7 +87,7 @@ real-time safety-critical software.
 
 \sec Structure
 
-\sec Following text
+\rfc{The rest is organized as follows... bla bla bla}
 
 
 
@@ -970,7 +970,20 @@ experimentally supported), but there is no way to reduce the CPU time
 complexity. However, KLEE does not have to finish testing a program completely
 to find bugs and to output possible paths through the tested program.
 
+\midinsert \clabel[klee-stats]{KLEE's runtime statistics}
+\begtt
+------------------------------------------------------------------------
+|  Path   |  Instrs|  Time(s)|  ICov(%)|  BCov(%)|  ICount|  TSolver(%)|
+------------------------------------------------------------------------
+|klee-last|52135650|302651.30|    77.61|    60.76|    1697|       99.39|
+------------------------------------------------------------------------
+\endtt
+\caption/f KLEE's runtime statistics.
+\endinsert
 
+\rfc{How many messages were sent versus how many are actually needed}
+\rfc{Work KLEE's runtime statistics into the section.}
+\rfc{Note that it created xy states?}
 \rfc{Insert ``If the task has not been killed, it is still runnin'' joke
 somewhere.}
 
@@ -981,7 +994,7 @@ find two previously unfound bug and if it was used sooner, it would have found
 another one. However, both of these could have been found by using other tools,
 with less run time and less time investment.
 
-\rfc{Cite that MIT ub tool}
+\rfc{Rewrite this.}
 
 We have found KLEE to be useful for specific kinds of software, one that
 contains assertions and does not have many branches.
