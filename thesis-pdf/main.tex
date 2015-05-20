@@ -757,7 +757,6 @@ bool macan_read(struct macan_ctx* ctx, struct can_frame* cf){
        return counter != 0;
 }
 
-//For the klee false target, this is a noop.
 void macan_target_init(struct macan_ctx* ctx){
        (void)ctx;
 }
@@ -770,6 +769,24 @@ bool macan_send(struct macan_ctx* ctx, const struct can_frame* cf){
 \endtt
 \caption/f Overview of MaCAN's KLEE target implementation. {\tt macan.c}
 \endinsert
+
+Figure~\ref[1signal] shows messages sent in the MaCAN network when it first
+establishes itself. Because CAN messages received by the node are symbolic
+in our testing, we are only interested in messages marked with ">>". There
+are placeholder number of messages that we need to simulate a node startup,
+and all messages afterwards are a payload.
+
+We have sent a total of 30 messages, which means that our node has received
+enough messages to perform initial initialization and placeholder number
+messages extra. This means that our testing of the node could exercise all
+paths through the MaCAN library, except the cryptographic ones.
+
+\midinsert \clabel[1signal]{List of initialization messages on MaCAN network}
+\begtt
+\endtt
+\caption/f List of initialization messages on MaCAN network.
+\endinsert
+
 
 
 
