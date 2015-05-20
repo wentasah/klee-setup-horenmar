@@ -597,7 +597,7 @@ linker to be compiled.
 
 Controller Area Network (CAN) bus is standard communication bus for vehicles,
 designed by Bosch~\cite[bosch-can]. The CAN protocol is message based and there
-are two different message formats, base frame format and extended frame format.
+are two different message formats, standard frame format and extended frame format.
 Because it was usually assumed that attackers do not have access to the
 network inside vehicle, CAN was designed for deterministic real-time
 communication, reliability and robustness and no consideration was given to
@@ -605,8 +605,8 @@ security. However modern vehicles often have at least one remotely accessible
 interfaces and thus there is now a need to have message security as part of the
 communication protocol.
 
-The MaCAN protocol contains both a key exchange protocol and a way of 
-authenticating messages, giving a measure of message security and has an
+The MaCAN protocol contains both a key exchange protocol and a means of 
+message authentication, giving a measure of message security and has an
 advantage in that it builds upon the CAN bus and is backwards compatible with
 already existing deployments of CAN. Because of these backward compatibility
 constraints, such as only 8 byte payload in a single CAN frame, MaCAN protocol
