@@ -772,17 +772,52 @@ bool macan_send(struct macan_ctx* ctx, const struct can_frame* cf){
 
 Figure~\ref[1signal] shows messages sent in the MaCAN network when it first
 establishes itself. Because CAN messages received by the node are symbolic
-in our testing, we are only interested in messages marked with ">>". There
-are placeholder number of messages that we need to simulate a node startup,
-and all messages afterwards are a payload.
+in our testing, we are only interested in messages the node receives
+(they are marked with ">>" in the figure). There are 13 messages that we need
+to receive to simulate a node startup, and all messages afterwards are a payload.
 
-We have sent a total of 30 messages, which means that our node has received
-enough messages to perform initial initialization and placeholder number
-messages extra. This means that our testing of the node could exercise all
-paths through the MaCAN library, except the cryptographic ones.
+As I already mentioned, my test harness forces the MaCAN library to receive a
+total of 30 messages, meaning that our node receives enough messages to perform
+initial initialization and then 17 messages extra. This means that our testing
+harness could exercise all paths through the MaCAN library, except those that
+make use of cryptographic primitives.
 
 \midinsert \clabel[1signal]{List of initialization messages on MaCAN network}
 \begtt
+  0.007 40029DCA42EE41EA crypt TS->KS(me) (1->0): challenge fwd_id=S
+  0.007 4003653631FB679F crypt TS->KS(me) (1->0): challenge fwd_id=R
+  0.007 00000000         time 0
+  0.007 4001FB8D4CB204DD crypt S->KS(me) (2->0): challenge fwd_id=TS
+  0.007 4003CBFC5E431EEB crypt S->KS(me) (2->0): challenge fwd_id=R
+  0.007 81068C7BB634DCB8 crypt KS(me)->TS (0->1): sess_key seq=0 len=6
+  0.007 8116527F367675FE crypt KS(me)->TS (0->1): sess_key seq=1 len=6
+  0.007 8126F2E868371D44 crypt KS(me)->TS (0->1): sess_key seq=2 len=6
+  0.007 81365DA64E2999FE crypt KS(me)->TS (0->1): sess_key seq=3 len=6
+  0.007 814680FEB6BA8926 crypt KS(me)->TS (0->1): sess_key seq=4 len=6
+  0.007 815236F1B6BA8926 crypt KS(me)->TS (0->1): sess_key seq=5 len=2
+>>0.007 0201             crypt KS(me)->S (0->2): req challenge fwd_id=TS
+  0.008 810633B3D3CDFC50 crypt KS(me)->TS (0->1): sess_key seq=0 len=6
+  0.008 8116C2AD9E7A9B20 crypt KS(me)->TS (0->1): sess_key seq=1 len=6
+  0.008 81262D798AF157C3 crypt KS(me)->TS (0->1): sess_key seq=2 len=6
+  0.008 8136EAD1B8033C06 crypt KS(me)->TS (0->1): sess_key seq=3 len=6
+  0.008 8146E89D3BC0985A crypt KS(me)->TS (0->1): sess_key seq=4 len=6
+  0.008 815229A33BC0985A crypt KS(me)->TS (0->1): sess_key seq=5 len=2
+>>0.009 82064E4E5EBA1956 crypt KS(me)->S (0->2): sess_key seq=0 len=6
+>>0.009 8216FC6195514DEF crypt KS(me)->S (0->2): sess_key seq=1 len=6
+>>0.009 822697F3A6F61D43 crypt KS(me)->S (0->2): sess_key seq=2 len=6
+>>0.009 8236DAA3670B3B3A crypt KS(me)->S (0->2): sess_key seq=3 len=6
+>>0.009 8246E56447E117DE crypt KS(me)->S (0->2): sess_key seq=4 len=6
+>>0.009 8252C6FC47E117DE crypt KS(me)->S (0->2): sess_key seq=5 len=2
+  0.009 4100F14494135731 crypt S->TS (2->1): challenge fwd_id=KS(me)
+>>0.010 82062D7CE15B64DA crypt KS(me)->S (0->2): sess_key seq=0 len=6
+>>0.010 8216C27453EBA9AD crypt KS(me)->S (0->2): sess_key seq=1 len=6
+>>0.010 8226344BCF27EAF9 crypt KS(me)->S (0->2): sess_key seq=2 len=6
+>>0.010 8236C1486C993615 crypt KS(me)->S (0->2): sess_key seq=3 len=6
+>>0.010 8246DD2249DF4E4A crypt KS(me)->S (0->2): sess_key seq=4 len=6
+>>0.010 82528F6249DF4E4A crypt KS(me)->S (0->2): sess_key seq=5 len=2
+  0.010 0000000077F739C5 authenticated time 0
+  0.010 81040000BD50C3F9 crypt S->TS (2->1): ack group=[2]
+  0.011 0000000054D0F079 authenticated time 0
 \endtt
 \caption/f List of initialization messages on MaCAN network.
 \endinsert
