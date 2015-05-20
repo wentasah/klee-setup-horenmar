@@ -981,7 +981,22 @@ somewhere.}
 
 \chap Conclusion
 
+I have tried to test two pieces of real-time safety-critical software using the
+symbolic execution tool KLEE. Because of KLEE's limitations and requirements, I
+could only proceed with testing of the MaCAN library and had to abandon testing
+eMotor.
 
+The results from testing the MaCAN library are mixed. On one hand, KLEE has
+helped found a critical bug, confirmed a found bug and helped find a currently
+dormant bug in the MaCAN implementation of the library. On the other, after
+running for more than 5 days, KLEE has not completely finished running the
+test.
+
+Thus we conclude that KLEE can be a valuable tool to use for verification of
+real-time safety-critical software, but the software has to be designed from
+the start with using KLEE in mind. This means liberal use of assertions,
+minimizing complexity of branches, well abstracted inputs and documented parts
+that are intractable for symbolic execution, such as cryptographic primitives.
 
 \bibchap
 \usebib/c (simple) mybase
