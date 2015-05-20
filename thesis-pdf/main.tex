@@ -123,8 +123,39 @@ J.2~\cite[iso-C99]}
 * Evaluating arithmetic expression that would be mathematically undefined
   (e.g. division by zero)
 \enditems
+Modern compilers use undefined behaviour to perform optimizations and code in
+Figure~\ref[ub-sample1] will be transformed into code in
+Figure~\ref[ub-transform1] by such compiler. The reasoning is that since
+a program cannot contain undefined behaviour, and the function dereferences
+"ptr", it cannot be null or the function would invoke undefined behaviour. This
+allows the compiler to remove the conditional branch and error checking, which
+is seen as worthwhile optimization.
+
+\midinsert \clabel[ub-sample1]{Example of undefined behaviour invoking code}
+\begtt
+int foo(int* ptr){
+    int temp = *ptr;
+    if (!ptr){
+        return ERR;
+    }
+    ...
+}
+\endtt
+\caption/f Example of undefined behaviour invoking code.
+\endinsert
+
+\midinsert \clabel[ub-transform1]{Code after compiler transformation}
+\begtt
+int foo(int* ptr){
+    int temp = *ptr;
+    ...
+}
+\endtt
+\caption/f Code after compiler transformation.
+\endinsert
+
 The willingness of compilers to exploit undefined behaviour in code has
-already been documented as causing security bugs in real 
+already been documented as causing security bugs in real
 world~\cite[linux-kernel-vuln], but defined behaviour can lead to bugs as well.
 A common example is unsigned overflow, which is well defined, but often is not
 accounted for and breaks program's logic. 
