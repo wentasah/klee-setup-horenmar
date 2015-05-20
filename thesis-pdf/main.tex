@@ -1042,13 +1042,23 @@ for (macan_ev_timer *t = loop->timers; t; t = t->next) {
 
 The rest of the potential overflows KLEE found were classified as benign. This
 either meant that they only occurred within 64 bit arithmetic and thus could
-happen only theoretically, or they were intended. Two examples of such follow.
+happen only theoretically, or they were intended. Figure~\ref[benign-bugs]
+contains the flagged expressions.
+
+\midinsert \clabel[benign-bugs]{Overview of benign overflows}
 \begtt
-(read_time() + (uint64_t)ctx->time.offs) / ctx->config->time_div;
-\endtt
-\begtt
+return (read_time() + (uint64_t)ctx->time.offs) / ctx->config->time_div;
+
 t->offs = (time_ts_us - read_time());
+
+t->offs = (time_ts_us - t->nonauth_loc);
+
+loc_us = now + t->offs;
+
+w->expire_us = read_time() + w->after_us;
 \endtt
+\caption/f Overview of benign overflows.
+\endinsert
 
 Table~\ref[klee-table] shows an overview of bugs found, where were they found
 and their classification. I added a ``dormant'' classification to label
