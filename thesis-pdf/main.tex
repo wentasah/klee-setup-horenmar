@@ -1299,14 +1299,14 @@ own heuristics for guiding the search in the "covnew" invocation. The
 difference between "dfs10" and "dfs15" is whether the MaCAN hardware
 implementation for KLEE serves 10 received messages in row, or 15.
 
-\midinsert \clabel[klee-runs]{Table of KLEE runs}
+\midinsert \clabel[klee-runs]{Overview of KLEE runs results}
 \ctable{lr}{
 \hfil Type & Number of potential problems found \crl \tskip4pt
     10dfs & 8 \cr
     15dfs & 5 \cr
     covnew & 3 \cr
 }
-\caption/t Table of KLEE runs.
+\caption/t Overview of KLEE runs results.
 \endinsert
 
 Table~\ref[klee-runs] shows an overview of KLEE runs and number of potential
@@ -1341,8 +1341,10 @@ there are currently known bugs in KLEE's memory management and it might be
 related. This is supported by fact that while using the DFS search strategy,
 KLEE's memory consumption is a lot smaller and KLEE executes normally.
 
-Taking these facts into regard together with results of testing from Chapter 4,
-I came to recommend using KLEE command line invocation from Figure~\ref[klee-cmd].
+Taking these facts into account, together with overview in
+Table~\ref[klee-runs-bugs] and test results from Chapter 4,
+I have to recommend using KLEE command line invocation from
+Figure~\ref[klee-cmd].
 
 \midinsert \clabel[klee-cmd]{KLEE command line invocation}
 \begtt
