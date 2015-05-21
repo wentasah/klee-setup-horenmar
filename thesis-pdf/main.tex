@@ -1118,10 +1118,16 @@ The memory complexity can be mitigated at the cost of further increasing
 runtime, by running KLEE with search strategy set to either Depth First Search
 (DFS) or Iteratively Deepening Depth First Search (IDDFS) (which is only
 experimentally supported), but there is no way to reduce the CPU time
-complexity. However, KLEE does not have to finish testing a program completely
-to find bugs and to output possible paths through the tested program.
+complexity. Even though KLEE does not have to finish testing a program
+completely to find bugs, safety critical software demands complete verification
+(or at least as complete as possible).
+
 Figure~\ref[klee-stats] shows runtime statistics from KLEE for test using the
-DFS search strategy.
+DFS search strategy. "Instrs" is number of executed LLVM IR instructions,
+"Time" is total time spent running, "ICov" is percentage of total instructions
+covered during testing, "BCov" is percentage of branches covered, "ICount" is
+the total number of instructions in the bitcode file and "TSolver" is
+percentage of time spent in the SAT solver.
 
 \midinsert \clabel[klee-stats]{KLEE's runtime statistics}
 \begtt
