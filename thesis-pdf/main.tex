@@ -1101,14 +1101,20 @@ overflow that currently doesn't cause bugs, but under different hardware could.
 As trying to test eMotor has shown, modifying software so it can be tested can
 be difficult if it has weakly abstracted input. This limits the kinds of
 software that can be tested using KLEE, to those with well abstracted inputs,
-which usually means software that was written to be cross-platform. Another
-difficulty in using KLEE to test software has shown itself when I created a
-test program for the MaCAN library. Due to an error I made while configuring
-the library in my test program, I ended up with a false positive results.
+which usually means software that was written to be cross-platform.
 
-Another potential pitfall of using KLEE to test software is the time it needs
+Another difficulty in using KLEE to test software is that the tested software
+requires modifications by programmer, which means that the validity of results
+depends on programmer. This has shown itself when I created a
+test program for the MaCAN library. Due to an error I made while configuring
+the library in my test program, I ended up with a false positive results and
+had to determine it was configuration error via manual inspection.
+
+Apart from relying on programmer to prepare the test program correctly, another
+potential pitfall of using KLEE to test software is the time it needs
 to test a program. The MaCAN test setup described in previously has been 
-running on modestly fast CPU for 5 days without finishing. This is caused by
+running on modestly fast CPU\note{2GHz AMD Opteron 6128}
+for 5 days without finishing. This is caused by
 KLEE's complexity being exponential in both memory (because the number of
 possible path generally increases exponentially with encountered conditional
 branches) and in CPU time (because it attempts to solve SAT problem at every
