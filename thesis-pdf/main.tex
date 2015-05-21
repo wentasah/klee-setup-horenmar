@@ -78,41 +78,45 @@ vysokoškolských závěrečných prací.
 
 \chap Introduction
 
-Security used to be thought of as completely orthogonal to safety-critical
-software, because such software was expected to be completely isolated from
-outside world, and if networked, the network was thought to be completely
-isolated from the outside world. These assumptions are becoming more and more
-outdated, with recent example being the ability to locate and unlock Tesla
-Model S electric car by hacking a trivially brute-forceable
+Safety-related software is software whose failure might result in injuries,
+and property damage, and more people rely on it every day. It is characterized
+by being thoroughly tested and reliable, but as the Internet of Things is
+becoming more and more pervasive, there can be no safety without security,
+as shown with the recent example of being able to locate and unlock Tesla
+Model S electric car by hacking a trivially brute-forceable security
 code~\cite[tesla-security].
 
-While no tool can prevent security vulnerabilities caused by naive
-authentication scheme, automatic testing can find security {\em implementation}
-bugs which could potentially allow an attack to bypass security measures that
-are in place. Thus there is a need to test new methods of verification of
-real-time safety-critical software.
+Because security used to be thought of as completely orthogonal to
+safety-related software, traditionally used tools for verification of
+safety-related software are ill-prepared to expose security vulnerabilities.
+This has led us to use a tool oriented towards finding bugs in general and
+evaluate its fitness for testing safety-critical software.
 
-In this thesis I attempt to determine whether a general purpose symbolic
-execution tool, KLEE, can help find bugs in existing real-time safety-critical
-software. While its original purpose was to test general purpose programs, we
-decided to test its fitness for testing real-time safety critical software,
-because such software's number of paths through code is typically relatively small, which
-mitigates the main downside of symbolic execution, its exponential complexity
-in number of branches in the executed program.
+The tool we decided to use is symbolic execution, namely
+KLEE~\cite[klee-paper], because symbolic execution is generally sound and
+its main drawbacks, exponential runtime complexity in number of branches,
+is mitigated by the fact that safety-related software contains relatively
+low number of paths through its code. While no tool can prevent security
+vulnerabilities caused by naive authentication scheme, automatic testing
+can find security vulnerabilities caused by {\em implementation} bugs which
+can allow an attacker to bypass security measures that are in place.
+
+This thesis investigates KLEE's fitness for purpose of testing safety-related
+software, documents its results on two selected pieces of safety-related
+software, eMotor and MaCAN library, and evaluates whether symbolic execution
+tools should be used for testing safety-related software in the future.
 
 The rest of this work is organized as follows. Second chapter, Background and
-Related Technologies introduces basic information about undefined behaviour,
-safety-critical software, symbolic execution and already existing tools using
-it, the tool I am testing in this thesis and the two pieces of safety-critical
+Related Technologies, introduces basic information about undefined behaviour,
+safety-critical software, symbolic execution and existing tools using it,
+the tool I am using in this thesis and the two pieces of safety-critical
 software we will use to evaluate KLEE's fitness for purpose. Third chapter,
-Toolchain and case study preparation, covers work performed in the course of
-writing my thesis. It covers work done on KLEE, eMotor software and the MaCAN
-library.
-
-Fourth chapter, Evaluation, covers results, such as number of bugs found using
-KLEE, their severity, time it took to find them and whether KLEE will be useful
-tool for testing safety-critical real-time software going forward. The final
-chapter, Conclusion, recapitulates our findings and recommendations.
+Toolchain and case study preparation, covers work done KLEE, eMotor software
+and the MaCAN library in the course of writing my thesis. Fourth chapter,
+Evaluation, covers our findings, such as number of bugs found using KLEE, their
+severity, time it took to find them and whether KLEE will be useful tool for
+testing safety-critical real-time software going forward. The final chapter,
+Conclusion, recapitulates our findings and recommendations.
 
 
 
