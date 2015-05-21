@@ -1256,21 +1256,33 @@ I made while working my thesis, is in the "thesis-setup" folder and all raw
 results from KLEE runs I used to make the final report in the "thesis-data"
 folder.
 
-The "thesis-pdf" folder also contains the \TeX{} document needed to recreate this
-thesis and cited papers (for obvious reasons, resources cited from the web are
-not included).
+The "thesis-pdf" folder contains:
+\begitems
+ * the \TeX{} document to recreate this thesis
+ * \TeX{} dependencies for said document
+ * cited papers in ".pdf" format
+\enditems
+for obvious reasons, resources cited from the web are not included
 
-The "thesis-setup" folder contains: tarballs of the LLVM-3.3 toolchain together
-Clang and compiler-rt, folder "thesis-setup-stable" containing all other
-dependencies, that is KLEE, STP, WLLVM, MaCAN, freshly checked out at the git
-version I worked with. eMotor is not there because of its proprietary nature
-and an NDA I had to sign to work with it. There are also "HOW_TO_INSTALL" and
-"HOW_TO_USE" files, which are exactly what they say.
+The "thesis-setup" folder contains:
+\begitems
+ * LLVM-3.3, Clang and compiler-rt tarballs
+ * "MaCAN-diff" a diff of all changes I made to MaCAN
+ * "thesis-setup-stable" folder with the rest of dependencies
+ * KLEE, STP, WLLVM and MaCAN, checked out at version used in this thesis
+ * "HOW_TO_INSTALL" and "HOW_TO_USE" files --- exactly what it says
+\enditems
+eMotor is not there because of its proprietary nature and the NDA I had to sign
+to work with it.
 
-The "thesis-data" folder contains a "readme.txt" file that, together with
-Appendix D, explains the "thesis-data" folder organization. Each run's folder
-has a "klee-last" folder, containing all output from KLEE created during
-that run.
+The "thesis-data" folder contains:
+\begitems
+ * "readme.txt" file to explain the folder organization
+ * a folder for each KLEE run used in the thesis
+ * calltracc for each KLEE run
+ * all files created by KLEE during a run
+\enditems
+
 
 \nextoddpage
 
