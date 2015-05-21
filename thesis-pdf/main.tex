@@ -1257,9 +1257,101 @@ report in the "thesis-data" folder.
 
 \nextoddpage
 
-\app Test result summary
+\app Test details
 
-Lorem Ipsum
+This appendix contains list of all flags given to KLEE when testing the MaCAN
+library, an overview of results and statistics of all runs.
+
+I used three independent instances of KLEE to test the MaCAN library. I shall
+refer to them as "covnew", "dfs10" and "dfs15". Abbreviated contents of their
+respective "info" files are in Figure~\ref[klee-cmd-covnew],
+Figure~\ref[klee-cmd-dfs10] and Figure~\ref[klee-cmd-dfs15] respectively.
+
+\midinsert \clabel[klee-cmd-covnew]{Contents of {\tt info} file for {\tt covnew}}
+\begtt
+klee --optimize --max-memory=0 --check-div-zero --check-overshift \
+--search=dfs --search=dfs --search=dfs --search=nurs:covnew
+Started: 2015-05-14 15:43:38
+\endtt
+\caption/f Contents of {\tt info} file for {\tt covnew}.
+\endinsert
+
+\midinsert \clabel[klee-cmd-dfs10]{Contents of {\tt info} file for {\tt dfs10}}
+\begtt
+klee --optimize --max-memory=0 --search=dfs --check-overshift \
+--check-div-zero
+Started: 2015-05-14 15:49:56
+\endtt
+\caption/f Contents of {\tt info} file for {\tt dfs10}.
+\endinsert
+
+\midinsert \clabel[klee-cmd-dfs15]{Contents of {\tt info} file for {\tt dfs15}}
+\begtt
+klee --only-output-states-covering-new --optimize --search=dfs \
+--max-memory=0 --check-div-zero --check-overshift
+Started: 2015-05-15 23:26:36
+\endtt
+\caption/f Contents of {\tt info} file for {\tt dfs15}.
+\endinsert
+
+The difference between "dfs" and "covnew" is that KLEE is allowed to use its
+own heuristics for guiding the search in the "covnew" invocation. The
+difference between "dfs10" and "dfs15" is whether the MaCAN hardware
+implementation for KLEE serves 10 received messages in row, or 15.
+
+\midinsert \clabel[klee-runs]{Table of KLEE runs}
+\ctable{lr}{
+\hfil Type & Number of potential problems found \crl \tskip4pt
+    10dfs & 8 \cr
+    15dfs & 5 \cr
+    covnew & 3 \cr
+}
+\caption/t Table of KLEE runs.
+\endinsert
+
+Table~\ref[klee-runs] shows an overview of KLEE runs and number of potential
+bugs they reported, and Figure~\ref[klee-runs-stats] shows their runtime
+statistics.
+
+\midinsert \clabel[klee-runs-stats]{Runtime statistics across used tests}
+\begtt
+----------------------------------------------------------------------
+|  Path | Instrs |  Time(s)|  ICov(%)|  BCov(%)|  ICount| TSolver(%) |
+----------------------------------------------------------------------
+|15dfs  | 4547644|416400.30|    75.37|    57.85|    1697|       99.93|
+----------------------------------------------------------------------
+|10dfs  |52135650|302651.30|    77.61|    60.76|    1697|       99.39|
+----------------------------------------------------------------------
+|covnew | 4834942| 51827.84|    54.10|    38.66|    1697|       99.59|
+----------------------------------------------------------------------
+\endtt
+\caption/f Runtime statistics across used tests.
+\endinsert
+
+Interestingly, even though "covnew" and "15dfs" have been started only 6
+minutes apart and stopped inside couple of minutes of each other as well,
+for the "covnew" run KLEE reports that it has ran for only about tenth of the
+time "15dfs" has ran for. The exact reason for this is unknown, but I speculate
+that it is because the "covnew"'s memory consumption quickly ballooned up to
+approx. 3.2 GBs and then it hit a KLEE bug with memory consumption. This is
+supported by two facts. First, an empirical observation: When trying to run
+KLEE with given command line options again, it quickly hit 3.2 GBs of memory
+consumption and then its memory consumption doesn't change for hours. Secondly,
+there are currently known bugs in KLEE's memory management and it might be
+related. This is supported by fact that while using the DFS search strategy,
+KLEE's memory consumption is a lot smaller and KLEE executes normally.
+
+Taking these facts into regard together with results of testing from Chapter 4,
+I came to recommend using KLEE command line invocation from Figure~\ref[klee-cmd].
+
+\midinsert \clabel[klee-cmd]{KLEE command line invocation}
+\begtt
+klee --only-output-states-covering-new --optimize --search=dfs \
+     --max-memory=0 --check-div-zero --check-overshift <bitcode file>
+\endtt
+\caption/f KLEE command line invocation.
+\endinsert
+
 
 \bye
 
