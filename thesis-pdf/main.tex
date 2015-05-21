@@ -49,8 +49,8 @@ s ohledem na KLEE.}
              security-critical systems, automotive domain}
 \keywordsCZ {Symbolická exekuce, KLEE, automatické testování,
              bezpečnostně kritický software, automobilový průmysl}
-\thanks{I would like to thank my supervisor Michal Sojka for his guidance
-        and advices.}
+\thanks{I would like to thank my supervisor Michal Sojka for his patience,
+        guidance and advices.}
 \declaration {
 I hereby declare that I made this on my own and I declared
 all used sources according to ``Metodický pokyn o dodržování
@@ -96,7 +96,7 @@ In this thesis I attempt to determine whether a general purpose symbolic
 execution tool, KLEE, can help find bugs in existing real-time safety-critical
 software. While its original purpose was to test general purpose programs, we
 decided to test its fitness for testing real-time safety critical software,
-because such software's number of paths through code is relatively small, which
+because such software's number of paths through code is typically relatively small, which
 mitigates the main downside of symbolic execution, its exponential complexity
 in number of branches in the executed program.
 
@@ -582,13 +582,13 @@ Infineon and MaCAN library because the Industrial Informatics Group created it.
 
 \secc eMotor
 
-The eMotor driver is Infineon Technologies' proprietary electric motor control software module for
-AUTomotive Open System ARchitecture (AUTOSAR\urlnote{http://www.autosar.org/}), standardized software
-architecture for automotive domain.
-It has an interrupt driven design (the entire control algorithm is
-executed inside the interrupt handler) and is designed to run on 32-bit Tricore
-TC1798 microcontroller. It requires proprietary IDE, compiler, assembler and
-linker to be compiled.
+The eMotor driver is Infineon Technologies' proprietary electric motor control
+software module for AUTomotive Open System ARchitecture
+(AUTOSAR\urlnote{http://www.autosar.org/}), standardized software architecture
+for automotive domain. It has an interrupt driven design (the entire control
+algorithm is executed inside the interrupt handler) and is designed to run on
+32-bit Tricore TC1798 microcontroller. It requires proprietary IDE, compiler,
+assembler and linker to be compiled.
 
 \secc MaCAN
 
@@ -662,9 +662,10 @@ from the KLEE mailing list~\cite[wllvm-patch].
 \sec eMotor modifications
 
 Because the eMotor's access to HW registers is weakly abstracted, modifying
-eMotor to support symbolic execution has proven to be hard. This, combined with
-time issues and the fact the project for which we worked on eMotor has ended,
-led us to give up on testing eMotor.
+eMotor to support symbolic execution has shown itself to be hard and very time
+consuming. Because of time issues and the fact that the project for which
+we worked on eMotor has ended, I talked to my supervisor and we decided
+to give up on testing eMotor.
 
 \sec MaCAN modifications
 
