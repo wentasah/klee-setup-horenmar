@@ -4,7 +4,7 @@
 \input opmac-bib
 
 %\shortcitations %Would be normally defined by the template, but I decided
-% to comment it out preventively.
+% to comment it out preventively. [3-4, 7] is ugly as fuck.
 \sortcitations  %Sort citation order for citation lists
 %That means turn [5, 3, 4, 7] into [3, 4, 5, 7] or [3-5, 7]
 
@@ -1256,7 +1256,7 @@ I made while working my thesis, is in the "thesis-setup" folder and all raw
 results from KLEE runs I used to make the final report in the "thesis-data"
 folder.
 
-The "thesis-pdf" folder also contains the TeX document needed to recreate this
+The "thesis-pdf" folder also contains the \TeX document needed to recreate this
 thesis and cited papers (for obvious reasons, resources cited from the web are
 not included).
 
@@ -1264,12 +1264,13 @@ The "thesis-setup" folder contains: tarballs of the LLVM-3.3 toolchain together
 Clang and compiler-rt, folder "thesis-setup-stable" containing all other
 dependencies, that is KLEE, STP, WLLVM, MaCAN, freshly checked out at the git
 version I worked with. eMotor is not there because of its proprietary nature
-and an NDA I had to sign to work with it. There are also HOW\textunderscore%
-TO\textunderscore INSTALL and HOW\textunderscore TO\textunderscore USE files,
-which are exactly what they say.
+and an NDA I had to sign to work with it. There are also "HOW_TO_INSTALL" and
+"HOW_TO_USE" files, which are exactly what they say.
 
 The "thesis-data" folder contains a "readme.txt" file that, together with
-Appendix D, explains things further.
+Appendix D, explains the "thesis-data" folder organization. Each run's folder
+has a "klee-last" folder, containing all output from KLEE created during
+that run.
 
 \nextoddpage
 
@@ -1372,4 +1373,3 @@ klee --only-output-states-covering-new --optimize --search=dfs \
 
 
 \bye
-
