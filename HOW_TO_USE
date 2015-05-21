@@ -14,6 +14,7 @@
 
 3) Build MaCAN by running make from macan/build/klee/
         The binary will be named single_node
+        (If MaCAN is not checked out yet, it is in submodules)
 
 4) Extract llvm bitcode from newly built binary.
         The binary is at macan/build/klee/_compiled/bin-tests/
