@@ -1,8 +1,0 @@
-Error: overflow on unsigned addition
-File: /home/horenmar/thesis-setup-stable/macan/build/klee/macan/src/macan.c
-Line: 864
-assembly.ll line: 2263
-Stack: 
-	#000002263 in macan_check_cmac (ctx=54893664, cmac4=57752428, fill_time=57149360) at /home/horenmar/thesis-setup-stable/macan/build/klee/macan/src/macan.c:864
-	#100001447 in can_rx_cb (loop=0, w=54893784, revents=0) at /home/horenmar/thesis-setup-stable/macan/build/klee/macan/src/macan.c:240
-	#200000443 in main () at /home/horenmar/thesis-setup-stable/macan/build/klee/macan/src/klee/macan_ev.c:98
