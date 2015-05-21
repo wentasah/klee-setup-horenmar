@@ -136,7 +136,7 @@ J.2~\cite[iso-C99]}
 * Converting pointers to objects of incompatible types (e.g. converting "float*"
   to "int*")
 * Signed integer overflow (unsigned overflow is well defined)
-* Shifting values by more than its size (ie "int64_t i = 1 << 70")
+* Shifting values by more than its size (i.e. "int64_t i = 1 << 70")
 * Evaluating arithmetic expression that would be mathematically undefined
   (e.g. division by zero)
 \enditems
@@ -1159,13 +1159,12 @@ Overall we found KLEE fit for purpose, but with reservation. It has helped to
 find two previously unknown bugs in the MaCAN library and another one that has
 been independently found and fixed after I forked MaCAN for testing.
 
-It provides sound analysis of software, but because most safety-critical
-programs are hardware dependent and their runtime is expected to never
-terminate, the software given to KLEE has to be modified and these
+Because most safety-critical programs are hardware dependent and their execution is
+expected to never terminate, the software given to KLEE has to be modified and these
 modifications can potentially obscure existing bugs.
-Assuming no bugs were obscured by testing-enabling modifications, the analysis
+Assuming no bugs were obscured by testing-enabling modifications, KLEE's analysis
 is sound (does not provide false negatives), which for safety-critical software
-is very valuable property of testing.
+is very valuable property.
 
 The cost of KLEE's analysis is exponential time and space complexity and
 specific requirements on the design of tested software. This also means that
@@ -1201,12 +1200,13 @@ the start with using KLEE in mind. This means liberal use of assertions,
 minimizing complexity of branches, well abstracted inputs and documented parts
 that are intractable for symbolic execution, such as cryptographic primitives.
 
-In closing I think there is a niche for a symbolic execution tools targeted
+In closing, I think there is a niche for a symbolic execution tools targeted
 specifically towards real-time safety-critical software systems, one that has
 not been yet filled with an already existing symbolic execution tool. It could
-provide a more comprehensive set of checks (i.e. no currently existing tool
+provide a more comprehensive set of checks (e.g. no currently existing tool
 checks against aliasing violations) and have specific annotations to help with
-managing runtime complexity.
+managing runtime complexity (e.g. to guide the symbolic execution tool towards
+failure paths).
 
 
 
