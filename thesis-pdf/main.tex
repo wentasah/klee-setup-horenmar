@@ -1173,23 +1173,22 @@ it, depending on how critical said software is.
 
 \chap Conclusion
 
-I have tried to test two pieces of real-time safety-critical software using the
-symbolic execution tool KLEE. Because of KLEE's limitations and requirements, I
-could only proceed with testing of the MaCAN library and had to abandon testing
-eMotor.
+In this work I showed how to use KLEE to test safety-critical software. I
+described how to compile KLEE and which modifications were needed to the tested
+software. Because of KLEE's limitations and requirements, I could only proceed
+with testing of the MaCAN library and had to abandon testing eMotor.
 
 The results from testing the MaCAN library are mixed. After running for more
-than 5 days, KLEE has found a critical bug, found already fixed bug again
-and helped to find a currently dormant bug in the MaCAN implementation of the
-library. Symbolic execution, using KLEE, will also be added amongst tools used
-to test the library going forward.
+than 5 days, KLEE has found a critical bug, an independently found and fixed
+bug and uncovered a currently dormant bug in manipulation of the MaCAN system
+time. However, after all this the best run of KLEE has only covered approx.
+60\% of all branches and 77\% of all the LLVM IR instructions in the test
+program and because the progress of KLEE's test coverage is non-linear and
+can generally be expected to be logarithmic, I predict that even after another
+5 days KLEE would not have finished running the MaCAN test program.
 
-On the other hand, as I have shown, even after running for more than 5 days,
-KLEE has only covered approx. 60\% of all branches and 77\% of all LLVM IR
-instructions in the test program. Because the progress of KLEE's test coverage
-is non-linear and can in general be expected to be logarithmic, I predict that
-even after another 5 days KLEE would not have finished running the MaCAN test
-program.
+Because of its results, KLEE will be added amongst tools used to test the MaCAN
+library going forward.
 
 Thus we conclude that KLEE can be a valuable tool to use for verification of
 real-time safety-critical software, but the software has to be designed from
