@@ -1172,6 +1172,11 @@ for software that resembles eMotor, having weakly abstracted hardware layer,
 the high time investment for testing said software with KLEE might not be worth
 it, depending on how critical said software is.
 
+For software that does not use all of KLEE's capabilities, e.g. it does not use
+assertions, but rather uses it to find undefined behaviour invoking code, there
+also exist tools that sacrifice soundness of analysis for speed. An example of
+such tool is the STACK~\cite[MIT-ub].
+
 
 
 
