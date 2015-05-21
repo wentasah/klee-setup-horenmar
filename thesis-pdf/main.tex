@@ -15,7 +15,7 @@
 \department {Department of Cybernetics}
 \title {The Use of Symbolic Execution for Testing of Real-Time
         Safety-Related Software}
-\titleCZ {Využití symbolické exekuce pro testování real-time,
+\titleCZ {Využití symbolické exekuce pro testování real-time
           bezpečnostně kritického softwaru}
 \author {Martin Hořeňovský}
 \authorinfo {horenmar@fel.cvut.cz}
@@ -90,7 +90,7 @@ Because security used to be thought of as completely orthogonal to
 safety-related software, traditionally used tools for verification of
 safety-related software are ill-prepared to expose security vulnerabilities.
 This has led us to use a tool oriented towards finding bugs in general and
-evaluate its fitness for testing safety-critical software.
+evaluate its fitness for testing safety-related software.
 
 The tool we decided to use is symbolic execution, namely
 KLEE~\cite[klee-paper], because symbolic execution is generally sound and
@@ -108,14 +108,14 @@ tools should be used for testing safety-related software in the future.
 
 The rest of this work is organized as follows. Second chapter, Background and
 Related Technologies, introduces basic information about undefined behaviour,
-safety-critical software, symbolic execution and existing tools using it,
-the tool I am using in this thesis and the two pieces of safety-critical
+safety-related software, symbolic execution and existing tools using it,
+the tool I am using in this thesis and the two pieces of safety-related
 software we will use to evaluate KLEE's fitness for purpose. Third chapter,
 Toolchain and case study preparation, covers work done on KLEE, eMotor software
 and the MaCAN library in the course of writing my thesis. Fourth chapter,
 Evaluation, covers our findings, such as number of bugs found using KLEE, their
 severity, time spent on finding them and whether KLEE will be useful tool for
-testing safety-critical real-time software going forward. The final chapter,
+testing real-time safety-related software going forward. The final chapter,
 Conclusion, recapitulates our findings and recommendations.
 
 
@@ -203,7 +203,8 @@ compilation is another potential source of software defects, there are formally
 provable compilers~\cite[compcert-paper].
 
 In general, safety-critical systems often have hard real-time requirements and
-to be fully defined for all possible inputs. This means that software contained
+are required to have their responses fully defined for all possible inputs.
+This means that software contained
 within must always respond under a fixed time-limit and have to fully define
 its failure modes, even if the response is just turning off motor and engaging
 emergency breaks.
@@ -279,11 +280,11 @@ amount of branches (possible paths) through the program. This allows use of
 symbolic testing on much larger programs than just using random inputs. 
 
 On the other hand, certain kinds of conditional branching are more or less
-unsolvable. Consider checking cryptographic hash of a symbolic value against
-predetermined result. For symbolic tool to be able to give us a concrete value
-or a set of constraints is asking it to reverse a cryptographic hash, which is
-generally regarded impossible without brute-force testing the input space, and
-in special cases might be impossible completely. Other problematic constructs
+unsolvable. Consider comparing cryptographic hash of a symbolic value against
+predetermined result. To be able to give proceed, a symbolic tool would have
+to reverse a cryptographic hash which is generally regarded as impossible
+without brute-force testing the input space, and
+in specific cases might be impossible completely. Other problematic constructs
 are unbounded loops (i.e. those waiting for a hardware response) and infinite
 loops, which prevent symbolic execution from terminating.
 
@@ -644,7 +645,7 @@ Virtually all my work is also available online, in a GitHub repository%
 
 \sec KLEE preparation
 
-Because KLEE's overflow checking relies on Clang's UndefinedBehaviorSanitizer,
+Because KLEE's overflow checking relies on Clang's Undefined Behavior Sanitizer,
 I had to find a way of compiling and linking together binary from multiple
 source files using Clang. Because the bitcode linking facilities in LLVM have
 been deleted between the 2.9 (officially supported by KLEE) version and 3.3
@@ -917,7 +918,7 @@ configuration (as the node configuration for our test harness was concrete.)
 \chap Evaluation
 
 This chapter presents results I obtained by running KLEE on the MaCAN library
-to evaluate its viability as testing tool of real-time, safety-critical
+to evaluate its viability as testing tool of real-time safety-critical
 software. Because of the already mentioned difficulties with modifying eMotor
 to run under KLEE, results from testing eMotor are not included.
 
@@ -927,10 +928,10 @@ When I ran KLEE on the modified MaCAN library, KLEE has reported some potential
 errors. After fixing Assertion and access violation caused by my
 misconfiguration of the test client, I ran KLEE again in two configurations.
 One using the default heuristics as its search strategy and one using DFS as
-its search strategy. Statistics for resulting bugs found are in 
+its search strategy. Total numbers of bugs found during both runs are in
 Table~\ref[klee-results].
 
-\midinsert \clabel[klee-results]{Number of bugs found}
+\midinsert \clabel[klee-results]{Overview of bugs found}
 \ctable{lr}{
 \hfil Type of bug & Count \crl \tskip4pt
     Assertion violation & 0 \cr
@@ -940,7 +941,7 @@ Table~\ref[klee-results].
     Calls to abort & 0 \cr
     Integer overfow & 8 \cr
 }
-\caption/t Number of bugs found.
+\caption/t Overview of bugs found.
 \endinsert
 
 As can be seen, the only reports were for integer overflows. The numbers for
@@ -952,14 +953,14 @@ dangerous. For unsigned overflows, I used personal inspection and assistance
 from my supervisor, Michal Sojka\fnote{Michal Sojka is one of the MaCAN library
 authors and current maintainer.}.
 
-\midinsert \clabel[overflow-results]{Number of overflows found}
+\midinsert \clabel[overflow-results]{Overview of overflows found}
 \ctable{lr}{
 \hfil Type of overflow & Count \crl \tskip4pt
     benign & 5 \cr
     causing bugs & 2 \cr
     causing undefined behaviour & 1 \cr
 }
-\caption/t Number of overflows found.
+\caption/t Overview of overflows found.
 \endinsert
 
 The one case of undefined-behaviour-causing overflow was in function checking
@@ -1046,7 +1047,7 @@ All current platform implementation start system time at 0, but if a future
 platform started system time at different value, it could trigger the overflow in
 Figure~\ref[dormant-bug] and the overflow could cause errors in the future,
 unless fixed. The bug lies in the expression
-"t->expire_us = now + t->repeat_us" whos right-hand side can overflow and the
+"t->expire_us = now + t->repeat_us" whose right-hand side can overflow and the
 timer then will remain expired until MaCAN system time ("now") overflows as well.
 
 \midinsert \clabel[dormant-bug]{Dormant bug in the event loop}
@@ -1110,15 +1111,15 @@ which usually means software that was written to be cross-platform.
 Another difficulty in using KLEE to test software is that the tested software
 requires modifications by programmer, which means that the validity of results
 depends on programmer. This has shown itself when I created a
-test program for the MaCAN library. Due to an error I made while configuring
-the library in my test program, I ended up with a false positive results and
+test program for the MaCAN library. Due to an error, made while configuring
+the library in my test program, I~ended up with a false positive results and
 had to determine it was configuration error via manual inspection.
 
 Apart from relying on programmer to prepare the test program correctly, another
 potential pitfall of using KLEE to test software is the time it needs
-to test a program. The MaCAN test setup described in previously has been 
-running on modestly fast CPU\fnote{2GHz AMD Opteron 6128}
-for 5 days without finishing. This is caused by
+to test a program. The MaCAN test setup described previously has been running
+on modestly fast CPU\fnote{2GHz AMD Opteron 6128} for 5 days without finishing.
+This is caused by
 KLEE's complexity being exponential in both memory (because the number of
 possible path generally increases exponentially with encountered conditional
 branches) and in CPU time (because it attempts to solve SAT problem at every
@@ -1133,11 +1134,12 @@ completely to find bugs, safety critical software demands complete verification
 (or at least as complete as possible).
 
 Figure~\ref[klee-stats] shows runtime statistics from KLEE for test using the
-DFS search strategy. "Instrs" is number of executed LLVM IR instructions,
+DFS search strategy, where "Instrs" is number of executed LLVM IR instructions,
 "Time" is total time spent running, "ICov" is percentage of total instructions
 covered during testing, "BCov" is percentage of branches covered, "ICount" is
 the total number of instructions in the bitcode file and "TSolver" is
-percentage of time spent in the SAT solver.
+percentage of time spent in the SAT solver. As the figure shows, KLEE has
+achieved approx. 77\% instruction coverage and approx. 60\% branch coverage.
 
 \midinsert \clabel[klee-stats]{KLEE's runtime statistics}
 \begtt
@@ -1199,7 +1201,7 @@ can generally be expected to be logarithmic, I predict that even after another
 Because of its results, KLEE will be added amongst tools used to test the MaCAN
 library going forward.
 
-Thus we conclude that KLEE can be a valuable tool to use for verification of
+Thus we conclude that KLEE can be a valuable tool for verification of
 real-time safety-critical software, but the software has to be designed from
 the start with having KLEE in mind. This means liberal use of assertions,
 minimizing complexity of branches, well abstracted inputs and documented parts
