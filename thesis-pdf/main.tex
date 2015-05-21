@@ -1153,17 +1153,21 @@ somewhere.}
 
 Overall we found KLEE fit for purpose, but with reservation. It has helped to
 find two previously unknown bugs in the MaCAN library and another one that has
-been independently found and fixed after I forked MaCAN for testing. It provides sound
-analysis, which means that it doesn't provide false negatives, at the cost of
-exponential time and space complexity and specific requirements on the tested
-software.
+been independently found and fixed after I forked MaCAN for testing.
 
-For software that resembles eMotor in that it has weakly abstracted inputs,
-the time investment needed to modify it so that it can be tested with KLEE is
-probably not worth the results and many of KLEE's benefits can be found from
-using other tools, such as STACK~\cite[MIT-ub], which does not need neither
-the time investment for running, nor the scope of modifications of using KLEE.
+It provides sound analysis of software, but because most safety-critical
+programs are hardware dependent and their runtime is expected to never
+terminate, the software given to KLEE has to be modified and these
+modifications can potentially obscure existing bugs.
+Assuming no bugs were obscured by testing-enabling modifications, the analysis
+is sound (does not provide false negatives), which for safety-critical software
+is very valuable property of testing.
 
+The cost of KLEE's analysis is exponential time and space complexity and
+specific requirements on the design of tested software. This also means that
+for software that resembles eMotor, having weakly abstracted hardware layer,
+the high time investment for testing said software with KLEE might not be worth
+it, depending on how critical said software is.
 
 
 
