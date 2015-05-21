@@ -79,7 +79,7 @@ vysokoškolských závěrečných prací.
 \chap Introduction
 
 Safety-related software is software whose failure might result in injuries,
-and property damage, and more people rely on it every day. It is characterized
+and property damage. More people rely on it every day. It is characterized
 by being thoroughly tested and reliable, but as the Internet of Things is
 becoming more and more pervasive, there can be no safety without security,
 as shown with the recent example of being able to locate and unlock Tesla
@@ -1189,7 +1189,8 @@ described how to compile KLEE and what modifications were needed in the tested
 software. Because of KLEE's limitations and requirements, I could only proceed
 with testing of the MaCAN library and had to abandon testing eMotor.
 
-The results from testing the MaCAN library are mixed. After running for more
+The results from testing the MaCAN library are mixed. After running the tests
+for more
 than 5 days, KLEE has found a critical bug, an independently found and fixed
 bug and uncovered a currently dormant bug in manipulation of the MaCAN system
 time. However, after all this the best run of KLEE has only covered approx.
@@ -1198,8 +1199,8 @@ program and because the progress of KLEE's test coverage is non-linear and
 can generally be expected to be logarithmic, I predict that even after another
 5 days KLEE would not have finished running the MaCAN test program.
 
-Because of its results, KLEE will be added amongst tools used to test the MaCAN
-library going forward.
+Because of its results, KLEE will be added amongst tools used to continuously
+test the MaCAN library.
 
 Thus we conclude that KLEE can be a valuable tool for verification of
 real-time safety-critical software, but the software has to be designed from
@@ -1208,13 +1209,12 @@ minimizing complexity of branches, well abstracted inputs and documented parts
 that are intractable for symbolic execution, such as cryptographic primitives.
 
 In closing, I think there is a niche for a symbolic execution tools targeted
-specifically towards real-time safety-critical software systems, one that has
-not been yet filled with an already existing symbolic execution tool. It could
+specifically towards real-time safety-critical software systems, niche that has
+not yet been filled with an already existing symbolic execution tool. It could
 provide a more comprehensive set of checks (e.g. no currently existing tool
 checks against aliasing violations) and have specific annotations to help with
 managing runtime complexity (e.g. to guide the symbolic execution tool towards
 failure paths).
-
 
 
 \nextoddpage
