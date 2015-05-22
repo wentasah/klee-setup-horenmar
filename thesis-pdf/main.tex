@@ -25,13 +25,14 @@
 \abstractEN {This thesis investigates fitness of symbolic execution tool KLEE
 for verification of real-time safety-critical systems. Real-time
 safety-critical systems are those systems, whose malfunction might result in
-death of people and/or environmental damage.
+loss of life and/or environmental damage.
 
 In this thesis I modify two pieces of real-time safety-critical
-software to test them with KLEE and evaluate how complex was the modification
-and whether using KLEE is viable going forward. I conclude that KLEE can be
-a valuable tool to use for verification of real-time safety-critical software,
-but the software has to be designed with having KLEE in mind.}
+software to test them with KLEE and to evaluate how complex the modification
+was and whether using KLEE for verification of real-time safety-critical
+systems is viable going forward. I conclude that KLEE can be
+a valuable tool for verifying real-time safety-critical software,
+but the software has to be designed with KLEE in mind.}
 
 \abstractCZ {Tato práce zkoumá vhodnost nástroje symbolické exekuce KLEE pro
 verifikaci real-time bezpečnostně kritických systémů. Real-time bezpečnostně
@@ -50,7 +51,7 @@ s ohledem na KLEE.}
 \keywordsCZ {Symbolická exekuce, KLEE, automatické testování,
              bezpečnostně kritický software, automobilový průmysl}
 \thanks{I would like to thank my supervisor Michal Sojka for his patience,
-        guidance and advices. I would also like to thank my friends whom I
+        guidance and advice. I would also like to thank my friends whom I
         bugged for proofreading, even though they had a lot of their own work.}
         
 \declaration {
@@ -91,17 +92,17 @@ code~\cite[tesla-security].
 
 Because security used to be thought of as completely orthogonal to
 safety-related software, traditionally used tools for verification of
-safety-related software are ill-prepared to expose security vulnerabilities,
-we decided to try a verification method oriented towards finding bugs
+safety-related software are ill-prepared to expose security vulnerabilities.
+Therefore we decided to try a verification method oriented towards finding bugs
 in general and evaluate its fitness for testing safety-related software in
 particular.
 
 The verification method we decided to use is symbolic execution, using
-KLEE~\cite[klee-paper] as our executor. Because symbolic execution is generally
-sound and its main drawback, exponential runtime complexity in number of
-executed branches, is  mitigated by the fact that safety-related software
-contains relatively low number of paths through its code, it seemed as a good
-fit for our needs. And while no tool can prevent security
+KLEE~\cite[klee-paper] as our executor. Symbolic execution seemed as a good
+fit for our needs as it is generally sound and its main drawback, exponential
+runtime complexity in number of executed branches, is mitigated by the fact
+that safety-related software contains a relatively low number of paths through
+its code. And while no tool can prevent security
 vulnerabilities caused by naive authentication scheme, automatic testing
 can find security vulnerabilities caused by {\em implementation} bugs which
 can allow an attacker to bypass security measures that are in place.
@@ -118,8 +119,8 @@ the tool I am using in this thesis and the two pieces of safety-related
 software we will use to evaluate KLEE's fitness for purpose. Third chapter,
 Toolchain and case study preparation, covers work done on KLEE, eMotor software
 and the MaCAN library in the course of writing my thesis. Fourth chapter,
-Evaluation, covers our findings, such as number of bugs found using KLEE, their
-severity, time spent on finding them and whether KLEE will be useful tool for
+Evaluation, covers our findings, such as the number of bugs found using KLEE, their
+severity, time spent on finding them and whether KLEE will be a useful tool for
 testing real-time safety-related software going forward. The final chapter,
 Conclusion, recapitulates our findings and recommendations.
 
@@ -1192,19 +1193,19 @@ such tool is the STACK~\cite[MIT-ub].
 
 \chap Conclusion
 
-In this work I showed how to use KLEE to test safety-critical software. I
+In this work I demonstrated how to use KLEE to test safety-critical software. I
 described how to compile KLEE and what modifications were needed in the tested
 software. Because of KLEE's limitations and requirements, I could only proceed
 with testing of the MaCAN library and had to abandon testing eMotor.
 
 The results from testing the MaCAN library are mixed. After running the tests
-for more than 5 days, KLEE has found three severe bugs. The first one was a
-signed integer overflow in validating message time, second was an independently
+for more than 5 days, KLEE had found three severe bugs. The first one was a
+signed integer overflow in message time validation, second was an independently
 found and fixed unsigned overflow bug in calculating current time and the third
 was a currently dormant bug in manipulation with the MaCAN system time.
-However, the best run of KLEE has only covered approx.
+However, the best run of KLEE had only covered approx.
 60\% of all branches and 77\% of all the LLVM IR instructions in the test
-program and because the progress of KLEE's test coverage is non-linear and
+program. Because the progress of KLEE's test coverage is non-linear and
 can generally be expected to be logarithmic, I predict that even after another
 5 days KLEE would not have finished running the MaCAN test program.
 
@@ -1213,7 +1214,7 @@ test the MaCAN library.
 
 Thus we conclude that KLEE can be a valuable tool for verification of
 real-time safety-critical software, but the software has to be designed from
-the start with having KLEE in mind. This means liberal use of assertions,
+the start with KLEE in mind. This means liberal use of assertions,
 minimizing complexity of branches, having strongly abstracted
 hardware-dependent code and documented parts that are intractable for symbolic
 execution, such as cryptographic primitives.
