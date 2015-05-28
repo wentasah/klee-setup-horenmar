@@ -1,11 +1,9 @@
 1) Download the wllvm utility (in submodules)
 	See https://github.com/travitch/whole-program-llvm for usage details.
 
-1b) Apply patch to force turning on the supported sanitizers.
-	Its in file sanitizer.patch
-        patch < sanitizer.patch should be enough
-
-1c) Add wllvm to path
+1b) Add wllvm to PATH
+    Add clang-3.3 to PATH
+    export LLVM_COMPILER=clang
 
 2) Add libkleeRuntest.so to linker's path.
         Its in klee/_build/Release+Asserts/lib/
