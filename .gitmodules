@@ -13,3 +13,15 @@
 [submodule "macan"]
 	path = macan
 	url = https://github.com/horenmar/macan.git
+[submodule "llvm"]
+	path = llvm
+	url = http://llvm.org/git/llvm.git
+	branch = release_33
+[submodule "clang"]
+	path = clang
+	url = http://llvm.org/git/clang.git
+	branch = release_33
+[submodule "compiler-rt"]
+	path = compiler-rt
+	url = http://llvm.org/git/compiler-rt.git
+	branch = release_33

@@ -1,3 +1,5 @@
+/_build/
+
 # Tex build artifacts
 *.ref
 *.synctex.gz
